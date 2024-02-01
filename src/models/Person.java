@@ -13,6 +13,13 @@ abstract class Person {
         this.sex = sex;
     }
 
+    //Normal case, the customer will not provide their information, data will set to not provided
+    public Person(){
+        this.code = "Not provided";
+        this.name = "Not provided";
+        this.yob = 0;
+        this.sex = "Not provided";
+    }
     public String getCode() {
         return code;
     }
@@ -29,4 +36,8 @@ abstract class Person {
         return sex;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%10d,%20s,%6d,%8s",code,name,yob,sex);
+    }
 }
