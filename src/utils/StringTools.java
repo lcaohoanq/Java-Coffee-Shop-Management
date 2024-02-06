@@ -25,12 +25,27 @@ public class StringTools {
         return num;
     }
 
-    public static void printTitle() {
-        String str = String.format("|%3s|%15s|%15s|%70s|%15s|%10s|", "ID", "Name", "Room Available", "Address", "Phone", "Rating");
+    public static void printTitle(String type) {
+        String str = "";
+        if(type.equals("i")){
+            str = String.format("| %-5s | %-15s | %-15s | %10s | %5s | %15s |\n","Code","Name","Type","Quantity","Unit","Price");
+        }else if(type.equals("m")){
+//            str = String.format("|%3
+        }else {
+//            str = String.format("|%3s|%15s|%15s|%70s|%15s|%10s|", "ID", "Name", "Room Available", "Address", "Phone", "Rating");
+        }
         System.out.println(str);
     }
 
-    public static void printLine() {
-        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
+    public static void printLine(String type) {
+        String str = "";
+        if(type.equals("i")){
+            str = "------------------------------------------------------------------------------------";
+        }else if(type.equals("m")){
+            str = "---------------------------------------------";
+        }else {
+            str = "-----------------------------------------------------------------------------------";
+        }
+        System.out.println(str);
     }
 }

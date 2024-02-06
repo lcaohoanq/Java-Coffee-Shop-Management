@@ -16,15 +16,15 @@ public class Message {
     public static final String INGREDIENT_QUANTITY_MUST_BE_A_POSITIVE_NUMBER = "Ingredient quantity must be a positive number";
     public static final String INGREDIENT_UNIT_MUST_A_LETTER = "Ingredient unit must be a letter";
     // if exist
-    public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed: ";
+    public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed";
 
     //Validation message if null value
-    public static final String INGREDIENT_CODE_IS_REQUIRED = "Ingredient code is required: ";
-    public static final String INGREDIENT_NAME_IS_REQUIRED = "Ingredient name is required: ";
-    public static final String INGREDIENT_TYPE_IS_REQUIRED = "Ingredient type is required: ";
-    public static final String INGREDIENT_QUANTITY_IS_REQUIRED = "Ingredient quantity is required: ";
-    public static final String INGREDIENT_UNIT_IS_REQUIRED = "Ingredient unit is required: ";
-    public static final String INGREDIENT_PRICE_IS_REQUIRED = "Ingredient price is required: ";
+    public static final String INGREDIENT_NAME_IS_REQUIRED = "Ingredient name is required";
+    public static final String INGREDIENT_CODE_IS_REQUIRED = "Ingredient code is required";
+    public static final String INGREDIENT_TYPE_IS_REQUIRED = "Ingredient type is required";
+    public static final String INGREDIENT_QUANTITY_IS_REQUIRED = "Ingredient quantity is required";
+    public static final String INGREDIENT_UNIT_IS_REQUIRED = "Ingredient unit is required";
+    public static final String INGREDIENT_PRICE_IS_REQUIRED = "Ingredient price is required";
 
     // Operation 
     public static final String ADD_INGREDIENT_SUCCESSFULLY = "Add ingredient successfully";

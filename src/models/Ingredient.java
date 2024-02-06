@@ -1,6 +1,8 @@
 package models;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
     private String code;
     private String name;
     private String type;
@@ -9,7 +11,7 @@ public class Ingredient {
     private double price;
 
     public Ingredient(String code, String name, String type, int quantity, String unit, double price) {
-        this.code = code;
+        this.code = code.toUpperCase();
         this.name = name;
         this.type = type;
         this.quantity = quantity;
@@ -65,6 +67,11 @@ public class Ingredient {
         this.price = price;
     }
     public void showIngredient(){
-        System.out.printf("%-5s%-20s%-10s%10d%5s%-6.2f\n",code,name,type,quantity,unit,price);
+        System.out.printf("| %-5s | %-15s | %-15s | %10d | %5s | %15.0f |\n",code,name,type,quantity,unit,price);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("| %-5s | %-15s | %-15s | %10d | %5s | %15.0f |\n", code, name, type, quantity, unit, price);
     }
 }
