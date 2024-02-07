@@ -88,6 +88,9 @@ public class IngredientManagement implements Searcher<Ingredient> {
         } else {
             System.out.println("Before delete: ");
             ingredient.showIngredient();
+            if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE)){
+                return;
+            }
             ingredientList.remove(index);
             System.out.println(Message.DELETE_INGREDIENT_SUCCESSFULLY);
         }
@@ -143,7 +146,7 @@ public class IngredientManagement implements Searcher<Ingredient> {
                 double price = Double.parseDouble(stk.nextToken());
                 ingredientList.add(new Ingredient(code, name, type, quantity, unit, price));
             }
-            System.out.println("Load data successfully");
+            System.out.println("Load data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,7 +167,7 @@ public class IngredientManagement implements Searcher<Ingredient> {
             }
             bw.close();
             fw.close();
-            System.out.println("Save data successfully");
+            System.out.println("Save data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }

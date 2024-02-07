@@ -1,74 +1,41 @@
 package models;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.ArrayList;
+import utils.Utils;
 
-public class Menu implements Serializable {
-    private String code;
-    private String name;
-    private Map<String,Integer> recipe;
+/*
+Menu: là 1 khuôn chuyên đúc ra object quản lý menu
+cái khuôn này chứa 1 danh sách các lựa chọn (opt)
+method addOption: thêm 1 Option
+method print: in ra danh sách các menu
+method getChoice: lấy lựa chọn từ người dùng
+*/
+public class Menu {
+    public ArrayList<String> optionList = new ArrayList<>();
+    public String title;
 
-//    private List<Ingredient> ingredients;
-//    private List<Integer> quantities;
-//    private static final int MIN_INGREDIENT_QUANTITY = 0;
-//    public Menu(String code, String name, List<Ingredient> ingredients, List<Integer> quantities) {
-//        this.code = code;
-//        this.name = name;
-//        this.ingredients = ingredients;
-//        this.quantities = quantities;
-//    }
-//
-//    public void updateIngredientQuantities() {
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            Ingredient ingredient = ingredients.get(i);
-//            int newQuantity = ingredient.getQuantity() - quantities.get(i);
-//            // Ensure the new quantity does not go below the minimum allowed
-//            ingredient.setQuantity(Math.max(newQuantity, MIN_INGREDIENT_QUANTITY));
-//        }
-//    }
-//
-//    public String getCode() {
-//        return code;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public List<Ingredient> getIngredients() {
-//        return ingredients;
-//    }
-//
-//    public List<Integer> getQuantities() {
-//        return quantities;
-//    }
-
-    public Menu(String code, String name, Map<String, Integer> recipe) {
-        this.code = code.toUpperCase();
-        this.name = name;
-        this.recipe = recipe;
+    // constructor
+    public Menu(String title) {
+        this.title = title;
     }
 
-    public String getCode() {
-        return code;
+    // method
+    public void addOption(String option) {
+        optionList.add(option);
     }
 
-    public String getName() {
-        return name;
+    // in ra menu
+    public void print() {
+        int count = 1;
+        System.out.println("----------------------------------------------" + title + "-----------------------------------------------");
+        for (String item : optionList) {
+            System.out.println(count + ". " + item);
+            count++;
+        }
     }
 
-    public Map<String, Integer> getRecipe() {
-        return recipe;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void showInfo(){
-        String str = String.format("| %5s | %20s | %20s |", code, name, recipe);
-        System.out.println(str);
+    // lấy ra lựa chọn
+    public int getChoice() {
+        return Utils.getInt("Input your choice: ","Required between 1 and " + optionList.size(),1, optionList.size());
     }
 }

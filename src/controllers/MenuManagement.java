@@ -3,18 +3,16 @@ package controllers;
 import constants.Message;
 import constants.Path;
 import constants.Regex;
-import models.Ingredient;
-import models.Menu;
+import models.MenuDrink;
 import models.Searcher;
 import utils.ConsoleColors;
-import utils.StringTools;
 import utils.Utils;
 
 import java.io.*;
 import java.util.*;
 
-public class MenuManagement implements Searcher<Menu> {
-    private List<Menu> drinkList = new ArrayList<>();
+public class MenuManagement implements Searcher<MenuDrink> {
+    private List<MenuDrink> drinkList = new ArrayList<>();
     private Map<String,Integer> recipe;
     private IngredientManagement idm = new IngredientManagement();
     private static Scanner sc = new Scanner(System.in);
@@ -28,7 +26,7 @@ public class MenuManagement implements Searcher<Menu> {
             isExist = false;
             // Add a new drink to the list
             code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
-            for (Menu drink : drinkList) {
+            for (MenuDrink drink : drinkList) {
                 if (drink.getCode().equalsIgnoreCase(code)) {
                     isExist = true;
                     System.out.println(Message.DRINK_CODE_IS_EXISTED + ", " + Message.ADD_DRINK_FAILED);
@@ -43,7 +41,7 @@ public class MenuManagement implements Searcher<Menu> {
             recipe.putAll(inputIngredientCodeAndQuantity());
         }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT));
         //add the drink to the list
-        drinkList.add(new Menu(code, name, recipe));
+        drinkList.add(new MenuDrink(code, name, recipe));
     }
 
     private Map<String,Integer> inputIngredientCodeAndQuantity(){
@@ -63,25 +61,47 @@ public class MenuManagement implements Searcher<Menu> {
     }
 
     //func 2.2: Update the drink information
+    //There 3 case to update: add, delete, adjust
+    //Why i need to clarify? Because in real life, the drink recipe can be changed by adding, deleting or adjusting each ingredient
     public void updateDrink(){
-        String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
-        Menu menuItem = this.searchObject(code);
-        if(menuItem == null) {
-            System.out.println(Message.DRINK_DOES_NOT_EXIST);
-            return;
-        }
+        String code;
+        MenuDrink menuDrinkItem;
+        do{
+            code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
+            menuDrinkItem = this.searchObject(code);
+            if(menuDrinkItem == null) {
+                System.out.println(Message.DRINK_DOES_NOT_EXIST);
+            }else{
+                break;
+            }
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_UPDATE_DRINK));
         //check if the ingredient code is existed
         System.out.println("Before updating: ");
-        menuItem.showInfo();
+        menuDrinkItem.showInfo();
 
-        String name = Utils.getString(Message.INPUT_DRINK_NAME, Regex.D_NAME, Message.DRINK_NAME_IS_REQUIRED, Message.DRINK_NAME_MUST_START_WITH_LETTER);
-        if(name.isEmpty()){
-            name = menuItem.getName();
-        }else{
-            menuItem.setName(name);
-        }
+        int choice;
+        do{
+            System.out.println("Update drink infomation");
+            System.out.println("1. Add ingredient");
+            System.out.println("2. Delete ingredient");
+            System.out.println("3. Adjust information");
+            choice = Utils.getInt(Message.INPUT_UPDATE_CHOICE,Message.CHOICE_REQUIRE_BETWEEN_1_AND_3, 1, 3);
 
-        String ingredientCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
+            switch (choice){
+                case 1:
+                    System.out.println("Add ingredient");
+                    break;
+                case 2:
+                    System.out.println("Delete ingredient");
+                    break;
+                case 3:
+                    System.out.println("Adjust information");
+                    break;
+            }
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_UPDATE_DRINK));
+
+
+//        String ingredientCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
 
 
 //        for(Ingredient ingredient : recipe.keySet()){
@@ -95,12 +115,17 @@ public class MenuManagement implements Searcher<Menu> {
     //func 2.3: Delete the drink
     public void deleteDrink(){
         String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
-        Menu menuItem = this.searchObject(code);
-        if(menuItem == null) {
+        MenuDrink menuDrinkItem = this.searchObject(code);
+        if(menuDrinkItem == null) {
             System.out.println(Message.DRINK_DOES_NOT_EXIST);
             return;
         }
-        drinkList.remove(menuItem);
+        System.out.println("Before deleting: ");
+        menuDrinkItem.showInfo();
+        if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK)){
+            return;
+        }
+        drinkList.remove(menuDrinkItem);
         System.out.println(Message.DELETE_DRINK_SUCCESSFULLY);
     }
 
@@ -111,14 +136,14 @@ public class MenuManagement implements Searcher<Menu> {
             return;
         }
         this.sortDrinkListByName(drinkList);
-        StringTools.printLine("d");
-        for(Menu menu : drinkList){
-            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "| %-5s | %-20s |" + ConsoleColors.RESET +"\n", menu.getCode(), menu.getName());
-            Map<String, Integer> recipe = menu.getRecipe();
+        System.out.println(ConsoleColors.GREEN + "List of drinks: " + ConsoleColors.RESET);
+        for(MenuDrink menuDrink : drinkList){
+            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "| %-5s | %-20s |" + ConsoleColors.RESET +"\n", menuDrink.getCode(), menuDrink.getName());
+            Map<String, Integer> recipe = menuDrink.getRecipe();
             for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
                 String name = entry.getKey();
                 int quantity = entry.getValue();
-                System.out.printf("| %-20s | %-10d |\n", name, quantity);
+                System.out.printf("| %-15s | %5d |\n", name, quantity);
             }
         }
     }
@@ -140,13 +165,14 @@ public class MenuManagement implements Searcher<Menu> {
                 Map<String, Integer> recipe = new HashMap<>();
                 String[] ingredients = stk.nextToken().split("\\s+");
                 for (int i = 0; i < ingredients.length; i += 2) {
-                    String iName = ingredients[i];
-                    int quantity = Integer.parseInt(ingredients[i + 1]);
+                    String iName = ingredients[i].trim();
+                    int quantity = Integer.parseInt(ingredients[i + 1].trim());
                     recipe.put(iName, quantity);
                 }
-                drinkList.add(new Menu(code, name, recipe));
+                drinkList.add(new MenuDrink(code, name, recipe));
             }
-            bufferedReader.close(); // close the reader when done
+            bufferedReader.close();
+            System.out.println("Load data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,26 +183,27 @@ public class MenuManagement implements Searcher<Menu> {
             File file = new File(path);
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for(Menu menu : drinkList){
-                bufferedWriter.write(menu.getCode() + "|" + menu.getName());
-                Map<String, Integer> recipe = menu.getRecipe();
+            for(MenuDrink menuDrink : drinkList){
+                bufferedWriter.write(menuDrink.getCode() + "|" + menuDrink.getName() + "|");
+                Map<String, Integer> recipe = menuDrink.getRecipe();
                 for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
                     String iName = entry.getKey();
                     int quantity = entry.getValue();
-                    bufferedWriter.write("|" + iName + "|" + quantity);
+                    bufferedWriter.write(iName + " " + quantity + " ");
                 }
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
+            System.out.println("Save data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void sortDrinkListByName(List<Menu> drinkList){
-        drinkList.sort(new Comparator<Menu>() {
+    private void sortDrinkListByName(List<MenuDrink> drinkList){
+        drinkList.sort(new Comparator<MenuDrink>() {
             @Override
-            public int compare(Menu o1, Menu o2) {
+            public int compare(MenuDrink o1, MenuDrink o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
@@ -184,8 +211,8 @@ public class MenuManagement implements Searcher<Menu> {
 
     @Override
     public boolean checkToExist(String code) {
-        Menu menu = this.searchObject(code);
-        return menu != null;
+        MenuDrink menuDrink = this.searchObject(code);
+        return menuDrink != null;
     }
 
     @Override
@@ -199,7 +226,7 @@ public class MenuManagement implements Searcher<Menu> {
     }
 
     @Override
-    public Menu searchObject(String code) {
+    public MenuDrink searchObject(String code) {
         int pos = this.searchIndex(code);
         return pos == -1 ? null : drinkList.get(pos);
     }

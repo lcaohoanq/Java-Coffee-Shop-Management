@@ -31,6 +31,11 @@ public class Message {
     public static final String DRINK_LIST_IS_EMPTY = "Drink list is empty";
     public static final String DRINK_CODE_IS_EXISTED = "Drink code is existed";
     public static final String ADD_DRINK_FAILED = "Add drink failed";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_UPDATE_DRINK = "Do you want to continue to update drink? (y/n): ";
+    public static final String INPUT_UPDATE_CHOICE = "Input update choice: ";
+    public static final String CHOICE_REQUIRE_BETWEEN_1_AND_3 = "Choice require between 1 and 3";
+    public static final String INPUT_NEW_INGREDIENT_CODE = "Input new ingredient code: ";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK = "Do you want to continue to delete drink? (y/n): ";
     // if exist
     public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed";
     public static final String NOT_FOUND_INGREDIENT = "Not found ingredient";

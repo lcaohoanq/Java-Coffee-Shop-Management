@@ -3,4 +3,9 @@ I02|coffee|flour|100|g|110000.0
 I03|sugar|additives|32|g|10000.0
 I04|ice|additives|3|g|2000.0
 I05|coca|soft drink|5|can|45000.0
+I06|orange|fruit|12|kg|23000.0
+I07|mango|fruit|45|kg|30000.0
+I08|peanut|fruit|99|kg|10000.0
+I09|almond|fruit|65|kg|1000000.0
+I10|vani|additives|5|g|34000.0
 I99|lemon|fruit|5|kg|56000.0
