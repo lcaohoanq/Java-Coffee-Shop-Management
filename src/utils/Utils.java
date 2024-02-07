@@ -180,8 +180,8 @@ public class Utils {
     //check equals với y => return true;
     //                 n => return false;
     //sử dụng 2 hàm này trong do-while
-    public static boolean getUserConfirmation() {
-        return Utils.getYesNo(Message.DO_YOU_WANT_TO_CONTINUE, Message.PLEASE_INPUT_Y_OR_N, Regex.YES_NO).equalsIgnoreCase("y");
+    public static boolean getUserConfirmation(String msg) {
+        return Utils.getYesNo(msg, Message.PLEASE_INPUT_Y_OR_N, Regex.YES_NO).equalsIgnoreCase("y");
     }
 
 }

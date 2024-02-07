@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Ingredient;
+import models.Searcher;
 import utils.ConsoleColors;
 import utils.StringTools;
 import utils.Utils;
@@ -8,10 +9,12 @@ import constants.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class IngredientManagement {
-    private ArrayList<Ingredient> ingredientList = new ArrayList<>();
+public class IngredientManagement implements Searcher<Ingredient> {
+    private List<Ingredient> ingredientList = new ArrayList<>();
     public void addIngredient() {
         boolean isExist = false;
         String code;
@@ -20,12 +23,12 @@ public class IngredientManagement {
                isExist = false; // reset isExisted
                code = Utils
                        .getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                               Message.INGREDIENT_CODE_MUST_BE_H_AND_2_DIGITS)
+                               Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS)
                        .toUpperCase();
                for (Ingredient ingredient : ingredientList) {
                    if (ingredient.getCode().equals(code)) {
                        isExist = true;
-                       System.out.println(Message.INGREDIENT_CODE_IS_EXISTED + "\n" + Message.ADD_INGREDIENT_FAILED);
+                       System.out.println(Message.INGREDIENT_CODE_IS_EXISTED + ", " + Message.ADD_INGREDIENT_FAILED);
                        break;
                    }
                }
@@ -40,7 +43,7 @@ public class IngredientManagement {
            // add to userActionList
            ingredientList.add(new Ingredient(code,name,type,quantity,unit,price));
            System.out.println(Message.ADD_INGREDIENT_SUCCESSFULLY);
-       }while(Utils.getUserConfirmation());
+       }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
 
     public void updateIngredient(){
@@ -49,9 +52,9 @@ public class IngredientManagement {
             return;
         }
         String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                Message.INGREDIENT_CODE_MUST_BE_H_AND_2_DIGITS).toUpperCase();
-        Ingredient ingredient = searchIngredientByCode(code);
-        int index = searchIngredientIndex(code);
+                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+        Ingredient ingredient = searchObject(code);
+        int index = searchIndex(code);
         if (ingredient == null) {
             System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
         } else {
@@ -77,9 +80,9 @@ public class IngredientManagement {
             return;
         }
         String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                Message.INGREDIENT_CODE_MUST_BE_H_AND_2_DIGITS).toUpperCase();
-        Ingredient ingredient = searchIngredientByCode(code);
-        int index = searchIngredientIndex(code);
+                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+        Ingredient ingredient = searchObject(code);
+        int index = searchIndex(code);
         if (ingredient == null) {
             System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
         } else {
@@ -99,26 +102,23 @@ public class IngredientManagement {
             System.out.println("Ingredient list is empty");
             return;
         }
+        sortIngredientListByName(ingredientList);
         String str = String.format(ConsoleColors.PURPLE_BACKGROUND + "%-5s%-20s%-10s%10s%5s%-6s", "Code", "Name", "Type", "Quantity", "Unit", "Price" + ConsoleColors.RESET);
         StringTools.printTitle("i");
+        StringTools.printLine("i");
         for (Ingredient ingredient : ingredientList) {
             ingredient.showIngredient();
             StringTools.printLine("i");
         }
     }
 
-    private int searchIngredientIndex(String code) {
-        for (int i = 0; i < ingredientList.size(); i++) {
-            if (ingredientList.get(i).getCode().equals(code)) {
-                return i;
+    public void sortIngredientListByName(List<Ingredient> ingredientList){
+        ingredientList.sort(new Comparator<Ingredient>() {
+            @Override
+            public int compare(Ingredient o1, Ingredient o2) {
+                return o1.getName().compareTo(o2.getName());
             }
-        }
-        return -1;
-    }
-
-    private Ingredient searchIngredientByCode(String code) {
-        int pos = this.searchIngredientIndex(code);
-        return pos == -1 ? null : ingredientList.get(pos);
+        });
     }
 
     public void loadData(String path){
@@ -174,4 +174,25 @@ public class IngredientManagement {
 
     }
 
+    @Override
+    public boolean checkToExist(String code) {
+        Ingredient ingredient = this.searchObject(code);
+        return ingredient == null? false : true;
+    }
+
+    @Override
+    public int searchIndex(String code) {
+        for (int i = 0; i < ingredientList.size(); i++) {
+            if (ingredientList.get(i).getCode().equalsIgnoreCase(code.trim())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public Ingredient searchObject(String code) {
+        int pos = this.searchIndex(code);
+        return pos == -1 ? null : ingredientList.get(pos);
+    }
 }

@@ -10,13 +10,31 @@ public class Message {
     public static final String INPUT_INGREDIENT_PRICE = "Input ingredient price: ";
     public static final String INGREDIENT_DOES_NOT_EXIST = "Ingredient does not exist";
     public static final String UPDATE_INGREDIENT_SUCCESSFULLY = "Update ingredient successfully";
-    public static final String INGREDIENT_CODE_MUST_BE_H_AND_2_DIGITS = "Ingredient code must be 'I' and 2 digits";
+    public static final String INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS = "Ingredient code must be 'I' and 2 digits";
     public static final String INGREDIENT_NAME_MUST_START_WITH_LETTER = "Ingredient name must start with letter";
     public static final String INGREDIENT_TYPE_MUST_A_LETTER = "Ingredient type must be a letter";
     public static final String INGREDIENT_QUANTITY_MUST_BE_A_POSITIVE_NUMBER = "Ingredient quantity must be a positive number";
     public static final String INGREDIENT_UNIT_MUST_A_LETTER = "Ingredient unit must be a letter";
+
+    // Drink information
+    public static final String INPUT_DRINK_CODE = "Input drink code: ";
+    public static final String DRINK_CODE_IS_REQUIRED = "Drink code is required";
+    public static final String DRINK_CODE_MUST_BE_D_AND_2_DIGITS = "Drink code must be 'D' and 2 digits";
+    public static final String DRINK_NAME_IS_REQUIRED = "Drink name is required";
+    public static final String DRINK_DOES_NOT_EXIST = "Drink does not exist";
+    public static final String INPUT_DRINK_NAME = "Input drink name: ";
+    public static final  String DRINK_NAME_MUST_START_WITH_LETTER = "Drink name must start with letter";
+    public static final String INPUT_NEW_DRINK_NAME = "Input new drink name: ";
+    public static final String INPUT_NEW_QUANTITY = "Input new quantity: ";
+    public static final String UPDATE_DRINK_SUCCESSFULLY = "Update drink successfully";
+    public static final String DELETE_DRINK_SUCCESSFULLY = "Delete drink successfully";
+    public static final String DRINK_LIST_IS_EMPTY = "Drink list is empty";
+    public static final String DRINK_CODE_IS_EXISTED = "Drink code is existed";
+    public static final String ADD_DRINK_FAILED = "Add drink failed";
     // if exist
     public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed";
+    public static final String NOT_FOUND_INGREDIENT = "Not found ingredient";
+    public static final String INGREDIENT_IS_EXISTED = "Ingredient is existed";
 
     //Validation message if null value
     public static final String INGREDIENT_NAME_IS_REQUIRED = "Ingredient name is required";
@@ -38,6 +56,8 @@ public class Message {
 
     // User confirmation prompts
     public static final String DO_YOU_WANT_TO_CONTINUE = "Do you want to continue? (y/n): ";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT = "Do you want to continue to add ingredient? (y/n): ";
+    public static final String DO_YOU_READY_WANT_TO_DELETE_THIS_HOTEL = "Do you ready want to delete this hotel? (y/n): ";
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";
 
 }

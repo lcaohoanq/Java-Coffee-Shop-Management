@@ -4,7 +4,7 @@ import constants.Path;
 import controllers.IngredientManagement;
 import views.Menu;
 
-public class Main {
+public class IngredientMain {
 
     public static void main(String[] args) {
         IngredientManagement idm = new IngredientManagement();
@@ -43,6 +43,10 @@ public class Main {
             }
         } while (choice != 0);
 
+
+    }
+
+    private static void manageSubmenu(){
 
     }
 
