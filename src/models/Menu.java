@@ -1,13 +1,14 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Menu {
+public class Menu implements Serializable {
     private String code;
     private String name;
-    private Map<Ingredient,Integer> recipe;
+    private Map<String,Integer> recipe;
 
 //    private List<Ingredient> ingredients;
 //    private List<Integer> quantities;
@@ -44,7 +45,7 @@ public class Menu {
 //        return quantities;
 //    }
 
-    public Menu(String code, String name, Map<Ingredient, Integer> recipe) {
+    public Menu(String code, String name, Map<String, Integer> recipe) {
         this.code = code.toUpperCase();
         this.name = name;
         this.recipe = recipe;
@@ -58,7 +59,7 @@ public class Menu {
         return name;
     }
 
-    public Map<Ingredient, Integer> getRecipe() {
+    public Map<String, Integer> getRecipe() {
         return recipe;
     }
 

@@ -10,11 +10,12 @@ import utils.ConsoleColors;
 import utils.StringTools;
 import utils.Utils;
 
+import java.io.*;
 import java.util.*;
 
 public class MenuManagement implements Searcher<Menu> {
     private List<Menu> drinkList = new ArrayList<>();
-    private Map<Ingredient,Integer> recipe;
+    private Map<String,Integer> recipe;
     private IngredientManagement idm = new IngredientManagement();
     private static Scanner sc = new Scanner(System.in);
 
@@ -45,8 +46,8 @@ public class MenuManagement implements Searcher<Menu> {
         drinkList.add(new Menu(code, name, recipe));
     }
 
-    private Map<Ingredient,Integer> inputIngredientCodeAndQuantity(){
-        Map<Ingredient,Integer> ingredientMap = new HashMap<>();
+    private Map<String,Integer> inputIngredientCodeAndQuantity(){
+        Map<String,Integer> ingredientMap = new HashMap<>();
         //input each ingredient code and quantity
         String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE,Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
         //find the ingredient by code
@@ -54,7 +55,7 @@ public class MenuManagement implements Searcher<Menu> {
         if(idm.checkToExist(iCode)){
             int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
             //add the ingredient and quantity to the list
-            recipe.put(idm.searchObject(iCode), quantity);
+            recipe.put(idm.searchObject(iCode).getName(), quantity);
         }else{
             System.out.println("The ingredient is not found");
         }
@@ -83,12 +84,12 @@ public class MenuManagement implements Searcher<Menu> {
         String ingredientCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
 
 
-        for(Ingredient ingredient : recipe.keySet()){
-            if(ingredient.getCode().equals(ingredientCode)){
-                int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
-
-            }
-        }
+//        for(Ingredient ingredient : recipe.keySet()){
+//            if(ingredient.getCode().equals(ingredientCode)){
+//                int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
+//
+//            }
+//        }
     }
 
     //func 2.3: Delete the drink
@@ -112,15 +113,63 @@ public class MenuManagement implements Searcher<Menu> {
         this.sortDrinkListByName(drinkList);
         StringTools.printLine("d");
         for(Menu menu : drinkList){
-            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "| %-5s | %-20s | " + ConsoleColors.RESET, menu.getCode(), menu.getName());
-            Map<Ingredient, Integer> recipe = menu.getRecipe();
-            String titleRecipe = String.format("| %-5s | %-20s | %-10s |", "Code", "Name", "Quantity");
-            for (Map.Entry<Ingredient, Integer> entry : recipe.entrySet()) {
-                Ingredient ingredient = entry.getKey();
+            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "| %-5s | %-20s |" + ConsoleColors.RESET +"\n", menu.getCode(), menu.getName());
+            Map<String, Integer> recipe = menu.getRecipe();
+            for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
+                String name = entry.getKey();
                 int quantity = entry.getValue();
-                System.out.printf("\n| %-20s | %-10d |", ingredient.getName(), quantity);
-                StringTools.printLine("d");
+                System.out.printf("| %-20s | %-10d |\n", name, quantity);
             }
+        }
+    }
+
+    public void loadData(String path){
+        try {
+            File file = new File(path);
+            if(!file.exists()){
+                return;
+            }
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            StringTokenizer stk;
+            while((line = bufferedReader.readLine()) != null){
+                stk = new StringTokenizer(line, "|");
+                String code = stk.nextToken().trim();
+                String name = stk.nextToken().trim();
+                Map<String, Integer> recipe = new HashMap<>();
+                String[] ingredients = stk.nextToken().split("\\s+");
+                for (int i = 0; i < ingredients.length; i += 2) {
+                    String iName = ingredients[i];
+                    int quantity = Integer.parseInt(ingredients[i + 1]);
+                    recipe.put(iName, quantity);
+                }
+                drinkList.add(new Menu(code, name, recipe));
+            }
+            bufferedReader.close(); // close the reader when done
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveData(String path){
+        try {
+            File file = new File(path);
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for(Menu menu : drinkList){
+                bufferedWriter.write(menu.getCode() + "|" + menu.getName());
+                Map<String, Integer> recipe = menu.getRecipe();
+                for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
+                    String iName = entry.getKey();
+                    int quantity = entry.getValue();
+                    bufferedWriter.write("|" + iName + "|" + quantity);
+                }
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
