@@ -17,6 +17,13 @@ public class Main {
         MenuManagement mm = new MenuManagement();
         mm.loadData(Path.URL_MENU_TXT);
 
+        Menu menuManageDispensingBeverages;
+//        DispensingBeveragesManagement dbm = new DispensingBeveragesManagement();
+//        dbm.loadData(Path.URL_ORDER_TXT);
+
+        Menu menuManageReport;
+//        ReportManagement rm = new ReportManagement();
+
         Menu menu = new Menu(ConsoleColors.GREEN + "Coffee Shop Management" + ConsoleColors.RESET);
         menu.addOption("Manage ingredients");
         menu.addOption("Manage beverage recipes");
@@ -91,14 +98,61 @@ public class Main {
                         }
                     }while (choiceManageDrinks != menuManageDrinks.optionList.size()) ;
                 case 3:
-                    System.out.println("Dispensing beverages");
+                    menuManageDispensingBeverages = new Menu("Manage dispensing beverages");
+                    menuManageDispensingBeverages.addOption("Dispensing the drink");
+                    menuManageDispensingBeverages.addOption("Update the dispensing drink");
+                    menuManageDispensingBeverages.addOption("Exit to main menu");
+
+                    int choiceManageDispensingBeverages;
+                    do{
+                        menuManageDispensingBeverages.print();
+                        choiceManageDispensingBeverages = menuManageDispensingBeverages.getChoice();
+                        switch (choiceManageDispensingBeverages){
+                            case 1:
+//                                dbm.dispensingDrink();
+                                break;
+
+                            case 2:
+//                                dbm.updateDispensingDrink();
+                                break;
+
+                            case 3:
+                                break;
+
+                        }
+                    }while(choiceManageDispensingBeverages != menuManageDispensingBeverages.optionList.size());
+
                     break;
                 case 4:
-                    System.out.println("Report");
+                    menuManageReport = new Menu("Manage Report");
+                    menuManageReport.addOption("The ingredients are available");
+                    menuManageReport.addOption("The drinks for which the store is out of ingredients");
+                    menuManageReport.addOption("Show all the dispensing drink");
+                    menuManageReport.addOption("Exit to main menu");
+                    int choiceManageReport;
+                    do{
+                        menuManageReport.print();
+                        choiceManageReport =  menuManageReport.getChoice();
+                        switch (choiceManageReport){
+                            case 1:
+//                                rm.
+                                break;
+                            case 2:
+//                                rm.
+                                break;
+                            case 3:
+//                                rm.
+                                break;
+                            case 4:
+                                break;
+                        }
+
+                    }while(choiceManageReport != menuManageReport.optionList.size());
                     break;
                 case 5:
                     im.saveData(Path.URL_INGREDIENT_TXT);
                     mm.saveData(Path.URL_MENU_TXT);
+//                    dbm.saveData(Path.URL_ORDER_TXT);
                     break;
                 case 6:
                     System.out.println("Exit");

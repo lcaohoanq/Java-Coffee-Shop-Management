@@ -8,7 +8,7 @@ public class Ingredient implements Serializable {
     private String type;
     private int quantity;
     private String unit;
-    private double price;
+    private double price; //price per unit
 
     public Ingredient(String code, String name, String type, int quantity, String unit, double price) {
         this.code = code.toUpperCase();
