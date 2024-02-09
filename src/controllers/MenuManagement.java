@@ -3,6 +3,8 @@ package controllers;
 import constants.Message;
 import constants.Path;
 import constants.Regex;
+import models.Ingredient;
+import models.Menu;
 import models.MenuDrink;
 import models.Searcher;
 import utils.ConsoleColors;
@@ -13,13 +15,14 @@ import java.util.*;
 
 public class MenuManagement implements Searcher<MenuDrink> {
     private List<MenuDrink> drinkList = new ArrayList<>();
-    private Map<String,Integer> recipe;
-    private IngredientManagement idm = new IngredientManagement();
-    private static Scanner sc = new Scanner(System.in);
-
+    private Map<Ingredient,Integer> recipe;
+    private IngredientManagement idm;
+//    private static Scanner sc = new Scanner(System.in);
+    public MenuManagement(IngredientManagement idm){
+        this.idm = idm;
+    }
     //func 2.1: Add the drink to the menu
     public void addDrink(){
-        idm.loadData(Path.URL_INGREDIENT_TXT);
         boolean isExist = false;
         String code;
         do{
@@ -44,8 +47,8 @@ public class MenuManagement implements Searcher<MenuDrink> {
         drinkList.add(new MenuDrink(code, name, recipe));
     }
 
-    private Map<String,Integer> inputIngredientCodeAndQuantity(){
-        Map<String,Integer> ingredientMap = new HashMap<>();
+    private Map<Ingredient,Integer> inputIngredientCodeAndQuantity(){
+        Map<Ingredient,Integer> ingredientMap = new HashMap<>();
         //input each ingredient code and quantity
         String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE,Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
         //find the ingredient by code
@@ -53,7 +56,7 @@ public class MenuManagement implements Searcher<MenuDrink> {
         if(idm.checkToExist(iCode)){
             int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
             //add the ingredient and quantity to the list
-            recipe.put(idm.searchObject(iCode).getName(), quantity);
+            recipe.put(idm.searchObject(iCode), quantity);
         }else{
             System.out.println("The ingredient is not found");
         }
@@ -135,16 +138,24 @@ public class MenuManagement implements Searcher<MenuDrink> {
             System.out.println(Message.DRINK_LIST_IS_EMPTY);
             return;
         }
+        double sum = 0;
         this.sortDrinkListByName(drinkList);
-        System.out.println(ConsoleColors.GREEN + "List of drinks: " + ConsoleColors.RESET);
+//        System.out.println(ConsoleColors.GREEN + "List of drinks: " + ConsoleColors.RESET);
         for(MenuDrink menuDrink : drinkList){
-            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "| %-5s | %-20s |" + ConsoleColors.RESET +"\n", menuDrink.getCode(), menuDrink.getName());
-            Map<String, Integer> recipe = menuDrink.getRecipe();
-            for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
-                String name = entry.getKey();
+//            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "  %-5s : %-20s" + ConsoleColors.RESET +"\n", menuDrink.getCode(), menuDrink.getName());
+            System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",menuDrink.getCode(),menuDrink.getName() + ConsoleColors.RESET);
+
+            Map<Ingredient, Integer> recipe = menuDrink.getRecipe();
+            System.out.printf("| %-15s | %10s | %10s |  %15s |\n", "Ingredient", "Quantity", "Price", "Amount");
+            for (Map.Entry<Ingredient, Integer> entry : recipe.entrySet()) {
+                String name = entry.getKey().getName();
+                double price = entry.getKey().getPrice();
                 int quantity = entry.getValue();
-                System.out.printf("| %-15s | %5d |\n", name, quantity);
+                double amount = quantity * price;
+                sum += amount;
+                System.out.printf("| %-15s | %10d | %10.1f |  %15.1f |\n", name, quantity, price, amount);
             }
+            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.1f\n", sum);
         }
     }
 
@@ -162,12 +173,13 @@ public class MenuManagement implements Searcher<MenuDrink> {
                 stk = new StringTokenizer(line, "|");
                 String code = stk.nextToken().trim();
                 String name = stk.nextToken().trim();
-                Map<String, Integer> recipe = new HashMap<>();
+                Map<Ingredient, Integer> recipe = new HashMap<>();
                 String[] ingredients = stk.nextToken().split("\\s+");
                 for (int i = 0; i < ingredients.length; i += 2) {
                     String iName = ingredients[i].trim();
                     int quantity = Integer.parseInt(ingredients[i + 1].trim());
-                    recipe.put(iName, quantity);
+                    Ingredient ingredient = this.idm.searchObjectByName(iName); //transfer because the Recipe receive Map<Ingredient, Integer> only
+                    recipe.put(ingredient, quantity);
                 }
                 drinkList.add(new MenuDrink(code, name, recipe));
             }
@@ -185,9 +197,9 @@ public class MenuManagement implements Searcher<MenuDrink> {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for(MenuDrink menuDrink : drinkList){
                 bufferedWriter.write(menuDrink.getCode() + "|" + menuDrink.getName() + "|");
-                Map<String, Integer> recipe = menuDrink.getRecipe();
-                for (Map.Entry<String, Integer> entry : recipe.entrySet()) {
-                    String iName = entry.getKey();
+                Map<Ingredient, Integer> recipe = menuDrink.getRecipe();
+                for (Map.Entry<Ingredient, Integer> entry : recipe.entrySet()) {
+                    String iName = entry.getKey().getName();
                     int quantity = entry.getValue();
                     bufferedWriter.write(iName + " " + quantity + " ");
                 }
@@ -230,4 +242,15 @@ public class MenuManagement implements Searcher<MenuDrink> {
         int pos = this.searchIndex(code);
         return pos == -1 ? null : drinkList.get(pos);
     }
+
+    @Override
+    public int searchIndexByName(String name) {
+        return 0;
+    }
+
+    @Override
+    public MenuDrink searchObjectByName(String name) {
+        return null;
+    }
+
 }

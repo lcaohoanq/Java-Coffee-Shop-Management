@@ -8,13 +8,15 @@ import utils.Utils;
 import constants.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class IngredientManagement implements Searcher<Ingredient> {
     private List<Ingredient> ingredientList = new ArrayList<>();
+
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
     public void addIngredient() {
         boolean isExist = false;
         String code;
@@ -51,27 +53,30 @@ public class IngredientManagement implements Searcher<Ingredient> {
             System.out.println("Ingredient list is empty");
             return;
         }
-        String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
-        Ingredient ingredient = searchObject(code);
-        int index = searchIndex(code);
-        if (ingredient == null) {
-            System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
-        } else {
-            System.out.println("Before update: ");
-            ingredient.showIngredient();
+        do{
+            String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                    Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+            Ingredient ingredient = searchObject(code);
+            int index = searchIndex(code);
+            if (ingredient == null) {
+                System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
+            } else {
+                System.out.println("Before update: ");
+                ingredient.showIngredient();
 
-            String name = Utils.getString(Message.INPUT_INGREDIENT_NAME, Regex.I_NAME, Message.INGREDIENT_NAME_IS_REQUIRED, Message.INGREDIENT_NAME_MUST_START_WITH_LETTER);
-            String type = Utils.getString(Message.INPUT_INGREDIENT_TYPE, Regex.I_TYPE, Message.INGREDIENT_TYPE_IS_REQUIRED, Message.INGREDIENT_TYPE_MUST_A_LETTER);
-            int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
-            String unit = Utils.getString(Message.INPUT_INGREDIENT_UNIT, Regex.I_UNIT, Message.INGREDIENT_UNIT_IS_REQUIRED, Message.INGREDIENT_UNIT_MUST_A_LETTER);
-            Double price = Utils.getDouble(Message.INPUT_INGREDIENT_PRICE, 0);
+                String name = Utils.getString(Message.INPUT_INGREDIENT_NAME, Regex.I_NAME, Message.INGREDIENT_NAME_IS_REQUIRED, Message.INGREDIENT_NAME_MUST_START_WITH_LETTER);
+                String type = Utils.getString(Message.INPUT_INGREDIENT_TYPE, Regex.I_TYPE, Message.INGREDIENT_TYPE_IS_REQUIRED, Message.INGREDIENT_TYPE_MUST_A_LETTER);
+                int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
+                String unit = Utils.getString(Message.INPUT_INGREDIENT_UNIT, Regex.I_UNIT, Message.INGREDIENT_UNIT_IS_REQUIRED, Message.INGREDIENT_UNIT_MUST_A_LETTER);
+                Double price = Utils.getDouble(Message.INPUT_INGREDIENT_PRICE, 0);
 
-            ingredientList.set(index, new Ingredient(code,name,type,quantity,unit,price));
-            System.out.println("After update: ");
-            ingredientList.get(index).showIngredient();
-            System.out.println(Message.UPDATE_INGREDIENT_SUCCESSFULLY);
-        }
+                ingredientList.set(index, new Ingredient(code,name,type,quantity,unit,price));
+                System.out.println("After update: ");
+                ingredientList.get(index).showIngredient();
+                System.out.println(Message.UPDATE_INGREDIENT_SUCCESSFULLY);
+                break;
+            }
+        }while(Utils.getUserConfirmation("Do you want to continue to update"));
     }
 
     public void deleteIngredient(){
@@ -79,25 +84,25 @@ public class IngredientManagement implements Searcher<Ingredient> {
             System.out.println("Ingredient list is empty");
             return;
         }
-        String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
-        Ingredient ingredient = searchObject(code);
-        int index = searchIndex(code);
-        if (ingredient == null) {
-            System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
-        } else {
-            System.out.println("Before delete: ");
-            ingredient.showIngredient();
-            if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE)){
-                return;
+        do{
+            String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                    Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+            Ingredient ingredient = searchObject(code);
+            int index = searchIndex(code);
+            if (ingredient == null) {
+                System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
+            }else {
+                System.out.println("Before delete: ");
+                ingredient.showIngredient();
+                if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){
+                    return;
+                }
+                ingredientList.remove(index);
+                System.out.println(Message.DELETE_INGREDIENT_SUCCESSFULLY);
+                break;
             }
-            ingredientList.remove(index);
-            System.out.println(Message.DELETE_INGREDIENT_SUCCESSFULLY);
-        }
-    }
-    public void exitProgram(){
-        System.out.println("Exit program");
-        System.exit(0);
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE));
+
     }
 
     public void showIngredientList(){
@@ -174,7 +179,11 @@ public class IngredientManagement implements Searcher<Ingredient> {
     }
 
     public static void main(String[] args) {
-
+        Scanner sc = new Scanner(System.in);
+//
+//        System.out.println("Enter name ingredient to find: ");
+//        String tmp = sc.nextLine();
+//        searchObjectByName(tmp);
     }
 
     @Override
@@ -196,6 +205,22 @@ public class IngredientManagement implements Searcher<Ingredient> {
     @Override
     public Ingredient searchObject(String code) {
         int pos = this.searchIndex(code);
+        return pos == -1 ? null : ingredientList.get(pos);
+    }
+
+    @Override
+    public int searchIndexByName(String name) {
+        for (int i = 0; i < ingredientList.size(); i++) {
+            if (ingredientList.get(i).getName().equalsIgnoreCase(name.trim())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public Ingredient searchObjectByName(String name) {
+        int pos = this.searchIndexByName(name);
         return pos == -1 ? null : ingredientList.get(pos);
     }
 }

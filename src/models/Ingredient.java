@@ -1,6 +1,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class Ingredient implements Serializable {
     private String code;
@@ -12,7 +13,7 @@ public class Ingredient implements Serializable {
 
     public Ingredient(String code, String name, String type, int quantity, String unit, double price) {
         this.code = code.toUpperCase();
-        this.name = name;
+        this.name = name.toLowerCase();
         this.type = type;
         this.quantity = quantity;
         this.unit = unit;

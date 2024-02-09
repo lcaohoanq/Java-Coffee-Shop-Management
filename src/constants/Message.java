@@ -27,6 +27,7 @@ public class Message {
     public static final String INPUT_NEW_DRINK_NAME = "Input new drink name: ";
     public static final String INPUT_NEW_QUANTITY = "Input new quantity: ";
     public static final String UPDATE_DRINK_SUCCESSFULLY = "Update drink successfully";
+    public static final String DO_YOU_READY_WANT_TO_DELETE = "Do you ready want to delete";
     public static final String DELETE_DRINK_SUCCESSFULLY = "Delete drink successfully";
     public static final String DRINK_LIST_IS_EMPTY = "Drink list is empty";
     public static final String DRINK_CODE_IS_EXISTED = "Drink code is existed";
@@ -61,6 +62,7 @@ public class Message {
 
     // User confirmation prompts
     public static final String DO_YOU_WANT_TO_CONTINUE = "Do you want to continue? (y/n): ";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE = "Do you want to continue to delete? (y/n)";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT = "Do you want to continue to add ingredient? (y/n): ";
     public static final String DO_YOU_READY_WANT_TO_DELETE_THIS_HOTEL = "Do you ready want to delete this hotel? (y/n): ";
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";

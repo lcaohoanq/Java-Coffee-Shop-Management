@@ -10,11 +10,11 @@ public class Main {
     public static void main(String[] args) {
 
         Menu menuManageIngredients;
-        IngredientManagement im = new IngredientManagement();;
+        IngredientManagement im = new IngredientManagement();
         im.loadData(Path.URL_INGREDIENT_TXT);
 
         Menu menuManageDrinks;
-        MenuManagement mm = new MenuManagement();
+        MenuManagement mm = new MenuManagement(im);
         mm.loadData(Path.URL_MENU_TXT);
 
         Menu menuManageDispensingBeverages;
@@ -97,6 +97,7 @@ public class Main {
                                 break;
                         }
                     }while (choiceManageDrinks != menuManageDrinks.optionList.size()) ;
+                    break;
                 case 3:
                     menuManageDispensingBeverages = new Menu("Manage dispensing beverages");
                     menuManageDispensingBeverages.addOption("Dispensing the drink");
@@ -159,6 +160,10 @@ public class Main {
                     break;
             }
         }while(choice != menu.optionList.size());
+
+    }
+
+    private static void initMenu(){
 
     }
 }
