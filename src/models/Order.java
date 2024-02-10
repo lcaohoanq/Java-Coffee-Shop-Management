@@ -1,37 +1,53 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Order {
-    private List<MenuDrink> menuDrinks;
-    private Customer customer;
-    private LocalDateTime orderTime;
+    private String code;
+    private String name;
+    private LocalDateTime time;
 
-    public Order(List<MenuDrink> menuDrinks, Customer customer) {
-        this.menuDrinks = menuDrinks;
-        this.customer = customer;
-        this.orderTime = LocalDateTime.now(); // Set the order time to the current time
+    public Order(String code) {
+        this.code = code;
     }
 
-    public List<MenuDrink> getMenuItem() {
-        return menuDrinks;
+    public Order(String code, String name){
+        this.code = code;
+        this.name = name;
+        this.time = LocalDateTime.now();
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Order(String code, String name, LocalDateTime time) {
+        this.code = code;
+        this.name = name;
+        this.time = time;
     }
 
-    public LocalDateTime getOrderTime() {
-        return orderTime;
+    public String getCode() {
+        return code;
     }
 
-    public void displayOrderDetails() {
-        System.out.println("Order for Customer ID " + customer.getCusId() +
-                ", Name: " + customer.getName() +
-                ", Order Time: " + orderTime);
-        for (MenuDrink MenuDrink : menuDrinks) {
-            System.out.println("  Item: " + MenuDrink.getName());
-        }
+    public String getName(){
+        return name;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%5s",code);
+    }
+
+    public void showInfo(){
+        // Define the format for displaying the date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // Format the creation time using the defined formatter
+        String timeFormatted = time.format(formatter);
+        String str = String.format("| %5s | %-15s | %20s |",code,name,timeFormatted);
+        System.out.println(str);
     }
 }

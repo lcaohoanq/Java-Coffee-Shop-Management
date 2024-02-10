@@ -11,6 +11,8 @@ public class Regex {
     //drink
     public static final String D_CODE = "^[dD]\\d{2}$"; // D01, D02, D03, D04, D05, D06, D07, D08, D09
     public static final String D_NAME = "^[a-zA-Z]+[a-zA-Z0-9\\s]*$"; // name: start with letter, can contain number, space
+    //order
+    public static final String O_PATTERN = "^([dD]\\d{2}[\\s]?)*$";
     //others
     public static final String YES_NO = "^[yYnN]$"; //y,Y,n,N
 }

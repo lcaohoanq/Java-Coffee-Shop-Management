@@ -3,6 +3,7 @@ package views;
 import constants.Path;
 import controllers.IngredientManagement;
 import controllers.MenuManagement;
+import controllers.OrderManagement;
 import utils.ConsoleColors;
 import models.Menu;
 
@@ -18,8 +19,8 @@ public class Main {
         mm.loadData(Path.URL_MENU_TXT);
 
         Menu menuManageDispensingBeverages;
-//        DispensingBeveragesManagement dbm = new DispensingBeveragesManagement();
-//        dbm.loadData(Path.URL_ORDER_TXT);
+        OrderManagement om = new OrderManagement(mm, im);
+        om.loadData(Path.URL_ORDER_TXT);
 
         Menu menuManageReport;
 //        ReportManagement rm = new ReportManagement();
@@ -110,11 +111,11 @@ public class Main {
                         choiceManageDispensingBeverages = menuManageDispensingBeverages.getChoice();
                         switch (choiceManageDispensingBeverages){
                             case 1:
-//                                dbm.dispensingDrink();
+                                om.dispensingDrink();
                                 break;
 
                             case 2:
-//                                dbm.updateDispensingDrink();
+                                om.updateDispensingDrink();
                                 break;
 
                             case 3:
@@ -153,7 +154,7 @@ public class Main {
                 case 5:
                     im.saveData(Path.URL_INGREDIENT_TXT);
                     mm.saveData(Path.URL_MENU_TXT);
-//                    dbm.saveData(Path.URL_ORDER_TXT);
+                    om.saveData(Path.URL_ORDER_TXT);
                     break;
                 case 6:
                     System.out.println("Exit");

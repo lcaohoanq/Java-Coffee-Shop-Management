@@ -56,8 +56,8 @@ public class IngredientManagement implements Searcher<Ingredient> {
         do{
             String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
-            Ingredient ingredient = searchObject(code);
-            int index = searchIndex(code);
+            Ingredient ingredient = searchObjectByCode(code);
+            int index = searchIndexByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
             } else {
@@ -79,6 +79,11 @@ public class IngredientManagement implements Searcher<Ingredient> {
         }while(Utils.getUserConfirmation("Do you want to continue to update"));
     }
 
+//    public void updateIngredient(String code){
+//        Ingredient i = this.searchObject(code);
+//        i.setQuantity();
+//    }
+
     public void deleteIngredient(){
         if(ingredientList.isEmpty()) {
             System.out.println("Ingredient list is empty");
@@ -87,8 +92,8 @@ public class IngredientManagement implements Searcher<Ingredient> {
         do{
             String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
-            Ingredient ingredient = searchObject(code);
-            int index = searchIndex(code);
+            Ingredient ingredient = searchObjectByCode(code);
+            int index = searchIndexByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
             }else {
@@ -178,22 +183,19 @@ public class IngredientManagement implements Searcher<Ingredient> {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-//
-//        System.out.println("Enter name ingredient to find: ");
-//        String tmp = sc.nextLine();
-//        searchObjectByName(tmp);
+    //return the full quantity of ingredient code
+    public int getStorageQuantity(String code){
+        return this.searchObjectByCode(code).getQuantity();
     }
 
     @Override
     public boolean checkToExist(String code) {
-        Ingredient ingredient = this.searchObject(code);
+        Ingredient ingredient = this.searchObjectByCode(code);
         return ingredient == null? false : true;
     }
 
     @Override
-    public int searchIndex(String code) {
+    public int searchIndexByCode(String code) {
         for (int i = 0; i < ingredientList.size(); i++) {
             if (ingredientList.get(i).getCode().equalsIgnoreCase(code.trim())) {
                 return i;
@@ -203,8 +205,8 @@ public class IngredientManagement implements Searcher<Ingredient> {
     }
 
     @Override
-    public Ingredient searchObject(String code) {
-        int pos = this.searchIndex(code);
+    public Ingredient searchObjectByCode(String code) {
+        int pos = this.searchIndexByCode(code);
         return pos == -1 ? null : ingredientList.get(pos);
     }
 
