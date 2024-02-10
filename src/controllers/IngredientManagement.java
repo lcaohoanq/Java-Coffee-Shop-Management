@@ -3,6 +3,7 @@ package controllers;
 import models.FileService;
 import models.Ingredient;
 import models.Searchable;
+import models.Sortable;
 import utils.ConsoleColors;
 import utils.StringTools;
 import utils.Utils;
@@ -11,7 +12,7 @@ import constants.*;
 import java.io.*;
 import java.util.*;
 
-public class IngredientManagement implements Searchable<Ingredient>, FileService {
+public class IngredientManagement implements Searchable<Ingredient>, Sortable<Ingredient>, FileService {
     private List<Ingredient> ingredientList = new ArrayList<>();
     private List<Ingredient> availableIngredientList = new ArrayList<>();
     private List<Ingredient> outOfIngredientList = new ArrayList<>();
@@ -117,7 +118,7 @@ public class IngredientManagement implements Searchable<Ingredient>, FileService
             System.out.println("Ingredient list is empty");
             return;
         }
-        sortIngredientListByName(ingredientList);
+        this.sortAscending(ingredientList);
         String str = String.format(ConsoleColors.PURPLE_BACKGROUND + "%-5s%-20s%-10s%10s%5s%-6s", "Code", "Name", "Type", "Quantity", "Unit", "Price" + ConsoleColors.RESET);
         StringTools.printTitle("i");
         StringTools.printLine("i");
@@ -154,15 +155,6 @@ public class IngredientManagement implements Searchable<Ingredient>, FileService
                 StringTools.printLine("i");
             }
         }
-    }
-
-    public void sortIngredientListByName(List<Ingredient> ingredientList){
-        ingredientList.sort(new Comparator<Ingredient>() {
-            @Override
-            public int compare(Ingredient o1, Ingredient o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
     }
 
     @Override
@@ -257,5 +249,20 @@ public class IngredientManagement implements Searchable<Ingredient>, FileService
     public Ingredient searchObjectByName(String name) {
         int pos = this.searchIndexByName(name);
         return pos == -1 ? null : ingredientList.get(pos);
+    }
+
+    @Override
+    public void sortAscending(List<Ingredient> list) {
+        list.sort(new Comparator<Ingredient>() {
+            @Override
+            public int compare(Ingredient o1, Ingredient o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+    }
+
+    @Override
+    public void sortDescending(List<Ingredient> list) {
+
     }
 }

@@ -2,17 +2,14 @@ package controllers;
 
 import constants.Message;
 import constants.Regex;
-import models.FileService;
-import models.Ingredient;
-import models.MenuDrink;
-import models.Searchable;
+import models.*;
 import utils.ConsoleColors;
 import utils.Utils;
 
 import java.io.*;
 import java.util.*;
 
-public class MenuManagement implements Searchable<MenuDrink>, FileService {
+public class MenuManagement implements Searchable<MenuDrink>, Sortable<MenuDrink>, FileService {
     private List<MenuDrink> drinkList = new ArrayList<>();
     private Map<Ingredient,Integer> recipe;
     private IngredientManagement idm;
@@ -140,7 +137,7 @@ public class MenuManagement implements Searchable<MenuDrink>, FileService {
             return;
         }
         double sum = 0;
-        this.sortDrinkListByName(drinkList);
+        this.sortAscending(drinkList);
 //        System.out.println(ConsoleColors.GREEN + "List of drinks: " + ConsoleColors.RESET);
         for(MenuDrink menuDrink : drinkList){
 //            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "  %-5s : %-20s" + ConsoleColors.RESET +"\n", menuDrink.getCode(), menuDrink.getName());
@@ -215,15 +212,6 @@ public class MenuManagement implements Searchable<MenuDrink>, FileService {
         }
     }
 
-    private void sortDrinkListByName(List<MenuDrink> drinkList){
-        drinkList.sort(new Comparator<MenuDrink>() {
-            @Override
-            public int compare(MenuDrink o1, MenuDrink o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
-    }
-
     @Override
     public boolean checkToExist(String code) {
         MenuDrink menuDrink = this.searchObjectByCode(code.trim());
@@ -262,4 +250,18 @@ public class MenuManagement implements Searchable<MenuDrink>, FileService {
         return pos == -1 ? null : drinkList.get(pos);
     }
 
+    @Override
+    public void sortAscending(List<MenuDrink> list) {
+        list.sort(new Comparator<MenuDrink>() {
+            @Override
+            public int compare(MenuDrink o1, MenuDrink o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+    }
+
+    @Override
+    public void sortDescending(List<MenuDrink> list) {
+
+    }
 }

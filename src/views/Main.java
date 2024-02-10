@@ -143,7 +143,7 @@ public class Main {
                                 im.showIngredientList("out");
                                 break;
                             case 3:
-//                                rm.
+                                om.showOrderList();
                                 break;
                             case 4:
                                 break;

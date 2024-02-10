@@ -4,19 +4,18 @@ import constants.Regex;
 import models.Ingredient;
 import models.MenuDrink;
 import models.Order;
+import models.Sortable;
 import utils.ConsoleColors;
 import utils.Utils;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class OrderManagement {
+public class OrderManagement implements Sortable<Order> {
     private List<Order> orderList = new ArrayList<>();
+    private List<Order> currentOrderList = new ArrayList<>();
     private List<Order> orderHistory = new ArrayList<>();
     private MenuManagement menuManagement;
     private IngredientManagement ingredientManagement;
@@ -24,43 +23,6 @@ public class OrderManagement {
         this.menuManagement = menuManagement;
         this.ingredientManagement = ingredientManagement;
     }
-
-    //4.1 Dispensing the drink
-    //Chuc nang chon mon,
-    //show danh sach mon an ra, nguoi dung lua mon,
-    //check neu khong co/ (in ra va hoi continue?)
-    //neu co thi we can start checking ingredients of the drink and update the
-    //ingredient’s status.
-    //tuc la sao? tuc la
-    //lua mon coffee (check xem nguyen lieu trong kho co du khong? va update the ingredient status???
-    //ingredient status la sao ta???
-//    public void dispensingDrink(){
-//        //in ra cho nguoi dung lua mon
-//        menuManagement.showAllDrinks();
-//        //tim code do uong
-//        do{
-//            String code = Utils.getString("Input code dispensing drink");
-//            MenuDrink menuDrink = menuManagement.searchObject(code);
-//            if(menuDrink == null){
-//                System.out.println("the drink does not exist");
-//            }else{
-//                //chọn món, lập một mảng option, phân cách nhau bằng dấu cách (dấu cách cuối sẽ trim đi)
-//                //khi nhập một món order(sẽ check ở đây, check có hay không)
-//                String userOrder = Utils.getString("Input your drink want to order", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and seperate by one space");
-//                String[] tmp = userOrder.split("\\s");
-//                System.out.println("Your order: " + tmp);
-//
-//                //neu tim thay thi se add vao mot cai gi do
-//
-//
-//                //add xong se show ra currenList
-//                //tao them mot ham display
-//
-//
-//                break;
-//            }
-//        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
-//    }
 
     public void dispensingDrink(){
         if(!orderList.isEmpty()){
@@ -74,7 +36,10 @@ public class OrderManagement {
         String userOrder = Utils.getString("Input your drink want to order: ", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and seperate by one space");
         String[] tmp = userOrder.trim().split("\\s"); //prevent the last space
         for(String code: tmp){
+            //change constructor for generate the code and name include time
+            //instead of using the constructor for code only
             orderList.add(new Order(code));
+            currentOrderList.add(new Order(code, menuManagement.searchObjectByCode(code).getName()));
             orderHistory.add(new Order(code,menuManagement.searchObjectByCode(code).getName()));
         }
 
@@ -98,7 +63,6 @@ public class OrderManagement {
             }
             System.out.printf(ConsoleColors.GREEN + "Order successfully, code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
         }
-        showOrderHistory();
     }
 
     //4.2 Update the dispensing drink
@@ -107,15 +71,18 @@ public class OrderManagement {
     //dispensing the drink and update the ingredient’s status.
     public void updateDispensingDrink(){
         //trong nay moi cap nhat
+
     }
 
-    private void showOrderList(){
-        if(orderList.isEmpty()){
+    public void showOrderList(){
+        if(currentOrderList.isEmpty()){
             System.out.println("No one order");
             return;
         }
-        for(Order code: orderList){
-            System.out.println(code.toString());
+        this.sortAscending(currentOrderList);
+        System.out.printf(ConsoleColors.GREEN_UNDERLINED + "| %5s | %15s | %20s |\n"  + ConsoleColors.RESET,"Code", "Name", "Time");
+        for(Order order: currentOrderList){
+            order.showInfo();
         }
     }
 
@@ -124,7 +91,7 @@ public class OrderManagement {
             System.out.println("Nothing to show");
             return;
         }
-        System.out.printf(ConsoleColors.RED_UNDERLINED + "| %5s | %15s | %20s    |\n"  + ConsoleColors.RESET,"Code", "Name", "Time");
+        System.out.printf(ConsoleColors.RED_UNDERLINED + "| %5s | %15s | %20s |\n"  + ConsoleColors.RESET,"Code", "Name", "Time");
         for(Order order: orderHistory){
             order.showInfo();
         }
@@ -170,7 +137,18 @@ public class OrderManagement {
         }
     }
 
-    public static void main(String[] args) {
+    @Override
+    public void sortAscending(List<Order> list) {
+        list.sort(new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                return o1.getName().compareTo(o2.getName()); //sort ascending order by name
+            }
+        });
+    }
+
+    @Override
+    public void sortDescending(List<Order> list) {
 
     }
 }
