@@ -2,16 +2,17 @@ package controllers;
 
 import constants.Message;
 import constants.Regex;
+import models.FileService;
 import models.Ingredient;
 import models.MenuDrink;
-import models.Searcher;
+import models.Searchable;
 import utils.ConsoleColors;
 import utils.Utils;
 
 import java.io.*;
 import java.util.*;
 
-public class MenuManagement implements Searcher<MenuDrink> {
+public class MenuManagement implements Searchable<MenuDrink>, FileService {
     private List<MenuDrink> drinkList = new ArrayList<>();
     private Map<Ingredient,Integer> recipe;
     private IngredientManagement idm;
@@ -61,7 +62,7 @@ public class MenuManagement implements Searcher<MenuDrink> {
         return ingredientMap;
     }
 
-    //func 2.2: Update the drink information
+    //func 2.2: Update the drink informationb
     //There 3 case to update: add, delete, adjust
     //Why i need to clarify? Because in real life, the drink recipe can be changed by adding, deleting or adjusting each ingredient
     public void updateDrink(){
@@ -159,6 +160,7 @@ public class MenuManagement implements Searcher<MenuDrink> {
         }
     }
 
+    @Override
     public void loadData(String path){
         try {
             File file = new File(path);
@@ -190,6 +192,7 @@ public class MenuManagement implements Searcher<MenuDrink> {
         }
     }
 
+    @Override
     public void saveData(String path){
         try {
             File file = new File(path);

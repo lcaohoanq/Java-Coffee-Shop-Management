@@ -5,27 +5,27 @@ import controllers.IngredientManagement;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
 import utils.ConsoleColors;
-import models.Menu;
+import models.MenuStructure;
 
 public class Main {
     public static void main(String[] args) {
 
-        Menu menuManageIngredients;
+        MenuStructure menuManageIngredients;
         IngredientManagement im = new IngredientManagement();
         im.loadData(Path.URL_INGREDIENT_TXT);
 
-        Menu menuManageDrinks;
+        MenuStructure menuManageDrinks;
         MenuManagement mm = new MenuManagement(im);
         mm.loadData(Path.URL_MENU_TXT);
 
-        Menu menuManageDispensingBeverages;
+        MenuStructure menuManageDispensingBeverages;
         OrderManagement om = new OrderManagement(mm, im);
         om.loadData(Path.URL_ORDER_TXT);
 
-        Menu menuManageReport;
+        MenuStructure menuManageReport;
 //        ReportManagement rm = new ReportManagement();
 
-        Menu menu = new Menu(ConsoleColors.GREEN + "Coffee Shop Management" + ConsoleColors.RESET);
+        MenuStructure menu = new MenuStructure(ConsoleColors.GREEN + "Coffee Shop Management" + ConsoleColors.RESET);
         menu.addOption("Manage ingredients");
         menu.addOption("Manage beverage recipes");
         menu.addOption("Dispensing beverages");
@@ -39,7 +39,7 @@ public class Main {
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                    menuManageIngredients = new Menu("Manage Ingredients");
+                    menuManageIngredients = new MenuStructure("Manage Ingredients");
 
                     menuManageIngredients.addOption("Add an ingredient");
                     menuManageIngredients.addOption("Update ingredient information");
@@ -70,7 +70,7 @@ public class Main {
 
                     break;
                 case 2:
-                    menuManageDrinks = new Menu("Manage Beverage Recipes");
+                    menuManageDrinks = new MenuStructure("Manage Beverage Recipes");
                     menuManageDrinks.addOption("Add the drink to menu");
                     menuManageDrinks.addOption("Update the drink information");
                     menuManageDrinks.addOption("Delete the drink from menu");
@@ -100,7 +100,7 @@ public class Main {
                     }while (choiceManageDrinks != menuManageDrinks.optionList.size()) ;
                     break;
                 case 3:
-                    menuManageDispensingBeverages = new Menu("Manage dispensing beverages");
+                    menuManageDispensingBeverages = new MenuStructure("Manage dispensing beverages");
                     menuManageDispensingBeverages.addOption("Dispensing the drink");
                     menuManageDispensingBeverages.addOption("Update the dispensing drink");
                     menuManageDispensingBeverages.addOption("Exit to main menu");
@@ -126,7 +126,7 @@ public class Main {
 
                     break;
                 case 4:
-                    menuManageReport = new Menu("Manage Report");
+                    menuManageReport = new MenuStructure("Manage Report");
                     menuManageReport.addOption("The ingredients are available");
                     menuManageReport.addOption("The drinks for which the store is out of ingredients");
                     menuManageReport.addOption("Show all the dispensing drink");
@@ -137,10 +137,10 @@ public class Main {
                         choiceManageReport =  menuManageReport.getChoice();
                         switch (choiceManageReport){
                             case 1:
-//                                rm.
+                                im.showIngredientList("available");
                                 break;
                             case 2:
-//                                rm.
+                                im.showIngredientList("out");
                                 break;
                             case 3:
 //                                rm.

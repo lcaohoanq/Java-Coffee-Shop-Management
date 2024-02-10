@@ -1,7 +1,8 @@
 package controllers;
 
+import models.FileService;
 import models.Ingredient;
-import models.Searcher;
+import models.Searchable;
 import utils.ConsoleColors;
 import utils.StringTools;
 import utils.Utils;
@@ -10,9 +11,10 @@ import constants.*;
 import java.io.*;
 import java.util.*;
 
-public class IngredientManagement implements Searcher<Ingredient> {
+public class IngredientManagement implements Searchable<Ingredient>, FileService {
     private List<Ingredient> ingredientList = new ArrayList<>();
-
+    private List<Ingredient> availableIngredientList = new ArrayList<>();
+    private List<Ingredient> outOfIngredientList = new ArrayList<>();
     public List<Ingredient> getIngredientList() {
         return ingredientList;
     }
@@ -125,6 +127,35 @@ public class IngredientManagement implements Searcher<Ingredient> {
         }
     }
 
+    //function 5.1: The ingredients are available
+    public void showIngredientList(String type){
+        if(ingredientList.isEmpty()){
+            System.out.println("Ingredient list is empty");
+            return;
+        }
+        for(Ingredient ingredient: ingredientList){
+            if(ingredient.getQuantity() > 0){
+                availableIngredientList.add(ingredient);
+            }else{
+                outOfIngredientList.add(ingredient);
+            }
+        }
+        String str = String.format(ConsoleColors.PURPLE_BACKGROUND + "%-5s%-20s%-10s%10s%5s%-6s", "Code", "Name", "Type", "Quantity", "Unit", "Price" + ConsoleColors.RESET);
+        StringTools.printTitle("i");
+        StringTools.printLine("i");
+        if(type.equals("available")){
+            for (Ingredient ingredient : availableIngredientList) {
+                ingredient.showIngredient();
+                StringTools.printLine("i");
+            }
+        }else if(type.equals("out")){
+            for (Ingredient ingredient : outOfIngredientList) {
+                ingredient.showIngredient();
+                StringTools.printLine("i");
+            }
+        }
+    }
+
     public void sortIngredientListByName(List<Ingredient> ingredientList){
         ingredientList.sort(new Comparator<Ingredient>() {
             @Override
@@ -134,6 +165,7 @@ public class IngredientManagement implements Searcher<Ingredient> {
         });
     }
 
+    @Override
     public void loadData(String path){
         if(!ingredientList.isEmpty()){
             ingredientList.clear();
@@ -162,6 +194,7 @@ public class IngredientManagement implements Searcher<Ingredient> {
         }
     }
 
+    @Override
     public void saveData(String path){
         if(ingredientList.isEmpty()){
             System.out.println("Ingredient list is empty");

@@ -89,6 +89,8 @@ public class OrderManagement {
                 //trong kho se bi giam quantity
                 int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
                 if(newQuantity < 0){
+                    //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
+                    i.setQuantity(0);
                     System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
                     return;
                 }
@@ -143,7 +145,7 @@ public class OrderManagement {
                 String name = stk.nextToken().trim();
                 String time = stk.nextToken().trim();
                 // Parse the timeString into a LocalDateTime object
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 LocalDateTime timeFormatted = LocalDateTime.parse(time, formatter);
                 orderHistory.add(new Order(code, name, timeFormatted));
             }

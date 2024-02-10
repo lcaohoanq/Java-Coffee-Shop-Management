@@ -10,12 +10,12 @@ method addOption: thêm 1 Option
 method print: in ra danh sách các menu
 method getChoice: lấy lựa chọn từ người dùng
 */
-public class Menu {
+public class MenuStructure {
     public ArrayList<String> optionList = new ArrayList<>();
     public String title;
 
     // constructor
-    public Menu(String title) {
+    public MenuStructure(String title) {
         this.title = title;
     }
 

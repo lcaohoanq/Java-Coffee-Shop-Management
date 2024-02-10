@@ -1,6 +1,6 @@
 package models;
 
-public interface Searcher<T> {
+public interface Searchable<T> {
     boolean checkToExist(String code);
     int searchIndexByCode(String code);
     T searchObjectByCode(String code);
