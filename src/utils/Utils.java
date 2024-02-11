@@ -120,7 +120,7 @@ public class Utils {
 
     //ép nhập số nguyên > 0 hoặc rỗng
     public static int getInt(String inpMsg,String pattern, String errMsg){
-        System.out.println(inpMsg);
+        System.out.print(inpMsg);
         while(true){
             try{
                 String number = sc.nextLine();

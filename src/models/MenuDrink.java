@@ -38,7 +38,7 @@ public class MenuDrink implements Serializable {
         double sum = 0;
         System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",code,name + ConsoleColors.RESET);
         Map<Ingredient, Integer> recipe = this.getRecipe();
-        System.out.printf("| %5s | %-15s | %10s | %10s |  %15s |\n", "Code", "Ingredient", "Quantity", "Price", "Amount");
+        System.out.printf("| %5s | %-15s | %10s | %10s | %15s   |\n", "Code", "Ingredient", "Quantity", "Price", "Amount");
         for(Map.Entry<Ingredient, Integer> entry : recipe.entrySet()) {
             String code = entry.getKey().getCode();
             String name = entry.getKey().getName();

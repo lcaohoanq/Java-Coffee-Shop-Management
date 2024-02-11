@@ -1,5 +1,6 @@
 package controllers;
 
+import constants.Message;
 import constants.Regex;
 import models.Ingredient;
 import models.MenuDrink;
@@ -17,6 +18,7 @@ public class OrderManagement implements Sortable<Order> {
     private List<Order> orderList = new ArrayList<>();
     private List<Order> currentOrderList = new ArrayList<>();
     private List<Order> orderHistory = new ArrayList<>();
+    private Map<Ingredient,Integer> recipe = new HashMap<>();
     private MenuManagement menuManagement;
     private IngredientManagement ingredientManagement;
     public OrderManagement(MenuManagement menuManagement, IngredientManagement ingredientManagement){
@@ -33,7 +35,7 @@ public class OrderManagement implements Sortable<Order> {
 
         //chọn món, lập một mảng option, phân cách nhau bằng dấu cách (dấu cách cuối sẽ trim đi)
         //khi nhập một món order(sẽ check ở đây, check có hay không)
-        String userOrder = Utils.getString("Input your drink want to order: ", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and seperate by one space");
+        String userOrder = Utils.getString("Input your drink want to order: ", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and seperate by one space if more than one").toUpperCase();
         String[] tmp = userOrder.trim().split("\\s"); //prevent the last space
         for(String code: tmp){
             //change constructor for generate the code and name include time
@@ -48,8 +50,8 @@ public class OrderManagement implements Sortable<Order> {
         for(Order order: orderList){
             //tìm món uống với code đó
             MenuDrink drinkItem = menuManagement.searchObjectByCode(order.getCode());
-            Map<Ingredient, Integer> ingredient = drinkItem.getRecipe();
-            for(Map.Entry<Ingredient, Integer> entry: ingredient.entrySet()){
+            recipe = drinkItem.getRecipe();
+            for(Map.Entry<Ingredient, Integer> entry: recipe.entrySet()){
                 Ingredient i = entry.getKey();
                 //trong kho se bi giam quantity
                 int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
@@ -57,9 +59,8 @@ public class OrderManagement implements Sortable<Order> {
                     //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
                     i.setQuantity(0);
                     System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
-                    return;
                 }
-                i.setQuantity(newQuantity);
+//                i.setQuantity(newQuantity);
             }
             System.out.printf(ConsoleColors.GREEN + "Order successfully, code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
         }
@@ -71,7 +72,35 @@ public class OrderManagement implements Sortable<Order> {
     //dispensing the drink and update the ingredient’s status.
     public void updateDispensingDrink(){
         //trong nay moi cap nhat
-
+        if(orderList.isEmpty()){
+            System.out.println("No one order");
+        }
+//        in ra cho nguoi dung lua mon
+//        menuManagement.showMenu();
+        //find the drink (find by code, contain which ingredient) and update the quantity of ingredient in ingredientManagement
+        //trường hợp lí tưởng, khi mà người dùng nhập đúng hết tất cả thông tin
+        for(Order order: orderList){
+            //tìm món uống với code đó
+            MenuDrink drinkItem = menuManagement.searchObjectByCode(order.getCode());
+            drinkItem.showInfo();
+            int newQuantityOrder = Utils.getInt("Input new quantity of order or blank to keep quantity is 1: ", Regex.I_NUMBER, "Quantity of order required a number or blank");
+            //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
+            if(!(newQuantityOrder == -1)){
+            recipe = drinkItem.getRecipe();
+            for(Map.Entry<Ingredient, Integer> entry: recipe.entrySet()){
+                Ingredient i = entry.getKey();
+                //trong kho se bi giam quantity
+                int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
+                if(newQuantity < 0){
+                    //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
+                    i.setQuantity(0);
+                    System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+                }
+                i.setQuantity(newQuantity);
+            }
+            System.out.printf(ConsoleColors.GREEN + "Update order's quantity successfully, code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+            }
+        }
     }
 
     public void showOrderList(){
