@@ -71,7 +71,9 @@ public class MenuManagement implements Searchable<MenuDrink>, Sortable<MenuDrink
         int iQuantity;
         Ingredient ingredient;
         MenuDrink menuDrinkItem;
+        Map<Ingredient,Integer> recipe;
         do{
+            this.showMenu();
             code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             menuDrinkItem = this.searchObjectByCode(code);
             if(menuDrinkItem == null) {
@@ -114,18 +116,62 @@ public class MenuManagement implements Searchable<MenuDrink>, Sortable<MenuDrink
                         if(ingredient == null){
                             System.out.println("Ingredient is not exist");
                         }else{
-                            if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){
+                            if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE)){
                                 return;
                             }
 
-                            Map<Ingredient,Integer> recipe = menuDrinkItem.getRecipe();
+                            recipe = menuDrinkItem.getRecipe();
                             recipe.remove(ingredient);
                             menuDrinkItem.showInfo();
                             System.out.println("Remove ingredient of drink successfully");
                         }
                         break;
                     case 3:
+                        do{
+                            System.out.print("Input the ingredient code: ");
+                            iCode = new Scanner(System.in).nextLine();
+                            ingredient = idm.searchObjectByCode(iCode);
+                            if(ingredient == null){
+                                System.out.println("Ingredient is not exist");
+                            }else{
+                                String newDrinkName = Utils.getString("Input new drink name or blank: ", Regex.I_NAME, "Drink name must a letter");
+                                //can receive null or != null
+                                //if null then do not change the old information
+                                if(!newDrinkName.isEmpty()){
+                                    menuDrinkItem.setName(newDrinkName);
+                                }
 
+                                recipe = menuDrinkItem.getRecipe();
+                                for(Map.Entry<Ingredient, Integer> entry: recipe.entrySet()){
+                                    System.out.printf("Before update of ingredient code: %s, name: %s\n", entry.getKey().getCode(), entry.getKey().getName());
+                                    entry.getKey().showIngredient();
+
+                                    //the empty name, unit receive ""
+                                    //the empty quantity, price receive -1
+                                    String newName = Utils.getString(Message.INPUT_NEW_INGREDIENT_NAME + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NAME, Message.INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK);
+                                    int newQuantity = Utils.getInt(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER,Message.INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK);
+                                    String newUnit = Utils.getString(Message.INPUT_NEW_INGREDIENT_UNIT + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_UNIT, Message.INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK);
+                                    Double newPrice = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_PRICE + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER, Message.INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK);
+
+                                    //neu no khac rong thi update gia tri moi
+                                    if(!newName.isEmpty()){
+                                        entry.getKey().setName(newName);
+                                    }
+                                    if(!(newQuantity == -1)){
+                                        entry.getKey().setQuantity(newQuantity);
+                                    }
+                                    if(!newUnit.isEmpty()){
+                                        entry.getKey().setUnit(newUnit);
+                                    }
+                                    if(!(newPrice == - 1)){
+                                        entry.getKey().setPrice(newPrice);
+                                    }
+                                    System.out.println("After update: ");
+                                    entry.getKey().showIngredient();
+                                    System.out.printf("Update ingredient successfully code: %s, name: %s\n", entry.getKey().getCode(), entry.getKey().getName());
+                                }
+                            }
+                        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
                         break;
                 }
                 break;
@@ -166,7 +212,7 @@ public class MenuManagement implements Searchable<MenuDrink>, Sortable<MenuDrink
             System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",menuDrink.getCode(),menuDrink.getName() + ConsoleColors.RESET);
 
             Map<Ingredient, Integer> recipe = menuDrink.getRecipe();
-            System.out.printf("| %-5s | %-15s | %10s | %10s |  %15s |\n", "Code", "Ingredient", "Quantity", "Price", "Amount");
+            System.out.printf("| %-5s | %-15s | %10s | %10s |  %15s |\n", "Code", "Name", "Quantity", "Price", "Amount");
             for (Map.Entry<Ingredient, Integer> entry : recipe.entrySet()) {
                 String code = entry.getKey().getCode();
                 String name = entry.getKey().getName();
