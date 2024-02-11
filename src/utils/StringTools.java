@@ -28,19 +28,19 @@ public class StringTools {
     public static void printTitle(String type) {
         String str = "";
         if(type.equals("i")){
-            str = String.format("| %-5s | %-15s | %-15s | %10s | %5s | %15s |\n","Code","Name","Type","Quantity","Unit","Price");
+            str = String.format("| %-5s | %-15s | %10s | %5s | %15s |\n","Code","Name","Quantity","Unit","Price");
         }else if(type.equals("d")){
             str = String.format("| %-10s | %-20s | %-20s |\n", "Code", "Name", "Price");
         }else {
 //            str = String.format("|%3s|%15s|%15s|%70s|%15s|%10s|", "ID", "Name", "Room Available", "Address", "Phone", "Rating");
         }
-        System.out.print(str);
+        System.out.print(ConsoleColors.GREEN + str + ConsoleColors.RESET);
     }
 
     public static void printLine(String type) {
         String str = "";
         if(type.equals("i")){
-            str = "------------------------------------------------------------------------------------";
+            str = "------------------------------------------------------------------";
         }else if(type.equals("d")){
             str = "---------------------------------------------";
         }else {

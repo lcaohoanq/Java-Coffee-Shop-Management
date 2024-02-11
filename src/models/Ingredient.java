@@ -6,15 +6,13 @@ import java.util.Locale;
 public class Ingredient implements Serializable {
     private String code;
     private String name;
-    private String type;
     private int quantity;
     private String unit;
     private double price; //price per unit
 
-    public Ingredient(String code, String name, String type, int quantity, String unit, double price) {
+    public Ingredient(String code, String name, int quantity, String unit, double price) {
         this.code = code.toUpperCase();
         this.name = name.toLowerCase();
-        this.type = type;
         this.quantity = quantity;
         this.unit = unit;
         this.price = price;
@@ -24,24 +22,12 @@ public class Ingredient implements Serializable {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getQuantity() {
@@ -68,11 +54,11 @@ public class Ingredient implements Serializable {
         this.price = price;
     }
     public void showIngredient(){
-        System.out.printf("| %-5s | %-15s | %-15s | %10d | %5s | %15.0f |\n",code,name,type,quantity,unit,price);
+        System.out.printf("| %-5s | %-15s | %10d | %5s | %15.0f |\n",code,name,quantity,unit,price);
     }
 
     @Override
     public String toString() {
-        return String.format("| %-5s | %-15s | %-15s | %10d | %5s | %15.0f |\n", code, name, type, quantity, unit, price);
+        return String.format("| %-5s | %-15s | %10d | %5s | %15.0f |\n", code, name, quantity, unit, price);
     }
 }

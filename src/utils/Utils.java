@@ -118,6 +118,25 @@ public class Utils {
         }
     }
 
+    //ép nhập số nguyên > 0 hoặc rỗng
+    public static int getInt(String inpMsg,String pattern, String errMsg){
+        System.out.println(inpMsg);
+        while(true){
+            try{
+                String number = sc.nextLine();
+                if(number.equals("")){
+                    return -1;
+                }else if(number.matches(pattern)){
+                    return Integer.parseInt(number.trim());
+                }else{
+                    throw new Exception();
+                }
+            }catch(Exception e){
+                System.out.println(errMsg);
+            }
+        }
+    }
+
     public static float getFloat(String welcome, int min) {
         boolean check = true;
         float number = 0;
@@ -158,6 +177,25 @@ public class Utils {
             }
         } while (check || number < min);
         return number;
+    }
+
+    //ép nhập số thực > 0 hoặc rỗng
+    public static double getDouble(String inpMsg,String pattern, String errMsg){
+        System.out.println(inpMsg);
+        while(true){
+            try{
+                String number = sc.nextLine();
+                if(number.equals("")){
+                    return -1;
+                }else if(number.matches(pattern)){
+                    return Double.parseDouble(number.trim());
+                }else{
+                    throw new Exception();
+                }
+            }catch(Exception e){
+                System.out.println(errMsg);
+            }
+        }
     }
     
     //nhận vào chuỗi y|Y|n|N

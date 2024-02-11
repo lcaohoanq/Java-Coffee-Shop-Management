@@ -92,7 +92,7 @@ public class Main {
                                 mm.deleteDrink();
                                 break;
                             case 4:
-                                mm.showAllDrinks();
+                                mm.showMenu();
                                 break;
                             case 5:
                                 break;

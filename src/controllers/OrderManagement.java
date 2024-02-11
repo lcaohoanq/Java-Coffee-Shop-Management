@@ -29,7 +29,7 @@ public class OrderManagement implements Sortable<Order> {
             orderList.clear();
         }
 //        in ra cho nguoi dung lua mon
-        menuManagement.showAllDrinks();
+        menuManagement.showMenu();
 
         //chọn món, lập một mảng option, phân cách nhau bằng dấu cách (dấu cách cuối sẽ trim đi)
         //khi nhập một món order(sẽ check ở đây, check có hay không)

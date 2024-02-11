@@ -40,13 +40,13 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
            } while (isExist);
 
            String name = Utils.getString(Message.INPUT_INGREDIENT_NAME, Regex.I_NAME, Message.INGREDIENT_NAME_IS_REQUIRED, Message.INGREDIENT_NAME_MUST_START_WITH_LETTER);
-           String type = Utils.getString(Message.INPUT_INGREDIENT_TYPE, Regex.I_TYPE, Message.INGREDIENT_TYPE_IS_REQUIRED, Message.INGREDIENT_TYPE_MUST_A_LETTER);
+//           String type = Utils.getString(Message.INPUT_INGREDIENT_TYPE, Regex.I_TYPE, Message.INGREDIENT_TYPE_IS_REQUIRED, Message.INGREDIENT_TYPE_MUST_A_LETTER);
            int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
            String unit = Utils.getString(Message.INPUT_INGREDIENT_UNIT, Regex.I_UNIT, Message.INGREDIENT_UNIT_IS_REQUIRED, Message.INGREDIENT_UNIT_MUST_A_LETTER);
            Double price = Utils.getDouble(Message.INPUT_INGREDIENT_PRICE, 0);
 
            // add to userActionList
-           ingredientList.add(new Ingredient(code,name,type,quantity,unit,price));
+           ingredientList.add(new Ingredient(code,name,quantity,unit,price));
            System.out.println(Message.ADD_INGREDIENT_SUCCESSFULLY);
        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
@@ -60,22 +60,36 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
             Ingredient ingredient = searchObjectByCode(code);
-            int index = searchIndexByCode(code);
+//            int index = searchIndexByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
             } else {
                 System.out.println("Before update: ");
+//                ingredientList.get(index).showIngredient();
                 ingredient.showIngredient();
 
-                String name = Utils.getString(Message.INPUT_INGREDIENT_NAME, Regex.I_NAME, Message.INGREDIENT_NAME_IS_REQUIRED, Message.INGREDIENT_NAME_MUST_START_WITH_LETTER);
-                String type = Utils.getString(Message.INPUT_INGREDIENT_TYPE, Regex.I_TYPE, Message.INGREDIENT_TYPE_IS_REQUIRED, Message.INGREDIENT_TYPE_MUST_A_LETTER);
-                int quantity = Utils.getInt(Message.INPUT_INGREDIENT_QUANTITY, 0);
-                String unit = Utils.getString(Message.INPUT_INGREDIENT_UNIT, Regex.I_UNIT, Message.INGREDIENT_UNIT_IS_REQUIRED, Message.INGREDIENT_UNIT_MUST_A_LETTER);
-                Double price = Utils.getDouble(Message.INPUT_INGREDIENT_PRICE, 0);
+                //the empty name, unit receive ""
+                //the empty quantity, price receive -1
+                String newName = Utils.getString(Message.INPUT_NEW_INGREDIENT_NAME + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NAME, Message.INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK);
+                int newQuantity = Utils.getInt(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER,Message.INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK);
+                String newUnit = Utils.getString(Message.INPUT_NEW_INGREDIENT_UNIT + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_UNIT, Message.INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK);
+                Double newPrice = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_PRICE + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER, Message.INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK);
 
-                ingredientList.set(index, new Ingredient(code,name,type,quantity,unit,price));
+                //neu no khac rong thi update gia tri moi
+                if(!newName.isEmpty()){
+                    ingredient.setName(newName);
+                }
+                if(!(newQuantity == -1)){
+                    ingredient.setQuantity(newQuantity);
+                }
+                if(!newUnit.isEmpty()){
+                    ingredient.setUnit(newUnit);
+                }
+                if(!(newPrice == - 1)){
+                    ingredient.setPrice(newPrice);
+                }
                 System.out.println("After update: ");
-                ingredientList.get(index).showIngredient();
+                ingredient.showIngredient();
                 System.out.println(Message.UPDATE_INGREDIENT_SUCCESSFULLY);
                 break;
             }
@@ -119,7 +133,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             return;
         }
         this.sortAscending(ingredientList);
-        String str = String.format(ConsoleColors.PURPLE_BACKGROUND + "%-5s%-20s%-10s%10s%5s%-6s", "Code", "Name", "Type", "Quantity", "Unit", "Price" + ConsoleColors.RESET);
         StringTools.printTitle("i");
         StringTools.printLine("i");
         for (Ingredient ingredient : ingredientList) {
@@ -129,7 +142,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
     }
 
     //function 5.1: The ingredients are available
-    public void showIngredientList(String type){
+    public void showIngredientList(String status){
         if(ingredientList.isEmpty()){
             System.out.println("Ingredient list is empty");
             return;
@@ -141,15 +154,14 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                 outOfIngredientList.add(ingredient);
             }
         }
-        String str = String.format(ConsoleColors.PURPLE_BACKGROUND + "%-5s%-20s%-10s%10s%5s%-6s", "Code", "Name", "Type", "Quantity", "Unit", "Price" + ConsoleColors.RESET);
         StringTools.printTitle("i");
         StringTools.printLine("i");
-        if(type.equals("available")){
+        if(status.equals("available")){
             for (Ingredient ingredient : availableIngredientList) {
                 ingredient.showIngredient();
                 StringTools.printLine("i");
             }
-        }else if(type.equals("out")){
+        }else if(status.equals("out")){
             for (Ingredient ingredient : outOfIngredientList) {
                 ingredient.showIngredient();
                 StringTools.printLine("i");
@@ -174,11 +186,11 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                 StringTokenizer stk = new StringTokenizer(data, "|");
                 String code = stk.nextToken();
                 String name = stk.nextToken();
-                String type = stk.nextToken();
+//                String type = stk.nextToken();
                 int quantity = Integer.parseInt(stk.nextToken());
                 String unit = stk.nextToken();
                 double price = Double.parseDouble(stk.nextToken());
-                ingredientList.add(new Ingredient(code, name, type, quantity, unit, price));
+                ingredientList.add(new Ingredient(code, name, quantity, unit, price));
             }
             System.out.println("Load data successfully at " + path);
         } catch (Exception e) {
@@ -197,7 +209,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             FileWriter fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
             for(Ingredient ingredient : ingredientList){
-                bw.write(ingredient.getCode() + "|" + ingredient.getName() + "|" + ingredient.getType() + "|" + ingredient.getQuantity() + "|" + ingredient.getUnit() + "|" + ingredient.getPrice());
+                bw.write(ingredient.getCode() + "|" + ingredient.getName() + "|" + ingredient.getQuantity() + "|" + ingredient.getUnit() + "|" + ingredient.getPrice());
                 bw.newLine();
             }
             bw.close();

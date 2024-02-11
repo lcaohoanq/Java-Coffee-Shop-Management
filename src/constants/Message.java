@@ -15,6 +15,15 @@ public class Message {
     public static final String INGREDIENT_TYPE_MUST_A_LETTER = "Ingredient type must be a letter";
     public static final String INGREDIENT_QUANTITY_MUST_BE_A_POSITIVE_NUMBER = "Ingredient quantity must be a positive number";
     public static final String INGREDIENT_UNIT_MUST_A_LETTER = "Ingredient unit must be a letter";
+    public static final String INPUT_NEW_INGREDIENT_NAME = "Input new ingredient name";
+    public static final String INPUT_NEW_INGREDIENT_QUANTITY = "Input new ingredient quantity";
+    public static final String INPUT_NEW_INGREDIENT_UNIT = "Input new ingredient unit";
+    public static final String INPUT_NEW_INGREDIENT_PRICE = "Input new ingredient price";
+    public static final String ENTER_TO_KEEP_THE_OLD_INFORMATION = " enter to keep the old information: ";
+    public static final String INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK = "Ingredient name required a letter or blank";
+    public static final String INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK = "Ingredient unit is required a letter or blank";
+    public static final String INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient quantity required a number or blank";
+    public static final String INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient price required a number or blank";
 
     // Drink information
     public static final String INPUT_DRINK_CODE = "Input drink code: ";
