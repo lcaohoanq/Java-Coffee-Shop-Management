@@ -24,7 +24,9 @@ public class Message {
     public static final String INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK = "Ingredient unit is required a letter or blank";
     public static final String INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient quantity required a number or blank";
     public static final String INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient price required a number or blank";
-
+    public static final String INGREDIENT_LIST_IS_EMPTY = "Ingredient list is empty";
+    public static final String MENU_DRINK_IS_EMPTY = "Menu drink is empty";
+    public static final String ORDER_LIST_IS_EMPTY = "Order list is empty";
     // Drink information
     public static final String INPUT_DRINK_CODE = "Input drink code: ";
     public static final String DRINK_CODE_IS_REQUIRED = "Drink code is required";

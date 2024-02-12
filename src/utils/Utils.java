@@ -137,27 +137,6 @@ public class Utils {
         }
     }
 
-    public static float getFloat(String welcome, int min) {
-        boolean check = true;
-        float number = 0;
-        do {
-            try {
-
-                System.out.print(welcome);
-                number = Float.parseFloat(sc.nextLine());
-                if (number < min) {
-                    System.out.println("Number must be large than " + min);
-                } else {
-                    check = false;
-                }
-
-            } catch (Exception e) {
-                System.out.println("Input double number!!!");
-            }
-        } while (check || number < min);
-        return number;
-    }
-
     public static Double getDouble(String welcome, int min) {
         boolean check = true;
         Double number = 0.0;

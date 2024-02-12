@@ -1,6 +1,5 @@
 package controllers;
 
-import constants.Message;
 import constants.Regex;
 import models.Ingredient;
 import models.MenuDrink;
@@ -57,7 +56,7 @@ public class OrderManagement implements Sortable<Order> {
                 int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
                 if(newQuantity < 0){
                     //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
-                    i.setQuantity(0);
+//                    i.setQuantity(0);
                     System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
                 }
 //                i.setQuantity(newQuantity);

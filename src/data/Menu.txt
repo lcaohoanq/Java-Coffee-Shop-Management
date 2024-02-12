@@ -1,6 +1,6 @@
-D00|bac xiu|coffee 5 milk 5 sugar 12 
-D03|coca cola|coca 1 ice 5 
-D02|coffee|milk 10 sugar 5 ice 23 
-D01|lemonade|ice 6 lemon 6 
-D04|mango juice|mango 1 ice 10 
-D05|orange juice|orange 2 ice 2 
+D00|bac xiu|sugar 12 milk 5 coffee 5 
+D03|coca cola|ice 5 coca 1 
+D02|coffee|sugar 5 ice 23 milk 10 
+D01|lemonade|almond 2 ice 6 lemon 6 
+D04|mango juice|ice 10 mango 1 
+D05|orange juice|ice 2 orange 2 

@@ -3,8 +3,6 @@ package models;
 import utils.ConsoleColors;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class MenuDrink implements Serializable {

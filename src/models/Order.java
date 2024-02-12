@@ -1,10 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private String code;
     private String name;
     private LocalDateTime time;
