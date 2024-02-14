@@ -17,7 +17,7 @@ public class OrderManagement implements Sortable<Order> {
     private List<Order> orderList = new ArrayList<>();
     private List<Order> currentOrderList = new ArrayList<>();
     private List<Order> orderHistory = new ArrayList<>();
-    private Map<Ingredient,Integer> recipe = new HashMap<>();
+    private Map<Ingredient,Double> recipe = new HashMap<>();
     private MenuManagement menuManagement;
     private IngredientManagement ingredientManagement;
     public OrderManagement(MenuManagement menuManagement, IngredientManagement ingredientManagement){
@@ -50,10 +50,10 @@ public class OrderManagement implements Sortable<Order> {
             //tìm món uống với code đó
             MenuDrink drinkItem = menuManagement.searchObjectByCode(order.getCode());
             recipe = drinkItem.getRecipe();
-            for(Map.Entry<Ingredient, Integer> entry: recipe.entrySet()){
+            for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
                 Ingredient i = entry.getKey();
                 //trong kho se bi giam quantity
-                int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
+                double newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
                 if(newQuantity < 0){
                     //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
 //                    i.setQuantity(0);
@@ -86,10 +86,10 @@ public class OrderManagement implements Sortable<Order> {
             //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
             if(!(newQuantityOrder == -1)){
             recipe = drinkItem.getRecipe();
-            for(Map.Entry<Ingredient, Integer> entry: recipe.entrySet()){
+            for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
                 Ingredient i = entry.getKey();
                 //trong kho se bi giam quantity
-                int newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
+                double newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
                 if(newQuantity < 0){
                     //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
                     i.setQuantity(0);
@@ -175,9 +175,5 @@ public class OrderManagement implements Sortable<Order> {
         });
     }
 
-    @Override
-    public void sortDescending(List<Order> list) {
-
-    }
 }
 

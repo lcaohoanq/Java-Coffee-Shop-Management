@@ -48,7 +48,7 @@ public class Utils {
             //nếu khác rỗng tức là có dữ liệu, thì phải match regex
             //còn rỗng thì if sẽ bỏ qua, và check = false
             if (!result.isEmpty() && !result.matches(pattern)) {
-                System.out.println(msgreg);
+                System.out.println(ConsoleColors.RED + msgreg + ConsoleColors.RESET);
             } else {
                 check = false;
             }
@@ -64,9 +64,9 @@ public class Utils {
             System.out.print(welcome);
             result = sc.nextLine();
             if (result.isEmpty()) {
-                System.out.println(msg);
+                System.out.println(ConsoleColors.RED + msg + ConsoleColors.RESET);
             } else if (!result.matches(pattern)) {
-                System.out.println(msgreg);
+                System.out.println(ConsoleColors.RED + msgreg + ConsoleColors.RESET);
             } else {
                 check = false;
             }
@@ -83,13 +83,13 @@ public class Utils {
                 System.out.print(welcome);
                 number = Integer.parseInt(sc.nextLine());
                 if (number < min) {
-                    System.out.println("Number must be large than " + min);
+                    System.out.println(ConsoleColors.RED + "Number must be large than " + min + ConsoleColors.RESET);
                 } else {
                     check = false;
                 }
 
             } catch (Exception e) {
-                System.out.println("Input integer number!!!");
+                System.out.println(ConsoleColors.RED + "Input integer number!!!" + ConsoleColors.RESET);
             }
         } while (check || number < min);
         return number;
@@ -104,7 +104,7 @@ public class Utils {
             upperBound = tmp;
         }
 
-        System.out.println(inpMsg);
+        System.out.print(inpMsg);
         while (true) {
             try {
                 int number = Integer.parseInt(sc.nextLine());
@@ -113,7 +113,7 @@ public class Utils {
                 }
                 return number;
             } catch (Exception e) {
-                System.out.println(errMsg);
+                System.out.println(ConsoleColors.RED + errMsg + ConsoleColors.RESET);
             }
         }
     }
@@ -132,27 +132,27 @@ public class Utils {
                     throw new Exception();
                 }
             }catch(Exception e){
-                System.out.println(errMsg);
+                System.out.println(ConsoleColors.RED + errMsg + ConsoleColors.RESET);
             }
         }
     }
 
-    public static Double getDouble(String welcome, int min) {
+    public static double getDouble(String welcome, double min) {
         boolean check = true;
-        Double number = 0.0;
+        double number = 0.0;
         do {
             try {
 
                 System.out.print(welcome);
                 number = Double.parseDouble(sc.nextLine());
-                if (number < min) {
-                    System.out.println("Number must be large than " + min);
+                if (number <= min) {
+                    System.out.println(ConsoleColors.RED + "Number must be large than " + min + ConsoleColors.RESET);
                 } else {
                     check = false;
                 }
 
             } catch (Exception e) {
-                System.out.println("Input double number!!!");
+                System.out.println(ConsoleColors.RED + "Input double number!!!" + ConsoleColors.RESET);
             }
         } while (check || number < min);
         return number;
@@ -172,33 +172,17 @@ public class Utils {
                     throw new Exception();
                 }
             }catch(Exception e){
-                System.out.println(errMsg);
+                System.out.println(ConsoleColors.RED + errMsg + ConsoleColors.RESET);
             }
         }
     }
-    
-    //nhận vào chuỗi y|Y|n|N
-    //trả ra chuỗi đó, xử lí thì ở bên HotelManagement
-    public static String getYesNo(String inpMsg, String errMsg, String regex) {
-        System.out.println(inpMsg);
-        while (true) {
-            try {
-                String str = sc.nextLine();
-                if (str.isEmpty() || !str.matches(regex)) {
-                    throw new Exception();
-                }
-                return str;
-            } catch (Exception e) {
-                System.out.println(errMsg);
-            }
-        }
-    }
+
     //chấp nhận người dùng chỉ nhập vào 4 kí tự y,Y,n,N và kết quả sẽ đem lowerCase
     //check equals với y => return true;
     //                 n => return false;
     //sử dụng 2 hàm này trong do-while
     public static boolean getUserConfirmation(String msg) {
-        return Utils.getYesNo(msg, Message.PLEASE_INPUT_Y_OR_N, Regex.YES_NO).equalsIgnoreCase("y");
+        return getString(msg,Regex.YES_NO, Message.OPTIONS_IS_REQUIRED, Message.PLEASE_INPUT_Y_OR_N ).equalsIgnoreCase("y");
     }
 
 }

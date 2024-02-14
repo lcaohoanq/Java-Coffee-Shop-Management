@@ -27,6 +27,7 @@ public class Message {
     public static final String INGREDIENT_LIST_IS_EMPTY = "Ingredient list is empty";
     public static final String MENU_DRINK_IS_EMPTY = "Menu drink is empty";
     public static final String ORDER_LIST_IS_EMPTY = "Order list is empty";
+    public static final String OPTIONS_IS_REQUIRED = "Options is required";
     // Drink information
     public static final String INPUT_DRINK_CODE = "Input drink code: ";
     public static final String DRINK_CODE_IS_REQUIRED = "Drink code is required";
@@ -38,10 +39,10 @@ public class Message {
     public static final String INPUT_NEW_DRINK_NAME = "Input new drink name: ";
     public static final String INPUT_NEW_QUANTITY = "Input new quantity: ";
     public static final String UPDATE_DRINK_SUCCESSFULLY = "Update drink successfully";
-    public static final String DO_YOU_READY_WANT_TO_DELETE = "Do you ready want to delete";
     public static final String DELETE_DRINK_SUCCESSFULLY = "Delete drink successfully";
     public static final String DRINK_LIST_IS_EMPTY = "Drink list is empty";
     public static final String DRINK_CODE_IS_EXISTED = "Drink code is existed";
+    public static final String ADD_DRINK_SUCCESSFULLY = "Add drink successfully";
     public static final String ADD_DRINK_FAILED = "Add drink failed";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_UPDATE_DRINK = "Do you want to continue to update drink? (y/n): ";
     public static final String INPUT_UPDATE_CHOICE = "Input update choice: ";
@@ -50,8 +51,6 @@ public class Message {
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK = "Do you want to continue to delete drink? (y/n): ";
     // if exist
     public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed";
-    public static final String NOT_FOUND_INGREDIENT = "Not found ingredient";
-    public static final String INGREDIENT_IS_EXISTED = "Ingredient is existed";
 
     //Validation message if null value
     public static final String INGREDIENT_NAME_IS_REQUIRED = "Ingredient name is required";
@@ -73,9 +72,9 @@ public class Message {
 
     // User confirmation prompts
     public static final String DO_YOU_WANT_TO_CONTINUE = "Do you want to continue? (y/n): ";
-    public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE = "Do you want to continue to delete? (y/n)";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE = "Do you want to continue to delete? (y/n): ";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT = "Do you want to continue to add ingredient? (y/n): ";
-    public static final String DO_YOU_READY_WANT_TO_DELETE_THIS_HOTEL = "Do you ready want to delete this hotel? (y/n): ";
+    public static final String DO_YOU_READY_WANT_TO_DELETE = "Do you ready want to delete? (y/n): ";
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";
 
 }
