@@ -2,10 +2,7 @@ package controllers;
 
 import constants.Message;
 import constants.Regex;
-import models.Ingredient;
-import models.Menu;
-import models.Order;
-import models.Sortable;
+import models.*;
 import utils.ConsoleColors;
 import utils.Utils;
 
@@ -14,8 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class OrderManagement implements Sortable<Order> {
-    private List<Order> orderList = new ArrayList<>();
+public class OrderManagement implements Sortable<Order>, Searchable<Order> {
+//    private List<Order> orderList = new ArrayList<>();
     private List<Order> currentOrderList = new ArrayList<>();
     private List<Order> orderHistory = new ArrayList<>();
     private Map<Ingredient,Double> recipe = new HashMap<>();
@@ -27,8 +24,9 @@ public class OrderManagement implements Sortable<Order> {
     }
 
     public void dispensingDrink(){
-        if(!orderList.isEmpty()){
-            orderList.clear();
+        if(!currentOrderList.isEmpty()){
+//            orderList.clear();
+            currentOrderList.clear();
         }
 //        in ra cho nguoi dung lua mon
         menuManagement.showMenu();
@@ -43,8 +41,12 @@ public class OrderManagement implements Sortable<Order> {
                     System.out.println("The drink code is not exist");
                     break;
                 }else{
-                    orderList.add(new Order(code));
+                    //cac thao tac order se thuc hien tren orderList, ta chi can co code la duoc
+//                    orderList.add(new Order(code));
+                    //current order list tuong tu order list nhung ta dung constructor co 2 tham so de lay ten cua drink
+                    //de in ra cho nguoi dung trong
                     currentOrderList.add(new Order(code, menuManagement.searchObjectByCode(code).getName()));
+                    //orderHistory de luu lai toan bo lich su order de ghi ra file
                     orderHistory.add(new Order(code,menuManagement.searchObjectByCode(code).getName()));
                 }
             }
@@ -55,7 +57,7 @@ public class OrderManagement implements Sortable<Order> {
         double total = 0.0;
         double newQuantity;
         boolean isOutOfIngredient = false;
-        for(Order order: orderList){
+        for(Order order: currentOrderList){
             //tìm món uống với code đó
             Menu menuItem = menuManagement.searchObjectByCode(order.getCode());
             recipe = menuItem.getRecipe();
@@ -88,52 +90,64 @@ public class OrderManagement implements Sortable<Order> {
     //dispensing the drink and update the ingredient’s status.
     public void updateDispensingDrink(){
         //trong nay moi cap nhat
-        if(orderList.isEmpty()){
+        if(currentOrderList.isEmpty()){
             System.out.println("No one order");
+            return;
         }
 //        in ra cho nguoi dung lua mon
 //        menuManagement.showMenu();
         //find the drink (find by code, contain which ingredient) and update the quantity of ingredient in ingredientManagement
         //trường hợp lí tưởng, khi mà người dùng nhập đúng hết tất cả thông tin
         double newQuantity;
+        boolean isExist;
         boolean isOutOfIngredient = false;
-        for(Order order: orderList){
-            //tìm món uống với code đó
-            Menu menuItem = menuManagement.searchObjectByCode(order.getCode());
-            menuItem.showInfo();
-            int newQuantityOrder = Utils.getInt("Input new quantity of order or blank to keep quantity is 1: ", Regex.I_NUMBER, "Quantity of order required a number or blank");
-            //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
-            if(newQuantityOrder != -1){
-                recipe = menuItem.getRecipe();
-                for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
-                    Ingredient i = entry.getKey();
-                    //trong kho se bi giam quantity
-                    newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
-                    if(newQuantity < 0){
-                        //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
-    //                    i.setQuantity(0);
-//                        System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName());
-                        System.out.println("Out of ingredient for the quantity order");
-                        isOutOfIngredient = true;
-                        break;
-                    }else{
-                        i.setQuantity(newQuantity);
+        System.out.println("--------User ordered--------");
+        this.showCurrentOrder();
+
+        do {
+            isExist = true;
+            //find the drink with input code
+            String code = Utils.getString("Input the drink code you want to update: ", Regex.D_CODE, "The drink code is required", Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS).toUpperCase();
+            if (searchIndexByCode(code) == -1) {
+                System.out.println("Not exist drink code in the current order");
+                isExist = false;
+            }
+            if(isExist) {
+                Menu menuItem = menuManagement.searchObjectByCode(code);
+                menuItem.showSortInfo();
+                int newQuantityOrder = Utils.getInt("Input new quantity of order or blank to keep quantity is 1: ", Regex.I_NUMBER, "Quantity of order required a positive number or blank");
+                //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
+                if (newQuantityOrder != -1) {
+                    recipe = menuItem.getRecipe();
+                    for (Map.Entry<Ingredient, Double> entry : recipe.entrySet()) {
+                        Ingredient i = entry.getKey();
+                        //trong kho se bi giam quantity
+                        newQuantity = ingredientManagement.getStorageQuantity(i.getCode()) - (newQuantityOrder * (entry.getValue()));
+                        if (newQuantity < 0) {
+                            //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
+                            i.setQuantity(0);
+                            System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s, price: %.0f VND\n" + ConsoleColors.RESET, menuItem.getCode(), menuItem.getName(), menuItem.getPrice());
+                            isOutOfIngredient = true;
+                            break;
+                        } else {
+                            i.setQuantity(newQuantity);
+                        }
                     }
                 }
+                if(newQuantityOrder == -1){
+                    System.out.printf("Update quantity successfully for drink code: %s, name: %s, quantity: %d\n", menuItem.getCode(), menuItem.getName(), 1);
+                }else{
+                    System.out.printf("Update successfully for drink code: %s, name: %s, quantity: %d\n", menuItem.getCode(), menuItem.getName(), newQuantityOrder);
+                }
             }
-            if (!isOutOfIngredient){
-                System.out.printf(ConsoleColors.GREEN + "Update order's quantity successfully, code: %s, name: %s\n\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName());
-            }
-        }
-        //order thanh cong, thi ta se xoa du lieu trong orderList
-        if(!isOutOfIngredient){
-            orderList.clear();
-        }
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
+        //order thanh cong, thi ta se xoa du lieu trong currentOrderList
+        currentOrderList.clear();
     }
 
-    public void showOrderList(){
+    public void showCurrentOrder(){
         if(currentOrderList.isEmpty()){
-            System.out.println("No one order");
+            System.out.println("No one order now");
             return;
         }
         this.sortAscending(currentOrderList);
@@ -143,12 +157,12 @@ public class OrderManagement implements Sortable<Order> {
         }
     }
 
-    private void showOrderHistory(){
+    public void showAllOrder(){
         if(orderHistory.isEmpty()){
             System.out.println("Nothing to show");
             return;
         }
-        System.out.printf(ConsoleColors.RED_UNDERLINED + "| %5s | %15s | %20s |\n"  + ConsoleColors.RESET,"Code", "Name", "Time");
+        System.out.printf(ConsoleColors.RED_UNDERLINED + "| %5s | %-15s | %20s |\n"  + ConsoleColors.RESET,"Code", "Name", "Time");
         for(Order order: orderHistory){
             order.showInfo();
         }
@@ -204,5 +218,34 @@ public class OrderManagement implements Sortable<Order> {
         });
     }
 
+    @Override
+    public boolean checkToExist(String code) {
+        return false;
+    }
+
+    @Override
+    public int searchIndexByCode(String code) {
+        for(int i = 0; i < currentOrderList.size(); i++){
+            if(currentOrderList.get(i).getCode().equalsIgnoreCase(code)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public Order searchObjectByCode(String code) {
+        return null;
+    }
+
+    @Override
+    public int searchIndexByName(String name) {
+        return 0;
+    }
+
+    @Override
+    public Order searchObjectByName(String name) {
+        return null;
+    }
 }
 

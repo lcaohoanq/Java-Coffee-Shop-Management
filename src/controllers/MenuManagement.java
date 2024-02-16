@@ -46,7 +46,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         //add the drink to the list
         menu = new Menu(code, name, recipe);
         menuList.add(menu);
-        menu.showInfo();
+        menu.showAllInfo();
         System.out.println(ConsoleColors.GREEN + Message.ADD_DRINK_SUCCESSFULLY + ConsoleColors.RESET);
     }
 
@@ -82,7 +82,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
 
             System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
-            menuItem.showInfo();
+            menuItem.showAllInfo();
             System.out.println("--------------Select the ingredient at the list below-------------");
             im.showIngredientList();
             String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
@@ -96,7 +96,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                 drinkRecipe.put(ingredient, iQuantity);
             }
             System.out.println("After adding");
-            menuItem.showInfo();
+            menuItem.showAllInfo();
             System.out.println("Add drink ingredient successfully");
         }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
@@ -114,7 +114,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                 return;
             }
             System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
-            menuItem.showInfo();
+            menuItem.showAllInfo();
             System.out.print("Input the ingredient code: ");
             iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
@@ -128,7 +128,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
 
                 recipe = menuItem.getRecipe();
                 recipe.remove(ingredient);
-                menuItem.showInfo();
+                menuItem.showAllInfo();
                 System.out.println("Remove ingredient of drink successfully");
             }
         }while (Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
@@ -148,7 +148,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
 
         System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
-        menuItem.showInfo();
+        menuItem.showAllInfo();
         String newDrinkName = Utils.getString("Input new drink name or blank: ", Regex.I_NAME, "Drink name must a letter");
         //can receive null or != null
         //if null then do not change the old information
@@ -174,7 +174,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                             entry.setValue(iQuantity);
                         }
                         System.out.printf("After update ingredient %s, %s\n", entry.getKey().getCode(), entry.getKey().getName());
-                        menuItem.showInfo();
+                        menuItem.showAllInfo();
                     }
                 }
             }else{
@@ -192,7 +192,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             return;
         }
         System.out.println("---------------------Before deleting---------------------");
-        menuItem.showInfo();
+        menuItem.showAllInfo();
         if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK)){
             return;
         }

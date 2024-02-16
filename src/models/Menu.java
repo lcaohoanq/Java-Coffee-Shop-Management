@@ -32,7 +32,20 @@ public class Menu implements Serializable {
         this.name = name;
     }
 
-    public void showInfo(){
+    public void showSortInfo(){
+        double total = 0;
+        System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",code,name + ConsoleColors.RESET);
+        Map<Ingredient, Double> recipe = this.getRecipe();
+        for(Map.Entry<Ingredient, Double> entry : recipe.entrySet()) {
+            double price = entry.getKey().getPrice();
+            double quantity = entry.getValue();
+            double amount = quantity * price;
+            total += amount;
+        }
+        System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.0f VND\n", total);
+    }
+
+    public void showAllInfo(){
         double total = 0;
         System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",code,name + ConsoleColors.RESET);
         Map<Ingredient, Double> recipe = this.getRecipe();
