@@ -1,8 +1,9 @@
 package controllers;
 
+import constants.Message;
 import constants.Regex;
 import models.Ingredient;
-import models.MenuDrink;
+import models.Menu;
 import models.Order;
 import models.Sortable;
 import utils.ConsoleColors;
@@ -34,35 +35,51 @@ public class OrderManagement implements Sortable<Order> {
 
         //chọn món, lập một mảng option, phân cách nhau bằng dấu cách (dấu cách cuối sẽ trim đi)
         //khi nhập một món order(sẽ check ở đây, check có hay không)
-        String userOrder = Utils.getString("Input your drink want to order: ", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and seperate by one space if more than one").toUpperCase();
-        String[] tmp = userOrder.trim().split("\\s"); //prevent the last space
-        for(String code: tmp){
-            //change constructor for generate the code and name include time
-            //instead of using the constructor for code only
-            orderList.add(new Order(code));
-            currentOrderList.add(new Order(code, menuManagement.searchObjectByCode(code).getName()));
-            orderHistory.add(new Order(code,menuManagement.searchObjectByCode(code).getName()));
-        }
+        do{
+            String userOrder = Utils.getString("Input your drink want to order: ", Regex.O_PATTERN,"The drink code is required", "Order information is the drink code and separate by one space if more than one").toUpperCase();
+            String[] userOrderList = userOrder.trim().split("\\s"); //prevent the last space
+            for(String code: userOrderList){
+                if(menuManagement.searchObjectByCode(code) == null){
+                    System.out.println("The drink code is not exist");
+                    break;
+                }else{
+                    orderList.add(new Order(code));
+                    currentOrderList.add(new Order(code, menuManagement.searchObjectByCode(code).getName()));
+                    orderHistory.add(new Order(code,menuManagement.searchObjectByCode(code).getName()));
+                }
+            }
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_ORDER_MORE_DRINK));
 
         //find the drink (find by code, contain which ingredient) and update the quantity of ingredient in ingredientManagement
         //trường hợp lí tưởng, khi mà người dùng nhập đúng hết tất cả thông tin
+        double total = 0.0;
+        double newQuantity;
+        boolean isOutOfIngredient = false;
         for(Order order: orderList){
             //tìm món uống với code đó
-            MenuDrink drinkItem = menuManagement.searchObjectByCode(order.getCode());
-            recipe = drinkItem.getRecipe();
+            Menu menuItem = menuManagement.searchObjectByCode(order.getCode());
+            recipe = menuItem.getRecipe();
             for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
                 Ingredient i = entry.getKey();
                 //trong kho se bi giam quantity
-                double newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue();
+                newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-entry.getValue(); //so luong nguyen lieu hien co trong kho tru cho so luong nguyen lieu can co trong mon uong
                 if(newQuantity < 0){
                     //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
 //                    i.setQuantity(0);
-                    System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+//                    System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s, price: %.0f VND\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName(),menuItem.getPrice());
+                    System.out.println("Out of ingredient for the order\n");
+                    isOutOfIngredient = true;
+                    break;
+                }else{
+                    i.setQuantity(newQuantity);
                 }
-//                i.setQuantity(newQuantity);
             }
-            System.out.printf(ConsoleColors.GREEN + "Order successfully, code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+            if(!isOutOfIngredient){
+                System.out.printf(ConsoleColors.GREEN + "Order successfully, code: %s, name: %s, price: %.0f VND\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName(), menuItem.getPrice());
+                total += menuItem.getPrice();
+            }
         }
+        System.out.printf("Total: %.0f VND\n", total);
     }
 
     //4.2 Update the dispensing drink
@@ -78,27 +95,39 @@ public class OrderManagement implements Sortable<Order> {
 //        menuManagement.showMenu();
         //find the drink (find by code, contain which ingredient) and update the quantity of ingredient in ingredientManagement
         //trường hợp lí tưởng, khi mà người dùng nhập đúng hết tất cả thông tin
+        double newQuantity;
+        boolean isOutOfIngredient = false;
         for(Order order: orderList){
             //tìm món uống với code đó
-            MenuDrink drinkItem = menuManagement.searchObjectByCode(order.getCode());
-            drinkItem.showInfo();
+            Menu menuItem = menuManagement.searchObjectByCode(order.getCode());
+            menuItem.showInfo();
             int newQuantityOrder = Utils.getInt("Input new quantity of order or blank to keep quantity is 1: ", Regex.I_NUMBER, "Quantity of order required a number or blank");
             //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
-            if(!(newQuantityOrder == -1)){
-            recipe = drinkItem.getRecipe();
-            for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
-                Ingredient i = entry.getKey();
-                //trong kho se bi giam quantity
-                double newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
-                if(newQuantity < 0){
-                    //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
-                    i.setQuantity(0);
-                    System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+            if(newQuantityOrder != -1){
+                recipe = menuItem.getRecipe();
+                for(Map.Entry<Ingredient, Double> entry: recipe.entrySet()){
+                    Ingredient i = entry.getKey();
+                    //trong kho se bi giam quantity
+                    newQuantity = ingredientManagement.getStorageQuantity(i.getCode())-(newQuantityOrder*(entry.getValue()));
+                    if(newQuantity < 0){
+                        //neu < 0 thi tuc la nguyen lieu da het, ta set ve 0 luon
+    //                    i.setQuantity(0);
+//                        System.out.printf(ConsoleColors.RED + "Out of ingredient for drink code: %s, name: %s\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName());
+                        System.out.println("Out of ingredient for the quantity order");
+                        isOutOfIngredient = true;
+                        break;
+                    }else{
+                        i.setQuantity(newQuantity);
+                    }
                 }
-                i.setQuantity(newQuantity);
             }
-            System.out.printf(ConsoleColors.GREEN + "Update order's quantity successfully, code: %s, name: %s\n" + ConsoleColors.RESET, drinkItem.getCode(),drinkItem.getName());
+            if (!isOutOfIngredient){
+                System.out.printf(ConsoleColors.GREEN + "Update order's quantity successfully, code: %s, name: %s\n\n" + ConsoleColors.RESET, menuItem.getCode(),menuItem.getName());
             }
+        }
+        //order thanh cong, thi ta se xoa du lieu trong orderList
+        if(!isOutOfIngredient){
+            orderList.clear();
         }
     }
 

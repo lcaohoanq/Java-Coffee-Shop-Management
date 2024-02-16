@@ -19,14 +19,13 @@ public class Main {
 
         initMenu(menu, menuManageIngredients, menuManageDrinks, menuManageDispensingBeverages, menuManageReport, menuUpdateDrink);
 
-        //Reload data when the program starts
         IngredientManagement im = new IngredientManagement();
-        im.loadData(Path.URL_INGREDIENT_TXT);
-
         MenuManagement mm = new MenuManagement(im);
-        mm.loadData(Path.URL_MENU_TXT);
-
         OrderManagement om = new OrderManagement(mm, im);
+
+        //Reload data when the program starts
+        im.loadData(Path.URL_INGREDIENT_TXT);
+        mm.loadData(Path.URL_MENU_TXT);
         om.loadData(Path.URL_ORDER_TXT);
 
         int choice;
@@ -42,15 +41,12 @@ public class Main {
                         switch (choiceManageIngredients) {
                             case 1:
                                 im.addIngredient();
-                                //Go back to the main menu.
                                 break;
                             case 2:
                                 im.updateIngredient();
-                                //After updating, the program returns to the main screen.
                                 break;
                             case 3:
                                 im.deleteIngredient();
-                                //After deleting, the program returns to the main screen.
                                 break;
                             case 4:
                                 im.showIngredientList();

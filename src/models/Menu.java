@@ -5,12 +5,12 @@ import utils.ConsoleColors;
 import java.io.Serializable;
 import java.util.Map;
 
-public class MenuDrink implements Serializable {
+public class Menu implements Serializable {
     private String code;
     private String name;
     private Map<Ingredient,Double> recipe;
 
-    public MenuDrink(String code, String name, Map<Ingredient, Double> recipe) {
+    public Menu(String code, String name, Map<Ingredient, Double> recipe) {
         this.code = code.toUpperCase();
         this.name = name.toLowerCase();
         this.recipe = recipe;
@@ -33,7 +33,7 @@ public class MenuDrink implements Serializable {
     }
 
     public void showInfo(){
-        double sum = 0;
+        double total = 0;
         System.out.printf(ConsoleColors.GREEN + "Drink code: %-5s\nDrink name: %-20s\n",code,name + ConsoleColors.RESET);
         Map<Ingredient, Double> recipe = this.getRecipe();
         System.out.printf("| %-5s | %-15s | %10s | %10s |  %19s |\n", "Code", "Name", "Quantity", "Price", "Amount");
@@ -43,9 +43,21 @@ public class MenuDrink implements Serializable {
             double price = entry.getKey().getPrice();
             double quantity = entry.getValue();
             double amount = quantity * price;
-            sum += amount;
+            total += amount;
             System.out.printf("| %5s | %-15s | %10.1f| %10.0f |  %15.0f VND |\n", code, name, quantity, price, amount);
         }
-        System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.0f VND\n", sum);
+        System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.0f VND\n", total);
+    }
+
+    public double getPrice(){
+        double total = 0;
+        Map<Ingredient, Double> recipe = this.getRecipe();
+        for(Map.Entry<Ingredient, Double> entry : recipe.entrySet()) {
+            double price = entry.getKey().getPrice();
+            double quantity = entry.getValue();
+            double amount = quantity * price;
+            total += amount;
+        }
+        return total;
     }
 }

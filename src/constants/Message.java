@@ -75,6 +75,7 @@ public class Message {
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE = "Do you want to continue to delete? (y/n): ";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT = "Do you want to continue to add ingredient? (y/n): ";
     public static final String DO_YOU_READY_WANT_TO_DELETE = "Do you ready want to delete? (y/n): ";
+    public static final String DO_YOU_WANT_TO_ORDER_MORE_DRINK = "Do you want to order more drink? (y/n): ";
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";
 
 }
