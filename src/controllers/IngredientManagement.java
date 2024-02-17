@@ -4,7 +4,6 @@ import models.FileService;
 import models.Ingredient;
 import models.Searchable;
 import models.Sortable;
-import utils.ConsoleColors;
 import utils.StringTools;
 import utils.Utils;
 import constants.*;
@@ -21,6 +20,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
     }
 
     public void addIngredient() {
+        this.showIngredientList();
         boolean isExist;
         String code;
        do{
@@ -32,7 +32,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                for (Ingredient ingredient : ingredientList) {
                    if (ingredient.getCode().equalsIgnoreCase(code)) {
                        isExist = true;
-                       System.out.println(ConsoleColors.RED + Message.INGREDIENT_CODE_IS_EXISTED + ConsoleColors.RESET);
+                       System.out.println(Message.INGREDIENT_CODE_IS_EXISTED);
                        break;
                    }
                }
@@ -55,13 +55,16 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
+        //show the list of ingredient to choose which one need to update
+        System.out.println("Select the ingredient you want to update below:");
+        this.showIngredientList();
         do{
             String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
             Ingredient ingredient = searchObjectByCode(code);
 //            int index = searchIndexByCode(code);
             if (ingredient == null) {
-                System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
+                System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             } else {
                 System.out.println("Before update: ");
 //                ingredientList.get(index).showIngredient();
@@ -73,7 +76,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                 //the empty name, unit receive ""
                 //the empty quantity, price receive -1
                 String newName = Utils.getString(Message.INPUT_NEW_INGREDIENT_NAME + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NAME, Message.INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK);
-                double newQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER,Message.INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK);
+                double newQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.QUANTITY,Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
                 String newUnit = Utils.getString(Message.INPUT_NEW_INGREDIENT_UNIT + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_UNIT, Message.INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK);
                 double newPrice = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_PRICE + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER, Message.INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK);
 
@@ -106,27 +109,28 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
-        do{
-            String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                    Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
-            Ingredient ingredient = searchObjectByCode(code);
-            int index = searchIndexByCode(code);
-            if (ingredient == null) {
-                System.out.println(Message.INGREDIENT_DOES_NOT_EXIST);
-            }else {
-                System.out.println("Before delete: ");
-                StringTools.printTitle("i");
-                StringTools.printLine("i");
-                ingredient.showIngredient();
-                StringTools.printLine("i");
-                if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){
-                    return;
-                }
-                ingredientList.remove(index);
-                System.out.println(Message.DELETE_INGREDIENT_SUCCESSFULLY);
-                break;
+        //show the list of ingredient to choose which one need to delete
+        System.out.println("Select the ingredient you want to delete below:");
+        this.showIngredientList();
+        String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+        Ingredient ingredient = searchObjectByCode(code);
+        int index = searchIndexByCode(code);
+        if (ingredient == null) {
+            System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
+        }else {
+            System.out.println("Before delete: ");
+            StringTools.printTitle("i");
+            StringTools.printLine("i");
+            ingredient.showIngredient();
+            StringTools.printLine("i");
+            if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){
+                System.out.println(Message.DELETE_INGREDIENT_FAILED);
+                return;
             }
-        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE));
+            ingredientList.remove(index);
+            System.out.println(Message.DELETE_INGREDIENT_SUCCESSFULLY);
+        }
     }
 
     public void showIngredientList(){
@@ -157,6 +161,32 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         }
     }
 
+    private void checkingStatus(String status){
+        if(status.equals("available")) {
+            if (availableIngredientList.isEmpty()) {
+                System.out.println(Message.NOTHING_TO_SHOW);
+                return;
+            }
+            StringTools.printTitle("i");
+            StringTools.printLine("i");
+            for (Ingredient ingredient : availableIngredientList) {
+                ingredient.showIngredient();
+                StringTools.printLine("i");
+            }
+        }else if(status.equals("out")){
+            if(outOfIngredientList.isEmpty()){
+                System.out.println(Message.NOTHING_TO_SHOW);
+                return;
+            }
+            StringTools.printTitle("i");
+            StringTools.printLine("i");
+            for (Ingredient ingredient : outOfIngredientList) {
+                ingredient.showIngredient();
+                StringTools.printLine("i");
+            }
+        }
+    }
+
     //function 5.1: The ingredients are available
     public void showIngredientList(String status){
         if(ingredientList.isEmpty()){
@@ -166,20 +196,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
 
         //filter ingredient list each time before showing
         filterIngredientList(availableIngredientList, outOfIngredientList);
-
-        StringTools.printTitle("i");
-        StringTools.printLine("i");
-        if(status.equals("available")){
-            for (Ingredient ingredient : availableIngredientList) {
-                ingredient.showIngredient();
-                StringTools.printLine("i");
-            }
-        }else if(status.equals("out")){
-            for (Ingredient ingredient : outOfIngredientList) {
-                ingredient.showIngredient();
-                StringTools.printLine("i");
-            }
-        }
+        checkingStatus(status);
     }
 
     @Override
@@ -230,6 +247,55 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             System.out.println("Save data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadDataObject(String path) {
+        if(!ingredientList.isEmpty()){
+            ingredientList.clear();
+        }
+        try{
+            File f = new File(path);
+            if(!f.exists()){
+                throw new Exception(Message.FILE_NOT_FOUND);
+            }
+            FileInputStream fi = new FileInputStream(f);
+            ObjectInputStream fo = new ObjectInputStream(fi);
+            Ingredient ingredient;
+            try{
+                while((ingredient = (Ingredient) fo.readObject()) != null){
+                    ingredientList.add(ingredient);
+                }
+            }catch(EOFException e){
+                //do nothing
+            }
+            fo.close();
+            fi.close();
+            System.out.println(Message.READ_FILE_SUCCESSFULLY + path);
+        }catch(Exception e){
+            System.out.println(Message.READ_FILE_FAILED + e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveDataObject(String path) {
+        if(ingredientList.isEmpty()){
+            System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
+            return;
+        }
+        try{
+            File f = new File(path);
+            FileOutputStream fOut = new FileOutputStream(f);
+            ObjectOutputStream out = new ObjectOutputStream(fOut);
+            for(Ingredient ingredient : ingredientList){
+                out.writeObject(ingredient);
+            }
+            out.close();
+            fOut.close();
+            System.out.println(Message.SAVE_FILE_SUCCESSFULLY + path);
+        }catch(Exception e) {
+            System.out.println(Message.SAVE_FILE_FAILED + e.getMessage());
         }
     }
 

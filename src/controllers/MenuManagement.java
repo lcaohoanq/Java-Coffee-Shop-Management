@@ -21,6 +21,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
 
     //func 2.1: Add the drink to the menu
     public void addDrink(){
+        this.showMenu();
         boolean isExist;
         String code;
         Menu menu;
@@ -31,7 +32,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             for (Menu drink : menuList) {
                 if (drink.getCode().equalsIgnoreCase(code)) {
                     isExist = true;
-                    System.out.println(ConsoleColors.RED + Message.DRINK_CODE_IS_EXISTED + ", " + Message.ADD_DRINK_FAILED + ConsoleColors.RESET);
+                    System.out.println(Message.DRINK_CODE_IS_EXISTED + ", " + Message.ADD_DRINK_FAILED);
                     break;
                 }
             }
@@ -39,15 +40,15 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String name = Utils.getString(Message.INPUT_DRINK_NAME, Regex.D_NAME, Message.DRINK_NAME_IS_REQUIRED, Message.DRINK_NAME_MUST_START_WITH_LETTER);
         recipe = new HashMap<>();
         do{
-            System.out.println("-------------Select the ingredient at the list below-------------");
+            System.out.println(Message.SELECT_INGREDIENT_AT_LIST_BELOW);
             im.showIngredientList();
             recipe.putAll(inputIngredientCodeAndQuantity());
-        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT));
+        }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_PICK_INGREDIENT));
         //add the drink to the list
         menu = new Menu(code, name, recipe);
         menuList.add(menu);
         menu.showAllInfo();
-        System.out.println(ConsoleColors.GREEN + Message.ADD_DRINK_SUCCESSFULLY + ConsoleColors.RESET);
+        System.out.println(Message.ADD_DRINK_SUCCESSFULLY);
     }
 
     private Map<Ingredient,Double> inputIngredientCodeAndQuantity(){
@@ -61,7 +62,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             //add the ingredient and quantity to the list
             recipe.put(im.searchObjectByCode(iCode), quantity);
         }else{
-            System.out.println("The ingredient is not found");
+            System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
         }
         return ingredientMap;
     }
@@ -72,6 +73,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
     public void addIngredientToDrink(){
         String dCode;
         do{
+            System.out.println(Message.SELECT_DRINK_AT_LIST_BELOW);
             this.showMenu();
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             Menu menuItem = this.searchObjectByCode(dCode);
@@ -81,23 +83,23 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             }
             Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
 
-            System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
+            System.out.println(Message.BEFORE_ADDING);
             menuItem.showAllInfo();
-            System.out.println("--------------Select the ingredient at the list below-------------");
+            System.out.println(Message.SELECT_INGREDIENT_AT_LIST_BELOW);
             im.showIngredientList();
             String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
             Ingredient ingredient = im.searchObjectByCode(iCode);
             if(ingredient == null){
-                System.out.println("Ingredient is not exist");
+                System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             }else{
                 System.out.printf("Input the %s quantity: ", ingredient.getName());
                 double iQuantity = new Scanner(System.in).nextInt();
                 drinkRecipe.put(ingredient, iQuantity);
             }
-            System.out.println("After adding");
+            System.out.println(Message.AFTER_UPDATING);
             menuItem.showAllInfo();
-            System.out.println("Add drink ingredient successfully");
+            System.out.println(Message.ADD_INGREDIENT_TO_DRINK_SUCCESSFULLY);
         }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
 
@@ -105,6 +107,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String iCode,dCode;
         Ingredient ingredient;
         do{
+            System.out.println(Message.SELECT_DRINK_AT_LIST_BELOW);
             this.showMenu();
 
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
@@ -113,23 +116,23 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                 System.out.println(Message.DRINK_DOES_NOT_EXIST);
                 return;
             }
-            System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
+            System.out.println(Message.BEFORE_DELETING);
             menuItem.showAllInfo();
             System.out.print("Input the ingredient code: ");
             iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
             ingredient = im.searchObjectByCode(iCode);
             if(ingredient == null){
-                System.out.println("Ingredient is not exist");
+                System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             }else{
-                if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE)){
+                if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){ ;
                     return;
                 }
 
                 recipe = menuItem.getRecipe();
                 recipe.remove(ingredient);
                 menuItem.showAllInfo();
-                System.out.println("Remove ingredient of drink successfully");
+                System.out.println(Message.DELETE_INGREDIENT_FROM_DRINK_SUCCESSFULLY);
             }
         }while (Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
@@ -147,7 +150,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         }
         Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
 
-        System.out.println(ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET);
+        System.out.println(Message.BEFORE_UPDATING);
         menuItem.showAllInfo();
         String newDrinkName = Utils.getString("Input new drink name or blank: ", Regex.I_NAME, "Drink name must a letter");
         //can receive null or != null
@@ -167,9 +170,9 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             if(isExist){
                 for (Map.Entry<Ingredient, Double> entry : drinkRecipe.entrySet()) {
                     if (entry.getKey().getCode().equalsIgnoreCase(iCode)) {
-                        System.out.printf("Before update ingredient %s, %s\n", entry.getKey().getCode(), entry.getKey().getName());
-                        System.out.printf("| %-5s | %10.2f |\n", entry.getKey().getCode(), entry.getValue());
-                        iQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER,Message.INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK);
+                        System.out.printf("| %-5s | %-15s | %10s |\n", "Code", "Name", "Quantity");
+                        System.out.printf("| %-5s | %-15s | %10.2f |\n", entry.getKey().getCode(), entry.getKey().getName(), entry.getValue());
+                        iQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.QUANTITY,Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
                         if(iQuantity != -1){
                             entry.setValue(iQuantity);
                         }
@@ -178,7 +181,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                     }
                 }
             }else{
-                System.out.println("Ingredient is not exist");
+                System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             }
         }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
@@ -191,13 +194,13 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             System.out.println(Message.DRINK_DOES_NOT_EXIST);
             return;
         }
-        System.out.println("---------------------Before deleting---------------------");
+        System.out.println(Message.BEFORE_UPDATING);
         menuItem.showAllInfo();
         if(!Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK)){
             return;
         }
         menuList.remove(menuItem);
-        System.out.println(ConsoleColors.GREEN + Message.DELETE_DRINK_SUCCESSFULLY + ConsoleColors.RESET);
+        System.out.println(Message.DELETE_DRINK_SUCCESSFULLY);
     }
 
     //func 2.4: Show all drinks in the menu
@@ -222,7 +225,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
                 sum += amount;
                 System.out.printf("| %-5s | %-15s | %10.1f | %10.0f |  %15.0f VND |\n", code, name, quantity, price, amount);
             }
-            System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.0f VND\n", sum);
+            System.out.printf(Message.TOTAL + "%10.0f VND\n", sum);
         }
     }
 
@@ -278,6 +281,55 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             System.out.println("Save data successfully at " + path);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadDataObject(String path) {
+        if(!menuList.isEmpty()){
+            menuList.clear();
+        }
+        try {
+            File file = new File(path);
+            if(!file.exists()){
+                throw new Exception(Message.FILE_NOT_FOUND);
+            }
+            FileInputStream fi = new FileInputStream(file);
+            ObjectInputStream fo = new ObjectInputStream(fi);
+            Menu menuItem;
+            try{
+                while((menuItem = (Menu) fo.readObject()) != null){
+                    menuList.add(menuItem);
+                }
+            }catch (EOFException e){
+                //do nothing
+            }
+            fo.close();
+            fi.close();
+            System.out.println(Message.READ_FILE_SUCCESSFULLY + path);
+        } catch (Exception e) {
+            System.out.println(Message.READ_FILE_FAILED + e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveDataObject(String path) {
+        if(menuList.isEmpty()){
+            System.out.println(Message.MENU_DRINK_IS_EMPTY);
+            return;
+        }
+        try {
+            File file = new File(path);
+            FileOutputStream fOut = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fOut);
+            for(Menu menu : menuList){
+                out.writeObject(menu);
+            }
+            out.close();
+            fOut.close();
+            System.out.println(Message.SAVE_FILE_SUCCESSFULLY + path);
+        } catch (Exception e) {
+            System.out.println(Message.SAVE_FILE_FAILED + e.getMessage());
         }
     }
 

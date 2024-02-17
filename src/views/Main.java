@@ -24,9 +24,9 @@ public class Main {
         OrderManagement om = new OrderManagement(mm, im);
 
         //Reload data when the program starts
-        im.loadData(Path.URL_INGREDIENT_TXT);
-        mm.loadData(Path.URL_MENU_TXT);
-        om.loadData(Path.URL_ORDER_TXT);
+        im.loadDataObject(Path.URL_INGREDIENT_DAT);
+        mm.loadDataObject(Path.URL_MENU_DAT);
+        om.loadDataObject(Path.URL_ORDER_DAT);
 
         int choice;
         do{
@@ -140,9 +140,9 @@ public class Main {
                     }while(choiceManageReport != menuManageReport.optionList.size());
                     break;
                 case 5:
-                    im.saveData(Path.URL_INGREDIENT_TXT);
-                    mm.saveData(Path.URL_MENU_TXT);
-                    om.saveData(Path.URL_ORDER_TXT);
+                    im.saveDataObject(Path.URL_INGREDIENT_DAT);
+                    mm.saveDataObject(Path.URL_MENU_DAT);
+                    om.saveDataObject(Path.URL_ORDER_DAT);
                     break;
                 case 6:
                     System.out.println("Thanks for using our service!");

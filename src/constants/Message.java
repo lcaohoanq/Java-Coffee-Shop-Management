@@ -1,5 +1,9 @@
 package constants;
 
+import utils.ConsoleColors;
+
+import java.io.Console;
+
 public class Message {
     // Ingredient information
     public static final String INPUT_INGREDIENT_ID = "Input ingredient id: ";
@@ -8,8 +12,8 @@ public class Message {
     public static final String INPUT_INGREDIENT_QUANTITY = "Input ingredient quantity: ";
     public static final String INPUT_INGREDIENT_UNIT = "Input ingredient unit: ";
     public static final String INPUT_INGREDIENT_PRICE = "Input ingredient price: ";
-    public static final String INGREDIENT_DOES_NOT_EXIST = "Ingredient does not exist";
-    public static final String UPDATE_INGREDIENT_SUCCESSFULLY = "Update ingredient successfully";
+    public static final String INGREDIENT_IS_NOT_EXIST = ConsoleColors.RED + "Ingredient is not exist" + ConsoleColors.RESET;
+    public static final String UPDATE_INGREDIENT_SUCCESSFULLY = ConsoleColors.GREEN + "Update ingredient successfully" + ConsoleColors.RESET;
     public static final String INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS = "Ingredient code must be 'I' and 2 digits";
     public static final String INGREDIENT_NAME_MUST_START_WITH_LETTER = "Ingredient name must start with letter";
     public static final String INGREDIENT_TYPE_MUST_A_LETTER = "Ingredient type must be a letter";
@@ -22,35 +26,52 @@ public class Message {
     public static final String ENTER_TO_KEEP_THE_OLD_INFORMATION = " enter to keep the old information: ";
     public static final String INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK = "Ingredient name required a letter or blank";
     public static final String INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK = "Ingredient unit is required a letter or blank";
+    public static final String QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE = "Quantity required a positive integer or double";
     public static final String INGREDIENT_QUANTITY_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient quantity required a number or blank";
     public static final String INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK = "Ingredient price required a number or blank";
-    public static final String INGREDIENT_LIST_IS_EMPTY = "Ingredient list is empty";
+    public static final String INGREDIENT_LIST_IS_EMPTY = ConsoleColors.RED + "Ingredient list is empty" + ConsoleColors.RESET;
     public static final String MENU_DRINK_IS_EMPTY = "Menu drink is empty";
     public static final String ORDER_LIST_IS_EMPTY = "Order list is empty";
     public static final String OPTIONS_IS_REQUIRED = "Options is required";
+    public static final String NO_ONE_ORDERED = ConsoleColors.RED + "No one ordered" + ConsoleColors.RESET;
+    public static final String ORDER_SUCCESSFULLY = ConsoleColors.GREEN + "Order successfully" + ConsoleColors.RESET;
+    public static final String OUT_OF_INGREDIENT = ConsoleColors.RED + "Out of ingredient" + ConsoleColors.RESET;
+    public static final String ORDER_PATTERN = "Order information is the drink code and separate by one space if more than one";
+    public static final String ORDER_FAILED = ConsoleColors.RED + "Order failed" + ConsoleColors.RESET;
+    public static final String OUT_OF_ALL_INGREDIENT = ConsoleColors.RED + "Out of all ingredient" + ConsoleColors.RESET;
+    public static final String NOTHING_TO_SHOW = ConsoleColors.RED + "Nothing to show" + ConsoleColors.RESET   ;
     // Drink information
     public static final String INPUT_DRINK_CODE = "Input drink code: ";
     public static final String DRINK_CODE_IS_REQUIRED = "Drink code is required";
     public static final String DRINK_CODE_MUST_BE_D_AND_2_DIGITS = "Drink code must be 'D' and 2 digits";
     public static final String DRINK_NAME_IS_REQUIRED = "Drink name is required";
-    public static final String DRINK_DOES_NOT_EXIST = "Drink does not exist";
+    public static final String DRINK_DOES_NOT_EXIST = ConsoleColors.RED + "Drink does not exist" + ConsoleColors.RESET;
     public static final String INPUT_DRINK_NAME = "Input drink name: ";
     public static final  String DRINK_NAME_MUST_START_WITH_LETTER = "Drink name must start with letter";
     public static final String INPUT_NEW_DRINK_NAME = "Input new drink name: ";
     public static final String INPUT_NEW_QUANTITY = "Input new quantity: ";
     public static final String UPDATE_DRINK_SUCCESSFULLY = "Update drink successfully";
-    public static final String DELETE_DRINK_SUCCESSFULLY = "Delete drink successfully";
+    public static final String ADD_INGREDIENT_TO_DRINK_SUCCESSFULLY = ConsoleColors.GREEN + "Add ingredient to drink successfully" + ConsoleColors.RESET;
+    public static final String DELETE_DRINK_SUCCESSFULLY = ConsoleColors.GREEN + "Delete drink successfully" + ConsoleColors.RESET;
+    public static final String DELETE_INGREDIENT_FROM_DRINK_SUCCESSFULLY = ConsoleColors.GREEN + "Delete ingredient from drink successfully" + ConsoleColors.RESET;
     public static final String DRINK_LIST_IS_EMPTY = "Drink list is empty";
-    public static final String DRINK_CODE_IS_EXISTED = "Drink code is existed";
-    public static final String ADD_DRINK_SUCCESSFULLY = "Add drink successfully";
+    public static final String DRINK_CODE_IS_EXISTED = ConsoleColors.RED + "Drink code is existed" + ConsoleColors.RESET;
+    public static final String ADD_DRINK_SUCCESSFULLY = ConsoleColors.GREEN + "Add drink successfully" + ConsoleColors.RESET;
     public static final String ADD_DRINK_FAILED = "Add drink failed";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_UPDATE_DRINK = "Do you want to continue to update drink? (y/n): ";
     public static final String INPUT_UPDATE_CHOICE = "Input update choice: ";
     public static final String CHOICE_REQUIRE_BETWEEN_1_AND_3 = "Choice require between 1 and 3";
     public static final String INPUT_NEW_INGREDIENT_CODE = "Input new ingredient code: ";
     public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE_DRINK = "Do you want to continue to delete drink? (y/n): ";
+
     // if exist
-    public static final String INGREDIENT_CODE_IS_EXISTED = "Ingredient code is existed";
+    public static final String INGREDIENT_CODE_IS_EXISTED = ConsoleColors.RED + "Ingredient code is existed" + ConsoleColors.RESET;
+    public static final String DRINK_CODE_DOES_NOT_EXIST_IN_CURRENT_ORDER = ConsoleColors.RED + "Drink code does not exist in current order" + ConsoleColors.RESET;
+
+    // tittle
+    public static final String SELECT_INGREDIENT_AT_LIST_BELOW = "\n" + "Select ingredient at list below: ";
+    public static final String SELECT_DRINK_AT_LIST_BELOW = "\n" + "Select drink at list below: ";
+    public static final String SELECT_ORDER_AT_LIST_BELOW = "\n" + "Select order at list below: ";
 
     //Validation message if null value
     public static final String INGREDIENT_NAME_IS_REQUIRED = "Ingredient name is required";
@@ -61,21 +82,29 @@ public class Message {
     public static final String INGREDIENT_PRICE_IS_REQUIRED = "Ingredient price is required";
 
     // Operation 
-    public static final String ADD_INGREDIENT_SUCCESSFULLY = "Add ingredient successfully";
-    public static final String ADD_INGREDIENT_FAILED = "Add ingredient failed";
-    public static final String DELETE_INGREDIENT_SUCCESSFULLY = "Delete ingredient successfully";
+    public static final String ADD_INGREDIENT_SUCCESSFULLY = ConsoleColors.GREEN + "Add ingredient successfully" + ConsoleColors.RESET;
+    public static final String DELETE_INGREDIENT_SUCCESSFULLY = ConsoleColors.GREEN + "Delete ingredient successfully" + ConsoleColors.RESET;
+    public static final String DELETE_INGREDIENT_FAILED = ConsoleColors.RED + "Delete ingredient failed" + ConsoleColors.RESET;
 
     // File
-    public static final String READ_FILE_FAILED = "Read file failed ";
-    public static final String SAVE_FILE_SUCCESS = "Write file success ";
-    public static final String SAVE_FILE_FAILED = "Write file failed ";
+    public static final String FILE_NOT_FOUND = ConsoleColors.RED + "File not found " + ConsoleColors.RESET;
+    public static final String READ_FILE_FAILED = ConsoleColors.RED + "Read file failed " + ConsoleColors.RESET;
+    public static final String SAVE_FILE_FAILED = ConsoleColors.RED + "Write file failed " + ConsoleColors.RESET;
+    public static final String READ_FILE_SUCCESSFULLY = ConsoleColors.GREEN + "Read file successfully " + ConsoleColors.RESET;
+    public static final String SAVE_FILE_SUCCESSFULLY = ConsoleColors.GREEN + "Write file successfully " + ConsoleColors.RESET;
 
     // User confirmation prompts
     public static final String DO_YOU_WANT_TO_CONTINUE = "Do you want to continue? (y/n): ";
-    public static final String DO_YOU_WANT_TO_CONTINUE_TO_DELETE = "Do you want to continue to delete? (y/n): ";
-    public static final String DO_YOU_WANT_TO_CONTINUE_TO_ADD_INGREDIENT = "Do you want to continue to add ingredient? (y/n): ";
+    public static final String DO_YOU_WANT_TO_CONTINUE_TO_PICK_INGREDIENT = "Do you want to continue to pick ingredient? (y/n): ";
     public static final String DO_YOU_READY_WANT_TO_DELETE = "Do you ready want to delete? (y/n): ";
     public static final String DO_YOU_WANT_TO_ORDER_MORE_DRINK = "Do you want to order more drink? (y/n): ";
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";
+    public static final String BEFORE_UPDATING = ConsoleColors.RED + "Before updating: " + ConsoleColors.RESET;
+    public static final String AFTER_UPDATING = ConsoleColors.GREEN + "After updating: " + ConsoleColors.RESET;
+    public static final String BEFORE_DELETING = ConsoleColors.RED + "Before deleting: " + ConsoleColors.RESET;
+    public static final String AFTER_DELETING = ConsoleColors.GREEN + "After deleting: " + ConsoleColors.RESET;
+    public static final String BEFORE_ADDING = ConsoleColors.RED + "Before adding: " + ConsoleColors.RESET;
+    public static final String AFTER_ADDING = ConsoleColors.GREEN + "After adding: " + ConsoleColors.RESET;
+    public static final String TOTAL = ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET;
 
 }

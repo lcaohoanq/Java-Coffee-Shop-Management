@@ -14,7 +14,7 @@ public class Utils {
         boolean check = true;
         String result = "";
         do {
-            System.out.print(welcome);
+            System.out.print("\n" + welcome);
             result = sc.nextLine();
             if (result.isEmpty()) {
                 System.out.println(msg);
@@ -43,7 +43,7 @@ public class Utils {
         boolean check = true;
         String result = "";
         do {
-            System.out.print(welcome);
+            System.out.print("\n" + welcome);
             result = sc.nextLine();
             //nếu khác rỗng tức là có dữ liệu, thì phải match regex
             //còn rỗng thì if sẽ bỏ qua, và check = false
@@ -61,7 +61,7 @@ public class Utils {
         String result = "";
         do {
 
-            System.out.print(welcome);
+            System.out.print("\n" + welcome);
             result = sc.nextLine();
             if (result.isEmpty()) {
                 System.out.println(ConsoleColors.RED + msg + ConsoleColors.RESET);
@@ -80,7 +80,7 @@ public class Utils {
         do {
             try {
 
-                System.out.print(welcome);
+                System.out.print("\n" + welcome);
                 number = Integer.parseInt(sc.nextLine());
                 if (number < min) {
                     System.out.println(ConsoleColors.RED + "Number must be large than " + min + ConsoleColors.RESET);
@@ -143,7 +143,7 @@ public class Utils {
         do {
             try {
 
-                System.out.print(welcome);
+                System.out.print("\n" + welcome);
                 number = Double.parseDouble(sc.nextLine());
                 if (number <= min) {
                     System.out.println(ConsoleColors.RED + "Number must be large than " + min + ConsoleColors.RESET);
