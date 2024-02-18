@@ -15,9 +15,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
     private List<Ingredient> ingredientList = new ArrayList<>();
     private List<Ingredient> availableIngredientList = new ArrayList<>();
     private List<Ingredient> outOfIngredientList = new ArrayList<>();
-    public List<Ingredient> getIngredientList() {
-        return ingredientList;
-    }
 
     public void addIngredient() {
         this.showIngredientList();
@@ -27,7 +24,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
            do {
                isExist = false; // reset isExisted
                code = Utils
-                       .getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                       .getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
                for (Ingredient ingredient : ingredientList) {
                    if (ingredient.getCode().equalsIgnoreCase(code)) {
@@ -59,15 +56,13 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         System.out.println("Select the ingredient you want to update below:");
         this.showIngredientList();
         do{
-            String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+            String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
             Ingredient ingredient = searchObjectByCode(code);
-//            int index = searchIndexByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             } else {
                 System.out.println("Before update: ");
-//                ingredientList.get(index).showIngredient();
                 StringTools.printTitle("i");
                 StringTools.printLine("i");
                 ingredient.showIngredient();
@@ -99,7 +94,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                 ingredient.showIngredient();
                 StringTools.printLine("i");
                 System.out.println(Message.UPDATE_INGREDIENT_SUCCESSFULLY);
-                break;
             }
         }while(Utils.getUserConfirmation(Message.DO_YOU_WANT_TO_CONTINUE));
     }
@@ -112,7 +106,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         //show the list of ingredient to choose which one need to delete
         System.out.println("Select the ingredient you want to delete below:");
         this.showIngredientList();
-        String code = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+        String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                 Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
         Ingredient ingredient = searchObjectByCode(code);
         int index = searchIndexByCode(code);
@@ -216,7 +210,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
                 StringTokenizer stk = new StringTokenizer(data, "|");
                 String code = stk.nextToken();
                 String name = stk.nextToken();
-//                String type = stk.nextToken();
                 double quantity = Double.parseDouble(stk.nextToken());
                 String unit = stk.nextToken();
                 double price = Double.parseDouble(stk.nextToken());

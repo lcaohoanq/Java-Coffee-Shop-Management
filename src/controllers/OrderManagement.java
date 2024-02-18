@@ -36,7 +36,6 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         orderDrink();
 
         //find the drink (find by code, contain which ingredient) and update the quantity of ingredient in ingredientManagement
-        //trường hợp lí tưởng, khi mà người dùng nhập đúng hết tất cả thông tin
         for(Order order: currentOrderList){
             //tìm món uống với code đó
             Menu menuItem = menuManagement.searchObjectByCode(order.getCode());
@@ -66,9 +65,7 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
     }
 
     //4.2 Update the dispensing drink
-    //tang them so luong cua drink
-    // update quantity, start checking ingredients for
-    //dispensing the drink and update the ingredient’s status.
+    //tang them so luong cua dispensing drink above
     public void updateDispensingDrink(){
         //trong nay moi cap nhat
         if(currentOrderList.isEmpty()){
@@ -84,10 +81,10 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         do {
             isExist = true;
             //find the drink with input code
-            String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, "The drink code is required", Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS).toUpperCase();
+            String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS).toUpperCase();
 
             if (searchIndexByCode(code) == -1) {
-                System.out.println(Message.DRINK_CODE_DOES_NOT_EXIST_IN_CURRENT_ORDER);
+                System.out.println(Message.DRINK_CODE_IS_NOT_EXIST_IN_CURRENT_ORDER);
                 isExist = false;
             }
 
@@ -95,7 +92,7 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
                 Menu menuItem = menuManagement.searchObjectByCode(code);
                 menuItem.showSortInfo();
                 double newQuantity = 0.0;
-                int newQuantityOrder = Utils.getInt("Input new quantity of order or blank to keep quantity is 1: ", Regex.QUANTITY, Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
+                int newQuantityOrder = Utils.getInt(Message.INPUT_NEW_QUANTITY_OF_ORDER + " or" + Message.BLANK_TO_KEEP_THE_OLD_INFORMATION, Regex.QUANTITY, Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
 
                 //if newQuantityOrder = -1 tuc la nguoi dung bam enter, giu nguyen nhu cu
                 if (newQuantityOrder != -1) {
@@ -131,7 +128,7 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
             String[] userOrderList = userOrder.trim().split("\\s"); //prevent the last space
             for(String code: userOrderList){
                 if(menuManagement.searchObjectByCode(code) == null){
-                    System.out.println(Message.DRINK_DOES_NOT_EXIST);
+                    System.out.println(Message.DRINK_IS_NOT_EXIST);
                     break;
                 }else{
                     currentOrderList.add(new Order(code, menuManagement.searchObjectByCode(code).getName()));

@@ -54,7 +54,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
     private Map<Ingredient,Double> inputIngredientCodeAndQuantity(){
         Map<Ingredient,Double> ingredientMap = new HashMap<>();
         //input each ingredient code and quantity
-        String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE,Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
+        String iCode = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE,Message.INGREDIENT_CODE_IS_REQUIRED, Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
         //find the ingredient by code
         //if the ingredient is not found, ask the user to input again
         if(im.checkToExist(iCode)){
@@ -78,7 +78,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             Menu menuItem = this.searchObjectByCode(dCode);
             if(menuItem == null) {
-                System.out.println(Message.DRINK_DOES_NOT_EXIST);
+                System.out.println(Message.DRINK_IS_NOT_EXIST);
                 return;
             }
             Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
@@ -87,7 +87,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             menuItem.showAllInfo();
             System.out.println(Message.SELECT_INGREDIENT_AT_LIST_BELOW);
             im.showIngredientList();
-            String iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+            String iCode = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
             Ingredient ingredient = im.searchObjectByCode(iCode);
             if(ingredient == null){
@@ -113,13 +113,13 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             Menu menuItem = this.searchObjectByCode(dCode);
             if(menuItem == null) {
-                System.out.println(Message.DRINK_DOES_NOT_EXIST);
+                System.out.println(Message.DRINK_IS_NOT_EXIST);
                 return;
             }
             System.out.println(Message.BEFORE_DELETING);
             menuItem.showAllInfo();
-            System.out.print("Input the ingredient code: ");
-            iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+            System.out.print(Message.INPUT_INGREDIENT_CODE);
+            iCode = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
             ingredient = im.searchObjectByCode(iCode);
             if(ingredient == null){
@@ -145,21 +145,21 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
         Menu menuItem = this.searchObjectByCode(code);
         if(menuItem == null) {
-            System.out.println(Message.DRINK_DOES_NOT_EXIST);
+            System.out.println(Message.DRINK_IS_NOT_EXIST);
             return;
         }
         Map<Ingredient, Double> drinkRecipe = menuItem.getRecipe();
 
         System.out.println(Message.BEFORE_UPDATING);
         menuItem.showAllInfo();
-        String newDrinkName = Utils.getString("Input new drink name or blank: ", Regex.I_NAME, "Drink name must a letter");
+        String newDrinkName = Utils.getString(Message.INPUT_NEW_DRINK_NAME + " or" + Message.BLANK_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NAME, Message.DRINK_NAME_MUST_START_WITH_LETTER);
         //can receive null or != null
         //if null then do not change the old information
         if(!newDrinkName.isEmpty()){
             menuItem.setName(newDrinkName);
         }
         do{
-            iCode = Utils.getString(Message.INPUT_INGREDIENT_ID, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+            iCode = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
             for(Map.Entry<Ingredient,Double> entry: drinkRecipe.entrySet()){
                 if(entry.getKey().getCode().equalsIgnoreCase(iCode)){
@@ -191,7 +191,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
         Menu menuItem = this.searchObjectByCode(code);
         if(menuItem == null) {
-            System.out.println(Message.DRINK_DOES_NOT_EXIST);
+            System.out.println(Message.DRINK_IS_NOT_EXIST);
             return;
         }
         System.out.println(Message.BEFORE_UPDATING);
