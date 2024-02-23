@@ -25,19 +25,6 @@ public class Utils {
         return result;
     }
 
-    // ép nhập chuỗi, có thể rỗng
-    public static String getString(String inpMsg) {
-        System.out.println(inpMsg);
-        while (true) {
-            try {
-                String str = sc.nextLine();
-                return str;
-            } catch (Exception e) {
-                System.out.println("Input String!");
-            }
-        }
-    }
-
     // ép nhập chuỗi, có thể rỗng, bắt theo regex
     public static String getString(String welcome, String pattern, String msgreg) {
         boolean check = true;

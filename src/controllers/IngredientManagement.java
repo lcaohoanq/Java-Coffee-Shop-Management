@@ -1,9 +1,6 @@
 package controllers;
 
-import models.FileService;
 import models.Ingredient;
-import models.Searchable;
-import models.Sortable;
 import utils.StringTools;
 import utils.Utils;
 import constants.*;
@@ -11,13 +8,12 @@ import constants.*;
 import java.io.*;
 import java.util.*;
 
-public class IngredientManagement implements Searchable<Ingredient>, Sortable<Ingredient>, FileService {
+public class IngredientManagement {
     private List<Ingredient> ingredientList = new ArrayList<>();
     private List<Ingredient> availableIngredientList = new ArrayList<>();
     private List<Ingredient> outOfIngredientList = new ArrayList<>();
 
     public void addIngredient() {
-        this.showIngredientList();
         boolean isExist;
         String code;
        do{
@@ -52,9 +48,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
-        //show the list of ingredient to choose which one need to update
-        System.out.println("Select the ingredient you want to update below:");
-        this.showIngredientList();
         do{
             String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
@@ -103,9 +96,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
-        //show the list of ingredient to choose which one need to delete
-        System.out.println("Select the ingredient you want to delete below:");
-        this.showIngredientList();
         String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                 Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
         Ingredient ingredient = searchObjectByCode(code);
@@ -193,57 +183,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         checkingStatus(status);
     }
 
-    @Override
-    public void loadData(String path){
-        if(!ingredientList.isEmpty()){
-            ingredientList.clear();
-        }
-        try{
-            File f = new File(path);
-            if(!f.exists()){
-                throw new Exception("File not found");
-            }
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-            String data;
-            while((data = br.readLine()) != null){
-                StringTokenizer stk = new StringTokenizer(data, "|");
-                String code = stk.nextToken();
-                String name = stk.nextToken();
-                double quantity = Double.parseDouble(stk.nextToken());
-                String unit = stk.nextToken();
-                double price = Double.parseDouble(stk.nextToken());
-                ingredientList.add(new Ingredient(code, name, quantity, unit, price));
-            }
-            System.out.println("Load data successfully at " + path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void saveData(String path){
-        if(ingredientList.isEmpty()){
-            System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
-            return;
-        }
-        try{
-            File f = new File(path);
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for(Ingredient ingredient : ingredientList){
-                bw.write(ingredient.getCode() + "|" + ingredient.getName() + "|" + ingredient.getQuantity() + "|" + ingredient.getUnit() + "|" + ingredient.getPrice());
-                bw.newLine();
-            }
-            bw.close();
-            fw.close();
-            System.out.println("Save data successfully at " + path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void loadDataObject(String path) {
         if(!ingredientList.isEmpty()){
             ingredientList.clear();
@@ -251,7 +190,7 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         try{
             File f = new File(path);
             if(!f.exists()){
-                throw new Exception(Message.FILE_NOT_FOUND);
+                throw new IOException(Message.FILE_NOT_FOUND + path);
             }
             FileInputStream fi = new FileInputStream(f);
             ObjectInputStream fo = new ObjectInputStream(fi);
@@ -271,7 +210,6 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         }
     }
 
-    @Override
     public void saveDataObject(String path) {
         if(ingredientList.isEmpty()){
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
@@ -297,13 +235,11 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         return this.searchObjectByCode(code).getQuantity();
     }
 
-    @Override
     public boolean checkToExist(String code) {
         Ingredient ingredient = this.searchObjectByCode(code);
         return ingredient == null? false : true;
     }
 
-    @Override
     public int searchIndexByCode(String code) {
         for (int i = 0; i < ingredientList.size(); i++) {
             if (ingredientList.get(i).getCode().equalsIgnoreCase(code.trim())) {
@@ -313,29 +249,11 @@ public class IngredientManagement implements Searchable<Ingredient>, Sortable<In
         return -1;
     }
 
-    @Override
     public Ingredient searchObjectByCode(String code) {
         int pos = this.searchIndexByCode(code);
         return pos == -1 ? null : ingredientList.get(pos);
     }
 
-    @Override
-    public int searchIndexByName(String name) {
-        for (int i = 0; i < ingredientList.size(); i++) {
-            if (ingredientList.get(i).getName().equalsIgnoreCase(name.trim())) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public Ingredient searchObjectByName(String name) {
-        int pos = this.searchIndexByName(name);
-        return pos == -1 ? null : ingredientList.get(pos);
-    }
-
-    @Override
     public void sortAscending(List<Ingredient> list) {
         list.sort(new Comparator<Ingredient>() {
             @Override

@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
-public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileService {
+public class MenuManagement {
     private List<Menu> menuList = new ArrayList<>();
     private Map<Ingredient,Double> recipe;
     private IngredientManagement im;
@@ -21,7 +21,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
 
     //func 2.1: Add the drink to the menu
     public void addDrink(){
-        this.showMenu();
         boolean isExist;
         String code;
         Menu menu;
@@ -74,7 +73,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String dCode;
         do{
             System.out.println(Message.SELECT_DRINK_AT_LIST_BELOW);
-            this.showMenu();
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             Menu menuItem = this.searchObjectByCode(dCode);
             if(menuItem == null) {
@@ -85,8 +83,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
 
             System.out.println(Message.BEFORE_ADDING);
             menuItem.showAllInfo();
-            System.out.println(Message.SELECT_INGREDIENT_AT_LIST_BELOW);
-            im.showIngredientList();
             String iCode = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
                     Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
             Ingredient ingredient = im.searchObjectByCode(iCode);
@@ -107,9 +103,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String iCode,dCode;
         Ingredient ingredient;
         do{
-            System.out.println(Message.SELECT_DRINK_AT_LIST_BELOW);
-            this.showMenu();
-
             dCode = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
             Menu menuItem = this.searchObjectByCode(dCode);
             if(menuItem == null) {
@@ -125,7 +118,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
             if(ingredient == null){
                 System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
             }else{
-                if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){ ;
+                if(!Utils.getUserConfirmation(Message.DO_YOU_READY_WANT_TO_DELETE)){
                     return;
                 }
 
@@ -141,7 +134,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         String iCode;
         double iQuantity;
         boolean isExist = false;
-        this.showMenu();
         String code = Utils.getString(Message.INPUT_DRINK_CODE, Regex.D_CODE, Message.DRINK_CODE_IS_REQUIRED, Message.DRINK_CODE_MUST_BE_D_AND_2_DIGITS);
         Menu menuItem = this.searchObjectByCode(code);
         if(menuItem == null) {
@@ -229,62 +221,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         }
     }
 
-    @Override
-    public void loadData(String path){
-        try {
-            File file = new File(path);
-            if(!file.exists()){
-                return;
-            }
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            StringTokenizer stk;
-            while((line = bufferedReader.readLine()) != null){
-                stk = new StringTokenizer(line, "|");
-                String code = stk.nextToken().trim();
-                String name = stk.nextToken().trim();
-                Map<Ingredient, Double> recipe = new HashMap<>();
-                String[] ingredients = stk.nextToken().split("\\s+");
-                for (int i = 0; i < ingredients.length; i += 2) {
-                    String iName = ingredients[i].trim();
-                    double quantity = Double.parseDouble(ingredients[i + 1].trim());
-                    Ingredient ingredient = this.im.searchObjectByName(iName); //transfer because the Recipe receive Map<Ingredient, Double> only
-                    recipe.put(ingredient, quantity);
-                }
-                menuList.add(new Menu(code, name, recipe));
-            }
-            bufferedReader.close();
-            System.out.println("Load data successfully at " + path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void saveData(String path){
-        try {
-            File file = new File(path);
-            FileWriter fileWriter = new FileWriter(file);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for(Menu menu : menuList){
-                bufferedWriter.write(menu.getCode() + "|" + menu.getName() + "|");
-                Map<Ingredient, Double> recipe = menu.getRecipe();
-                for (Map.Entry<Ingredient, Double> entry : recipe.entrySet()) {
-                    String iName = entry.getKey().getName();
-                    double quantity = entry.getValue();
-                    bufferedWriter.write(iName + " " + quantity + " ");
-                }
-                bufferedWriter.newLine();
-            }
-            bufferedWriter.close();
-            System.out.println("Save data successfully at " + path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void loadDataObject(String path) {
         if(!menuList.isEmpty()){
             menuList.clear();
@@ -292,7 +228,7 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         try {
             File file = new File(path);
             if(!file.exists()){
-                throw new Exception(Message.FILE_NOT_FOUND);
+                throw new IOException(Message.FILE_NOT_FOUND + path);
             }
             FileInputStream fi = new FileInputStream(file);
             ObjectInputStream fo = new ObjectInputStream(fi);
@@ -312,7 +248,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         }
     }
 
-    @Override
     public void saveDataObject(String path) {
         if(menuList.isEmpty()){
             System.out.println(Message.MENU_DRINK_IS_EMPTY);
@@ -333,13 +268,6 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         }
     }
 
-    @Override
-    public boolean checkToExist(String code) {
-        Menu menu = this.searchObjectByCode(code.trim());
-        return menu != null;
-    }
-
-    @Override
     public int searchIndexByCode(String code) {
         for(int i = 0; i < menuList.size(); i++){
             if(menuList.get(i).getCode().equalsIgnoreCase(code.trim())){
@@ -349,29 +277,11 @@ public class MenuManagement implements Searchable<Menu>, Sortable<Menu>, FileSer
         return -1;
     }
 
-    @Override
     public Menu searchObjectByCode(String code) {
         int pos = this.searchIndexByCode(code);
         return pos == -1 ? null : menuList.get(pos);
     }
 
-    @Override
-    public int searchIndexByName(String name) {
-        for(int i = 0; i < menuList.size(); i++){
-            if(menuList.get(i).getName().equals(name.trim())){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public Menu searchObjectByName(String name) {
-        int pos = this.searchIndexByName(name);
-        return pos == -1 ? null : menuList.get(pos);
-    }
-
-    @Override
     public void sortAscending(List<Menu> list) {
         list.sort(new Comparator<Menu>() {
             @Override

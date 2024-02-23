@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class OrderManagement implements Sortable<Order>, Searchable<Order>, FileService{
+public class OrderManagement {
     private List<Order> currentOrderList = new ArrayList<>();
     private List<Order> orderHistory = new ArrayList<>();
     private MenuManagement menuManagement;
@@ -162,49 +162,6 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         }
     }
 
-    @Override
-    public void loadData(String path){
-        try{
-            File f = new File(path);
-            if(!f.exists()){
-                return;
-            }
-            FileReader fileReader = new FileReader(f);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                StringTokenizer stk = new StringTokenizer(line, "|");
-                String code = stk.nextToken().trim();
-                String name = stk.nextToken().trim();
-                String time = stk.nextToken().trim();
-                // Parse the timeString into a LocalDateTime object
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                LocalDateTime timeFormatted = LocalDateTime.parse(time, formatter);
-                orderHistory.add(new Order(code, name, timeFormatted));
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void saveData(String path){
-        try {
-            File f = new File(path);
-            FileWriter fileWriter = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fileWriter);
-            for(Order order: orderHistory){
-                bw.write(order.getCode() + "|" + order.getName() + "|" + order.getTime());
-                bw.newLine();
-            }
-            bw.close();
-            System.out.println("Save data successfully at " + path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void loadDataObject(String path) {
         if(!orderHistory.isEmpty()){
             orderHistory.clear();
@@ -212,7 +169,7 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         try{
             File f = new File(path);
             if(!f.exists()){
-                return;
+                throw new IOException(Message.FILE_NOT_FOUND + path);
             }
             FileInputStream fi = new FileInputStream(f);
             ObjectInputStream fo = new ObjectInputStream(fi);
@@ -232,7 +189,6 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         }
     }
 
-    @Override
     public void saveDataObject(String path) {
         if(orderHistory.isEmpty()){
             System.out.println(Message.ORDER_LIST_IS_EMPTY);
@@ -253,7 +209,6 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         }
     }
 
-    @Override
     public void sortAscending(List<Order> list) {
         list.sort(new Comparator<Order>() {
             @Override
@@ -263,12 +218,6 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         });
     }
 
-    @Override
-    public boolean checkToExist(String code) {
-        return false;
-    }
-
-    @Override
     public int searchIndexByCode(String code) {
         for(int i = 0; i < currentOrderList.size(); i++){
             if(currentOrderList.get(i).getCode().equalsIgnoreCase(code)){
@@ -278,19 +227,5 @@ public class OrderManagement implements Sortable<Order>, Searchable<Order>, File
         return -1;
     }
 
-    @Override
-    public Order searchObjectByCode(String code) {
-        return null;
-    }
-
-    @Override
-    public int searchIndexByName(String name) {
-        return 0;
-    }
-
-    @Override
-    public Order searchObjectByName(String name) {
-        return null;
-    }
 }
 

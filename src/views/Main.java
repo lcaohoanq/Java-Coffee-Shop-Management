@@ -108,12 +108,6 @@ public class Main {
                                 om.updateDispensingDrink();
                                 break;
                             case 3:
-                                om.showCurrentOrder();
-                                break;
-                            case 4:
-                                om.showAllOrder();
-                                break;
-                            case 5:
                                 break;
                         }
                     }while(choiceManageDispensingBeverages != menuManageDispensingBeverages.optionList.size());
@@ -179,8 +173,6 @@ public class Main {
 
         dbm.addOption("Dispensing a drink");
         dbm.addOption("Update the dispensing information");
-        dbm.addOption("Show current order");
-        dbm.addOption("Show all order");
         dbm.addOption("Exit to main menu");
 
         rm.addOption("The ingredients are available");

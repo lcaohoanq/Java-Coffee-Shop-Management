@@ -5,5 +5,13 @@
         <group name="LAB211-THONGNT">
             <file>file:/D:/FPT/Spring24/LAB/ThongNt/LabProject/J1.L.P0028-Manage_ingredients_at_the_coffee_store/Coffee-Shop-Management/src/runtime/Main.java</file>
         </group>
+        <group name="J1.L.P0027-Hotel_Management-450-master">
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/models/Ingredient.java</file>
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/models/Menu.java</file>
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/models/MenuBuilder.java</file>
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/controllers/MenuManagement.java</file>
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/controllers/OrderManagement.java</file>
+            <file>file:/C:/Users/Admin/Desktop/J1.L.P0028-Manage_ingredients_at_the_coffee_store/src/models/Order.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -6,7 +6,6 @@ public class Regex {
     public static final String I_NAME = "^[a-zA-Z]+[a-zA-Z0-9\\s]*$"; // name: start with letter, can contain number, space
     public static final String I_NUMBER = "^\\d+$"; // quantity: 1-100
     public static final String I_UNIT = "^[a-zA-Z]+[a-zA-Z0-9\\s]*$"; // unit: start with letter, can contain number, space
-    public static final String I_PRICE = "^[1-9][0-9]*$"; // price: positive number
     public static final String QUANTITY = "^\\d+[.]?\\d*$"; // accept positive integer or double
     //drink
     public static final String D_CODE = "^[dD]\\d{2}$"; // D01, D02, D03, D04, D05, D06, D07, D08, D09
