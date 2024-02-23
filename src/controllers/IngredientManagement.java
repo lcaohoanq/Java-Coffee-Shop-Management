@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.*;
 
 public class IngredientManagement {
-    private List<Ingredient> ingredientList = new ArrayList<>();
+    public static List<Ingredient> ingredientList = new ArrayList<>();
     private List<Ingredient> availableIngredientList = new ArrayList<>();
     private List<Ingredient> outOfIngredientList = new ArrayList<>();
 

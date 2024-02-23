@@ -268,6 +268,11 @@ public class MenuManagement {
         }
     }
 
+    public boolean checkToExist(String code) {
+        Menu menu = this.searchObjectByCode(code.trim());
+        return menu != null;
+    }
+
     public int searchIndexByCode(String code) {
         for(int i = 0; i < menuList.size(); i++){
             if(menuList.get(i).getCode().equalsIgnoreCase(code.trim())){
