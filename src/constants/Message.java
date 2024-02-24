@@ -68,7 +68,7 @@ public class Message {
     public static final String ADD_DRINK_FAILED = ConsoleColors.RED + "Add drink failed" + ConsoleColors.RESET;
     public static final String DELETE_INGREDIENT_FAILED = ConsoleColors.RED + "Delete ingredient failed" + ConsoleColors.RESET;
     public static final String ORDER_SUCCESSFULLY = ConsoleColors.GREEN + "Order successfully" + ConsoleColors.RESET;
-    public static final String ORDER_FAILED = ConsoleColors.RED + "Order failed" + ConsoleColors.RESET;
+    public static final String ORDER_FAILED_OUT_OF_INGREDIENT = ConsoleColors.RED + "Order failed, out of ingredient for your order" + ConsoleColors.RESET;
     public static final String ENTER_TO_KEEP_THE_OLD_INFORMATION = " enter to keep the old information: ";
 
     //Processing

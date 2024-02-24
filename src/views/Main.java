@@ -4,7 +4,6 @@ import constants.Path;
 import controllers.IngredientManagement;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
-import controllers.OrderManagement2;
 import models.MenuBuilder;
 
 public class Main {
@@ -22,8 +21,7 @@ public class Main {
 
         IngredientManagement im = new IngredientManagement();
         MenuManagement mm = new MenuManagement(im);
-        OrderManagement om = new OrderManagement(mm, im);
-        OrderManagement2 om2 = new OrderManagement2(im, mm);
+        OrderManagement om = new OrderManagement(im, mm);
 
         //Reload data when the program starts
         im.loadDataObject(Path.URL_INGREDIENT_DAT);
@@ -105,12 +103,10 @@ public class Main {
                         choiceManageDispensingBeverages = menuManageDispensingBeverages.getChoice();
                         switch (choiceManageDispensingBeverages){
                             case 1:
-//                                om.dispensingDrink();
-                                om2.dispensingDrink();
+                                om.dispensingDrink();
                                 break;
                             case 2:
-//                                om.updateDispensingDrink();
-                                om2.updateDispensingDrink();
+                                om.updateDispensingDrink();
                                 break;
                             case 3:
                                 break;

@@ -61,16 +61,4 @@ public class Menu implements Serializable {
         }
         System.out.printf(ConsoleColors.PURPLE_BACKGROUND + "Total: " + ConsoleColors.RESET + "%10.0f VND\n", total);
     }
-
-    public double getPrice(){
-        double total = 0;
-        Map<Ingredient, Double> recipe = this.getRecipe();
-        for(Map.Entry<Ingredient, Double> entry : recipe.entrySet()) {
-            double price = entry.getKey().getPrice();
-            double quantity = entry.getValue();
-            double amount = quantity * price;
-            total += amount;
-        }
-        return total;
-    }
 }
