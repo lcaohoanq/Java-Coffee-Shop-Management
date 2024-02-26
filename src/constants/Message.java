@@ -3,6 +3,8 @@ package constants;
 import utils.ConsoleColors;
 
 public class Message {
+    //
+    public static final String COFFEE_SHOP_MANAGEMENT_PROGRAM = "Coffee Shop Management Program";
     // Ingredient information
     public static final String INPUT_INGREDIENT_CODE = "Input ingredient code: ";
     public static final String INPUT_INGREDIENT_NAME = "Input ingredient name: ";
