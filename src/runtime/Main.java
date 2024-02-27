@@ -1,4 +1,4 @@
-package views;
+package runtime;
 
 import constants.Path;
 import controllers.IngredientManagement;

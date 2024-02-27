@@ -1,22 +1,18 @@
-package viewer;
+package views;
 
-import constants.Message;
+import controllers.IngredientFrameController;
 import enums.IngredientMenu;
-import enums.MainMenu;
 import styles.BorderHandler;
 import styles.ColorHandler;
 import styles.FontHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class IngredientFrame extends MyFrame {
-    private MainFrame mainFrame;
-    public IngredientFrame(MainFrame mainFrame) {
+    public IngredientFrame() {
         super();
-        this.mainFrame = mainFrame;
+        includeScrollPane = true;
     }
     @Override
     protected void initTitleZone(){
@@ -34,7 +30,7 @@ public class IngredientFrame extends MyFrame {
             btn.setBackground(ColorHandler.TEXT_COLOR);
             btn.setForeground(ColorHandler.PRIMARY_COLOR);
             btn.setFont(FontHandler.BUTTON_FONT);
-            btn.addActionListener(this);
+            btn.addActionListener(new IngredientFrameController(this));
             btn.setActionCommand(Integer.toString(button.getKey()));
             jPanel_Button.add(btn);
         }
@@ -49,23 +45,17 @@ public class IngredientFrame extends MyFrame {
     @Override
     protected void initContainer() {
         super.initContainer();
-        panel.add(jPanel_RightPanel, BorderLayout.EAST);
+        panel.add(jPanel_RightPanel, BorderLayout.CENTER);
         panel.add(jPanel_LeftPanel_TextArea, BorderLayout.WEST);
     }
-
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Add ingredient")) {
-            System.out.println("Add ingredient");
-        }else if(e.getActionCommand().equals("Update ingredient information")) {
-            System.out.println("Update ingredient information");
-        }else if(e.getActionCommand().equals("Delete ingredient")) {
-            System.out.println("Delete ingredient");
-        }else if(e.getActionCommand().equals("Show all ingredients")) {
-            System.out.println("Show all ingredients");
-        }else if(e.getActionCommand().equals("Exit to main menu")) {
-            mainFrame.setVisible(true);
-            this.dispose();
-        }
+    protected void initApp(){
+        super.initApp();
+        initViewerZone();
+    }
+
+    public static void main(String[] args) {
+        IngredientFrame ingredientFrame = new IngredientFrame();
+        ingredientFrame.setVisible(true);
     }
 }

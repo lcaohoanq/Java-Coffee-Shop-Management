@@ -1,12 +1,8 @@
-package viewer;
+package views;
 
 //import controllers.Controller;
 import constants.Message;
-import enums.MainMenu;
-import styles.BorderHandler;
-import styles.ColorHandler;
-import styles.FontHandler;
-import styles.SizeHandler;
+import styles.*;
 import utils.ConsoleColors;
 
 import javax.swing.*;
@@ -21,9 +17,9 @@ public abstract class MyFrame extends JFrame implements ActionListener {
     protected JPanel panel = new JPanel(new BorderLayout());
     protected JPanel jPanel_JLabel = new JPanel();
     protected JPanel jPanel_Button = new JPanel();
-    protected JPanel jPanel_LeftPanel_TextArea = new JPanel(new BorderLayout());
+    protected JPanel jPanel_LeftPanel_TextArea = new JPanel();
 
-    public static JTextArea jTextArea_Viewer = new JTextArea(30, 30);
+    public static JTextArea jTextArea_Viewer = new JTextArea();
     public JScrollPane jScrollPane = new JScrollPane(jTextArea_Viewer);
     // set panel tổng là Flow Layout Hoặc BorderLayout (button: phải, viewer: trái)
 
@@ -33,23 +29,23 @@ public abstract class MyFrame extends JFrame implements ActionListener {
     // private GridLayout layout = new GridLayout(3, 3, 5, 5);
     protected JButton btn;
     private static int btnValue = 0; //
-//    private Controller controller; // Reference to the Controller
-
+//    private IngredientController controller; // Reference to the Controller
+    protected boolean includeScrollPane = false; // Flag for adding scroll pane
     public MyFrame() {
 //        this.controller = new Controller(); // Set the reference to the Controller
+        setIconImage(ImageHandler.icon);
         this.setSize(SizeHandler.WINDOW_WIDTH, SizeHandler.WINDOW_HEIGHT);
         this.setTitle(Message.COFFEE_SHOP_MANAGEMENT_PROGRAM);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        // this.pack();
+        this.setResizable(false);
         initApp();
 
     }
 
-    private void initApp() {
+    protected void initApp() {
         initTitleZone();
         initButtonZone();
-//        initViewerZone();
         initContainer();
         this.add(panel);
     }
@@ -68,12 +64,17 @@ public abstract class MyFrame extends JFrame implements ActionListener {
     protected abstract void initButtonZone();
 
     protected void initViewerZone(){
+        jTextArea_Viewer.setRows(30);
+        jTextArea_Viewer.setColumns(40);
         jTextArea_Viewer.setLineWrap(true);
         jTextArea_Viewer.setEditable(false);
         jTextArea_Viewer.setFont(FontHandler.TEXT_FONT);
         jTextArea_Viewer.setBackground(ColorHandler.PRIMARY_COLOR);
         jTextArea_Viewer.setForeground(ColorHandler.TEXT_COLOR);
         jTextArea_Viewer.setBorder(null);
+
+        jPanel_LeftPanel_TextArea.setLayout(new BorderLayout());
+
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -87,8 +88,9 @@ public abstract class MyFrame extends JFrame implements ActionListener {
         panel.setBackground(ColorHandler.PRIMARY_COLOR);
         //panel.add(jPanel_RightPanel, BorderLayout.CENTER);
 
-        //do not add for the main frame
-//        panel.add(jPanel_LeftPanel_TextArea, BorderLayout.WEST);
+        if (includeScrollPane) { // Modify the condition here
+            panel.add(jPanel_LeftPanel_TextArea, BorderLayout.WEST);
+        }
 
         // add(panelButton, BorderLayout.WEST);
         this.add(panel);
