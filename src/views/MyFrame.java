@@ -2,10 +2,7 @@ package views;
 
 //import controllers.Controller;
 import constants.Message;
-import styles.BorderHandler;
-import styles.ColorHandler;
-import styles.FontHandler;
-import styles.SizeHandler;
+import styles.*;
 import utils.ConsoleColors;
 
 import javax.swing.*;
@@ -36,6 +33,7 @@ public abstract class MyFrame extends JFrame implements ActionListener {
     protected boolean includeScrollPane = false; // Flag for adding scroll pane
     public MyFrame() {
 //        this.controller = new Controller(); // Set the reference to the Controller
+        setIconImage(ImageHandler.icon);
         this.setSize(SizeHandler.WINDOW_WIDTH, SizeHandler.WINDOW_HEIGHT);
         this.setTitle(Message.COFFEE_SHOP_MANAGEMENT_PROGRAM);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
