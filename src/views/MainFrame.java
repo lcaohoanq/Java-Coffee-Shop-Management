@@ -1,9 +1,9 @@
-package viewer;
+package views;
 
 //import controllers.Controller;
 
 import constants.Message;
-import enums.IngredientMenu;
+import controllers.MainFrameController;
 import enums.MainMenu;
 import styles.BorderHandler;
 import styles.ColorHandler;
@@ -12,12 +12,11 @@ import styles.FontHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends MyFrame{
-    private MainFrame mainFrame;
     public MainFrame() {
         super();
+        includeScrollPane = false;
     }
     @Override
     protected void initTitleZone(){
@@ -35,7 +34,7 @@ public class MainFrame extends MyFrame{
             btn.setBackground(ColorHandler.TEXT_COLOR);
             btn.setForeground(ColorHandler.PRIMARY_COLOR);
             btn.setFont(FontHandler.BUTTON_FONT);
-            btn.addActionListener(this);
+            btn.addActionListener(new MainFrameController(this));
             btn.setActionCommand(Integer.toString(button.getKey()));
             jPanel_Button.add(btn);
         }
@@ -48,11 +47,10 @@ public class MainFrame extends MyFrame{
         super.initContainer();
         panel.add(jPanel_RightPanel, BorderLayout.CENTER);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Manage ingredients")){
-            IngredientFrame ingredientFrame = new IngredientFrame(this.mainFrame);
+            IngredientFrame ingredientFrame = new IngredientFrame();
             ingredientFrame.setVisible(true);
             this.dispose();
         }else if(e.getActionCommand().equals("Manage beverages")) {
@@ -72,5 +70,9 @@ public class MainFrame extends MyFrame{
         }else if(e.getActionCommand().equals("Exit")) {
             System.exit(0);
         }
+    }
+    @Override
+    protected void initApp(){
+        super.initApp();
     }
 }

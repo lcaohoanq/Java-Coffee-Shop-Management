@@ -19,9 +19,7 @@ public class IngredientManagement {
        do{
            do {
                isExist = false; // reset isExisted
-               code = Utils
-                       .getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                               Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS);
+               code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
                for (Ingredient ingredient : ingredientList) {
                    if (ingredient.getCode().equalsIgnoreCase(code)) {
                        isExist = true;
@@ -49,8 +47,7 @@ public class IngredientManagement {
             return;
         }
         do{
-            String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                    Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+            String code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
             Ingredient ingredient = searchObjectByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
@@ -64,7 +61,7 @@ public class IngredientManagement {
                 //the empty name, unit receive ""
                 //the empty quantity, price receive -1
                 String newName = Utils.getString(Message.INPUT_NEW_INGREDIENT_NAME + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NAME, Message.INGREDIENT_NAME_REQUIRED_A_LETTER_OR_BLANK);
-                double newQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.QUANTITY,Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
+                double newQuantity = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_QUANTITY + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.QUANTITY, Message.QUANTITY_REQUIRED_A_POSITIVE_INTEGER_OR_DOUBLE);
                 String newUnit = Utils.getString(Message.INPUT_NEW_INGREDIENT_UNIT + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_UNIT, Message.INGREDIENT_UNIT_REQUIRED_A_LETTER_OR_BLANK);
                 double newPrice = Utils.getDouble(Message.INPUT_NEW_INGREDIENT_PRICE + " or" + Message.ENTER_TO_KEEP_THE_OLD_INFORMATION, Regex.I_NUMBER, Message.INGREDIENT_PRICE_REQUIRED_A_NUMBER_OR_BLANK);
 
@@ -96,8 +93,7 @@ public class IngredientManagement {
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
-        String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
-                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
+        String code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
         Ingredient ingredient = searchObjectByCode(code);
         int index = searchIndexByCode(code);
         if (ingredient == null) {
@@ -263,5 +259,10 @@ public class IngredientManagement {
         });
     }
 
-
+    @Override
+    public String toString() {
+        return "IngredientManagement{" +
+                "ingredientList=" + ingredientList +
+                '}';
+    }
 }

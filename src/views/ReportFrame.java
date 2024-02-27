@@ -1,7 +1,6 @@
-package viewer;
+package views;
 
-import constants.Message;
-import enums.IngredientMenu;
+import controllers.ReportFrameController;
 import enums.ReportMenu;
 import styles.BorderHandler;
 import styles.ColorHandler;
@@ -13,6 +12,7 @@ import java.awt.*;
 public class ReportFrame extends MyFrame{
     public ReportFrame() {
         super();
+        includeScrollPane = true;
     }
     @Override
     protected void initTitleZone(){
@@ -30,7 +30,7 @@ public class ReportFrame extends MyFrame{
             btn.setBackground(ColorHandler.TEXT_COLOR);
             btn.setForeground(ColorHandler.PRIMARY_COLOR);
             btn.setFont(FontHandler.BUTTON_FONT);
-            btn.addActionListener(this);
+            btn.addActionListener(new ReportFrameController(this));
             btn.setActionCommand(Integer.toString(button.getKey()));
             jPanel_Button.add(btn);
         }
@@ -38,12 +38,24 @@ public class ReportFrame extends MyFrame{
         jPanel_RightPanel.add(jPanel_JLabel, BorderLayout.NORTH);
         jPanel_RightPanel.add(jPanel_Button, BorderLayout.CENTER);
     }
-
+    @Override
+    protected void initViewerZone() {
+        super.initViewerZone();
+    }
     @Override
     protected void initContainer() {
         super.initContainer();
-        panel.add(jPanel_RightPanel, BorderLayout.EAST);
+        panel.add(jPanel_RightPanel, BorderLayout.CENTER);
         panel.add(jPanel_LeftPanel_TextArea, BorderLayout.WEST);
     }
+    @Override
+    protected void initApp(){
+        super.initApp();
+        initViewerZone();
+    }
 
+    public static void main(String[] args) {
+        ReportFrame reportFrame = new ReportFrame();
+        reportFrame.setVisible(true);
+    }
 }
