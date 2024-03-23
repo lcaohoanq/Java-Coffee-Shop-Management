@@ -1,2 +1,5 @@
-package views;public class IngredientView {
+package views;
+
+public class IngredientView {
+
 }

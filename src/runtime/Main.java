@@ -6,14 +6,22 @@ import controllers.IngredientManagement;
 import controllers.LoginController;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
+import enums.DrinkMenu;
+import enums.IngredientMenu;
+import enums.MainMenu;
+import enums.OrderMenu;
+import enums.ReportMenu;
+import enums.UpdateDrinkMenu;
 import models.MenuBuilder;
 import views.LoginView;
 
-public class NewMain {
+public class Main {
 
     public static void main(String[] args) {
+        doAuthentication();
+    }
 
-
+    private static void doAuthentication(){
         LoginView loginView = new LoginView();
         MenuBuilder menuAuthentication = loginView.getMenuAuthentication();
         LoginController loginController = new LoginController(loginView);
@@ -169,44 +177,35 @@ public class NewMain {
                     break;
                 case 6:
                     System.out.println("Thanks for using our service!");
+                    System.exit(0);
             }
         }while(choice != menu.optionList.size());
     }
 
     private static void initMenu(MenuBuilder mm, MenuBuilder im, MenuBuilder dm, MenuBuilder dbm, MenuBuilder rm, MenuBuilder udm){
 
-        mm.addOption("Manage ingredients");
-        mm.addOption("Manage beverage recipes");
-        mm.addOption("Dispensing beverages");
-        mm.addOption("Report");
-        mm.addOption("Store data to file");
-        mm.addOption("Exit");
+        for(MainMenu option : MainMenu.values()){
+            mm.addOption(option.getValue());
+        }
 
-        im.addOption("Add an ingredient");
-        im.addOption("Update ingredient information");
-        im.addOption("Delete ingredient");
-        im.addOption("Show all ingredients");
-        im.addOption("Exit to main menu");
+        for(IngredientMenu option : IngredientMenu.values()){
+            im.addOption(option.getValue());
+        }
 
-        dm.addOption("Add the drink to menu");
-        dm.addOption("Update the drink information");
-        dm.addOption("Delete the drink from menu");
-        dm.addOption("Show menu");
-        dm.addOption("Exit to main menu");
+        for(DrinkMenu option : DrinkMenu.values()){
+            dm.addOption(option.getValue());
+        }
 
-        udm.addOption("Add new ingredient to the drink");
-        udm.addOption("Remove ingredient from the drink");
-        udm.addOption("Adjust the ingredient in the drink");
-        udm.addOption("Exit to manage drinks menu");
+        for(UpdateDrinkMenu option : UpdateDrinkMenu.values()){
+            udm.addOption(option.getValue());
+        }
 
-        dbm.addOption("Dispensing a drink");
-        dbm.addOption("Update the dispensing information");
-        dbm.addOption("Exit to main menu");
+        for(OrderMenu option : OrderMenu.values()){
+            dbm.addOption(option.getValue());
+        }
 
-        rm.addOption("The ingredients are available");
-        rm.addOption("The drinks for which the store is out of ingredients");
-        rm.addOption("Show all the dispensing drink");
-        rm.addOption("Exit to main menu");
+        for(ReportMenu option : ReportMenu.values()){
+            rm.addOption(option.getValue());
+        }
     }
-
 }

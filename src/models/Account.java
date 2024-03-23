@@ -9,6 +9,10 @@ public class Account {
         this.password = password;
         this.role = role;
     }
+    public Account(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;

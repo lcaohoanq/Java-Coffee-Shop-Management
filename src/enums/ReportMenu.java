@@ -1,6 +1,6 @@
 package enums;
 
-public enum ReportMenu {
+public enum     ReportMenu {
     SHOW_AVAILABLE_INGREDIENTS(1, "Show available ingredients"),
     SHOW_OUT_INGREDIENTS(2, "Show out ingredients"),
     SHOW_CURRENT_ORDER(3, "Show current order"),

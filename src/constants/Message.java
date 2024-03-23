@@ -97,6 +97,8 @@ public class Message {
     public static final String PLEASE_INPUT_Y_OR_N = "Please input 'y' or 'n'";
 
     // others
+    public static final String LOGIN_SUCCESS = ConsoleColors.GREEN + "Login successfully!" + ConsoleColors.RESET;
+    public static final String LOGIN_FAILED = ConsoleColors.RED + "Login failed!" + ConsoleColors.RESET;
     public static final String INGREDIENT_LIST_IS_EMPTY = ConsoleColors.RED + "Ingredient list is empty" + ConsoleColors.RESET;
     public static final String MENU_DRINK_IS_EMPTY = ConsoleColors.RED + "Menu drink is empty" + ConsoleColors.RESET;
     public static final String OUT_OF_INGREDIENT = ConsoleColors.RED + "Out of ingredient" + ConsoleColors.RESET;

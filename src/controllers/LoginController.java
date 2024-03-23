@@ -1,24 +1,23 @@
 package controllers;
 
-import models.Account;
-import runtime.Main;
-import utils.Utils;
+import views.LoginView;
 
 public class LoginController {
 
-    RegisterController registerController;
-
-    public LoginController(RegisterController registerController) {
-        this.registerController = registerController;
+    LoginView loginView;
+    int count = 0;
+    int attempts = 3;
+    public LoginController(LoginView loginView) {
+        this.loginView = loginView;
     }
-
     public boolean authenticate() {
-        String username = Utils.getString("Enter username: ", "Username is required!");
-        String password = Utils.getString("Enter password: ", "Password is required!");
-        for (Account account : registerController.getAccountList()) {
-            if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
-                return true;
-            }
+        if(loginView.authenticate()){
+            return true;
+        }
+        count++;
+        System.out.printf("You have %d more attempts\n", attempts - count);
+        if(count == attempts){
+            System.exit(0);
         }
         return false;
     }
