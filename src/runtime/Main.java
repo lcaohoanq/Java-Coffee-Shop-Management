@@ -1,43 +1,32 @@
 package runtime;
 
+import constants.Message;
 import constants.Path;
 import controllers.IngredientManagement;
 import controllers.LoginController;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
-import controllers.RegisterController;
 import models.MenuBuilder;
+import views.LoginView;
 
-public class Main {
+public class NewMain {
+
     public static void main(String[] args) {
 
-        //init menu
-        MenuBuilder menuAuthentication = new MenuBuilder("Authentication");
-        MenuBuilder menu = new MenuBuilder("Coffee Shop Management");
-        MenuBuilder menuManageIngredients = new MenuBuilder("Manage Ingredients");
-        MenuBuilder menuManageDrinks = new MenuBuilder("Manage Beverage Recipes");
-        MenuBuilder menuManageDispensingBeverages = new MenuBuilder("Manage dispensing beverages");
-        MenuBuilder menuManageReport = new MenuBuilder("Manage Report");
-        MenuBuilder menuUpdateDrink = new MenuBuilder("Update Drink");
 
-        initMenu(menuAuthentication, menu, menuManageIngredients, menuManageDrinks, menuManageDispensingBeverages, menuManageReport, menuUpdateDrink);
-
-        RegisterController registerController = new RegisterController();
-        LoginController loginController = null;
-        boolean isLogin;
-        int choice_tmp;
+        LoginView loginView = new LoginView();
+        MenuBuilder menuAuthentication = loginView.getMenuAuthentication();
+        LoginController loginController = new LoginController(loginView);
+        int choice;
         do{
             menuAuthentication.print();
-            choice_tmp = menuAuthentication.getChoice();
-            switch (choice_tmp){
+            choice = menuAuthentication.getChoice();
+            switch (choice){
                 case 1:
-                    loginController = new LoginController(registerController);
-                    isLogin = loginController.authenticate();
-                    if (isLogin) {
-                        System.out.println("Login successfully!");
-                        break;
+                    if (loginController.authenticate()) {
+                        doManagement();
                     }else{
-                        System.out.println("Login failed!");
+                        System.out.println(Message.LOGIN_FAILED);
                     }
                     break;
                 case 2:
@@ -45,7 +34,18 @@ public class Main {
                 case 3:
                     System.exit(0);
             }
-        }while(choice_tmp != menuAuthentication.optionList.size());
+        }while(choice != menuAuthentication.optionList.size());
+    }
+
+    private static void doManagement(){
+        MenuBuilder menu = new MenuBuilder("Coffee Shop Management");
+        MenuBuilder menuManageIngredients = new MenuBuilder("Manage Ingredients");
+        MenuBuilder menuManageDrinks = new MenuBuilder("Manage Beverage Recipes");
+        MenuBuilder menuManageDispensingBeverages = new MenuBuilder("Manage dispensing beverages");
+        MenuBuilder menuManageReport = new MenuBuilder("Manage Report");
+        MenuBuilder menuUpdateDrink = new MenuBuilder("Update Drink");
+
+        initMenu(menu, menuManageIngredients, menuManageDrinks, menuManageDispensingBeverages, menuManageReport, menuUpdateDrink);
 
         IngredientManagement im = new IngredientManagement();
         MenuManagement mm = new MenuManagement(im);
@@ -171,14 +171,9 @@ public class Main {
                     System.out.println("Thanks for using our service!");
             }
         }while(choice != menu.optionList.size());
-
     }
 
-    //mm = main menu, im = ingredient menu, dm = drink menu, dbm = dispensing beverage menu, rm = report menu, udm = update drink menu
-    private static void initMenu(MenuBuilder ma ,MenuBuilder mm, MenuBuilder im, MenuBuilder dm, MenuBuilder dbm, MenuBuilder rm, MenuBuilder udm){
-        ma.addOption("Login");
-        ma.addOption("Register");
-        ma.addOption("Exit");
+    private static void initMenu(MenuBuilder mm, MenuBuilder im, MenuBuilder dm, MenuBuilder dbm, MenuBuilder rm, MenuBuilder udm){
 
         mm.addOption("Manage ingredients");
         mm.addOption("Manage beverage recipes");
@@ -213,4 +208,5 @@ public class Main {
         rm.addOption("Show all the dispensing drink");
         rm.addOption("Exit to main menu");
     }
+
 }
