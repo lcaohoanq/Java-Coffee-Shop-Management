@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mssql-jdbc-12.4.1.jre8">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../JavaWeb/AnhTTV-PRJ301/Materials/PRJ301/Tools-PRJ301/mssql-jdbc-12.4.1.jre8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../../../SOFTSTORE/jar/dotenv-java-2.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
