@@ -1,11 +1,10 @@
 package models;
 
 import constants.Path;
-import java.util.List;
 import utils.AccountHandler;
 
 public class RegisterModel{
-    public AccountHandler accountHandler;
+    private AccountHandler accountHandler;
     public RegisterModel(){
         this.accountHandler = new AccountHandler();
     }

@@ -1,12 +1,8 @@
 package models;
 
-import java.util.List;
 import utils.AccountHandler;
-import utils.Utils;
 
 public class LoginModel {
-    String username;
-    String password;
 
     private AccountHandler accountHandler;
 

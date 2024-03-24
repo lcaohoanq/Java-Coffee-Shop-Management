@@ -4,9 +4,9 @@ import views.LoginView;
 
 public class LoginController {
 
-    LoginView loginView;
-    int count = 0;
-    int attempts = 3;
+    private LoginView loginView;
+    private int count = 0;
+    private final int attempts = 3;
     public LoginController(LoginView loginView) {
         this.loginView = loginView;
     }

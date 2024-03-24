@@ -1,9 +1,5 @@
 package controllers;
 
-import constants.Message;
-import java.util.ArrayList;
-import java.util.List;
-import models.Account;
 import views.RegisterView;
 
 public class RegisterController {

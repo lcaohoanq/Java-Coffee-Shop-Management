@@ -1,8 +1,6 @@
 package views;
 
-import models.Account;
 import models.LoginModel;
-import models.MenuBuilder;
 import utils.Utils;
 
 public class LoginView {
@@ -13,9 +11,7 @@ public class LoginView {
     public LoginView(){
         this.loginModel = new LoginModel();
     }
-    public  LoginModel getLoginModel() {
-        return loginModel;
-    }
+
     public boolean authenticate(){
         username = Utils.getString("Enter username: ", "Username is required!");
         password = Utils.getString("Enter password: ", "Password is required!");
