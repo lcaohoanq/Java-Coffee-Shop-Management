@@ -8,14 +8,14 @@ public class LoginModel {
     String username;
     String password;
 
-    public List<Account> accountList = new AccountHandler().getAccountList();
+    private AccountHandler accountHandler;
 
-    public List<Account> getAccountList() {
-        return accountList;
+    public LoginModel(){
+        this.accountHandler = new AccountHandler();
     }
 
     public boolean authenticate(String username, String password){
-        for (Account account : this.getAccountList()) {
+        for (Account account : accountHandler) {
             if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
                 return true;
             }
