@@ -1,5 +1,6 @@
 package models;
 
+import constants.Path;
 import utils.AccountHandler;
 
 public class LoginModel {
@@ -18,6 +19,7 @@ public class LoginModel {
         }
         return false;
     }
-
-
+    public void readFromFile(){
+        this.accountHandler.loadFromFile(Path.URL_ACCOUNT_DAT);
+    }
 }

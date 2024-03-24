@@ -6,6 +6,7 @@ import controllers.IngredientManagement;
 import controllers.LoginController;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
+import controllers.RegisterController;
 import enums.AuthenticateMenu;
 import enums.DrinkMenu;
 import enums.IngredientMenu;
@@ -16,6 +17,7 @@ import enums.UpdateDrinkMenu;
 import models.Menu;
 import models.MenuBuilder;
 import views.LoginView;
+import views.RegisterView;
 
 public class Main {
 
@@ -27,6 +29,7 @@ public class Main {
         MenuBuilder ma = new MenuBuilder("Authentication");
         initMenuAuthentication(ma);
         LoginController loginController = new LoginController(new LoginView());
+        RegisterController registerController = new RegisterController(new RegisterView());
         int choice;
         do{
             ma.print();
@@ -40,6 +43,17 @@ public class Main {
                     }
                     break;
                 case 2:
+                    if(registerController.authenticate()){
+                        System.out.println(Message.REGISTER_SUCCESS);
+                        System.out.println("Please login to continue");
+                        if (loginController.authenticate()) {
+                            doManagement();
+                        }else{
+                            System.out.println(Message.LOGIN_FAILED);
+                        }
+                        break;
+                    }
+                    System.out.println(Message.REGISTER_FAILED);
                     break;
                 case 3:
                     System.exit(0);

@@ -17,4 +17,7 @@ public class LoginView {
         password = Utils.getString("Enter password: ", "Password is required!");
         return this.loginModel.authenticate(username, password);
     }
+    public void readFromFile(){
+        this.loginModel.readFromFile();
+    }
 }

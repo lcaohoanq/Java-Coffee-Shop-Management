@@ -11,6 +11,7 @@ public class LoginController {
         this.loginView = loginView;
     }
     public boolean authenticate() {
+        loginView.readFromFile();
         if(loginView.authenticate()){
             return true;
         }
