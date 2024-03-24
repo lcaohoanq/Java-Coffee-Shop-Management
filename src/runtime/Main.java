@@ -6,12 +6,14 @@ import controllers.IngredientManagement;
 import controllers.LoginController;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
+import enums.AuthenticateMenu;
 import enums.DrinkMenu;
 import enums.IngredientMenu;
 import enums.MainMenu;
 import enums.OrderMenu;
 import enums.ReportMenu;
 import enums.UpdateDrinkMenu;
+import models.Menu;
 import models.MenuBuilder;
 import views.LoginView;
 
@@ -22,13 +24,13 @@ public class Main {
     }
 
     private static void doAuthentication(){
-        LoginView loginView = new LoginView();
-        MenuBuilder menuAuthentication = loginView.getMenuAuthentication();
-        LoginController loginController = new LoginController(loginView);
+        MenuBuilder ma = new MenuBuilder("Authentication");
+        initMenuAuthentication(ma);
+        LoginController loginController = new LoginController(new LoginView());
         int choice;
         do{
-            menuAuthentication.print();
-            choice = menuAuthentication.getChoice();
+            ma.print();
+            choice = ma.getChoice();
             switch (choice){
                 case 1:
                     if (loginController.authenticate()) {
@@ -42,7 +44,7 @@ public class Main {
                 case 3:
                     System.exit(0);
             }
-        }while(choice != menuAuthentication.optionList.size());
+        }while(choice != ma.optionList.size());
     }
 
     private static void doManagement(){
@@ -181,7 +183,11 @@ public class Main {
             }
         }while(choice != menu.optionList.size());
     }
-
+    private static void initMenuAuthentication(MenuBuilder ma){
+        for(AuthenticateMenu option : AuthenticateMenu.values()){
+            ma.addOption(option.getValue());
+        }
+    }
     private static void initMenu(MenuBuilder mm, MenuBuilder im, MenuBuilder dm, MenuBuilder dbm, MenuBuilder rm, MenuBuilder udm){
 
         for(MainMenu option : MainMenu.values()){
