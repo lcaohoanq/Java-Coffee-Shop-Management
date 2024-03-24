@@ -36,7 +36,7 @@ public class AccountHandler extends ArrayList<Account>{
             }
             fo.close();
             fi.close();
-            System.out.println(Message.READ_FILE_SUCCESSFULLY + path);
+//            System.out.println(Message.READ_FILE_SUCCESSFULLY + path);
         }catch(Exception e){
             System.out.println(Message.READ_FILE_FAILED + e.getMessage());
         }
@@ -56,7 +56,7 @@ public class AccountHandler extends ArrayList<Account>{
             }
             out.close();
             fOut.close();
-            System.out.println(Message.SAVE_FILE_SUCCESSFULLY + path);
+//            System.out.println(Message.SAVE_FILE_SUCCESSFULLY + path);
         }catch(Exception e) {
             System.out.println(Message.SAVE_FILE_FAILED + e.getMessage());
         }
