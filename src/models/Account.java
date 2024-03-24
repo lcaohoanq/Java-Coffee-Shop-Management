@@ -1,6 +1,8 @@
 package models;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     String username;
     String password;
     String role; // admin, staff
@@ -24,5 +26,14 @@ public class Account {
 
     public String getRole() {
         return role;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+            "username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            ", role='" + role + '\'' +
+            '}';
     }
 }
