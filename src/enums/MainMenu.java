@@ -1,7 +1,5 @@
 package enums;
 
-// Enum to represent buttons
-
 public enum MainMenu {
     MANAGE_INGREDIENTS(1, "Manage ingredients"),
     MANAGE_BEVERAGES(2, "Manage beverages"),

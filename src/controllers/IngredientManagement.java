@@ -19,7 +19,8 @@ public class IngredientManagement {
        do{
            do {
                isExist = false; // reset isExisted
-               code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
+               code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                   Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
                for (Ingredient ingredient : ingredientList) {
                    if (ingredient.getCode().equalsIgnoreCase(code)) {
                        isExist = true;
@@ -47,7 +48,8 @@ public class IngredientManagement {
             return;
         }
         do{
-            String code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
+            String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+                Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
             Ingredient ingredient = searchObjectByCode(code);
             if (ingredient == null) {
                 System.out.println(Message.INGREDIENT_IS_NOT_EXIST);
@@ -93,7 +95,8 @@ public class IngredientManagement {
             System.out.println(Message.INGREDIENT_LIST_IS_EMPTY);
             return;
         }
-        String code = Notification.createInputDialog("Input Ingredient Code: ").toLowerCase();
+        String code = Utils.getString(Message.INPUT_INGREDIENT_CODE, Regex.I_CODE, Message.INGREDIENT_CODE_IS_REQUIRED,
+            Message.INGREDIENT_CODE_MUST_BE_I_AND_2_DIGITS).toUpperCase();
         Ingredient ingredient = searchObjectByCode(code);
         int index = searchIndexByCode(code);
         if (ingredient == null) {

@@ -25,15 +25,12 @@ public class Utils {
         return result;
     }
 
-    // ép nhập chuỗi, có thể rỗng, bắt theo regex
     public static String getString(String welcome, String pattern, String msgreg) {
         boolean check = true;
         String result = "";
         do {
             System.out.print("\n" + welcome);
             result = sc.nextLine();
-            //nếu khác rỗng tức là có dữ liệu, thì phải match regex
-            //còn rỗng thì if sẽ bỏ qua, và check = false
             if (!result.isEmpty() && !result.matches(pattern)) {
                 System.out.println(ConsoleColors.RED + msgreg + ConsoleColors.RESET);
             } else {
@@ -82,7 +79,6 @@ public class Utils {
         return number;
     }
 
-    // method: ép nhập số nguyên trong khoảng
     public static int getInt(String inpMsg, String errMsg,
             int lowerBound, int upperBound) {
         if (lowerBound > upperBound) {
@@ -105,13 +101,12 @@ public class Utils {
         }
     }
 
-    //ép nhập số nguyên > 0 hoặc rỗng
     public static int getInt(String inpMsg,String pattern, String errMsg){
         System.out.print(inpMsg);
         while(true){
             try{
                 String number = sc.nextLine();
-                if(number.equals("")){
+                if(number.isEmpty()){
                     return -1;
                 }else if(number.matches(pattern)){
                     return Integer.parseInt(number.trim());
@@ -145,13 +140,12 @@ public class Utils {
         return number;
     }
 
-    //ép nhập số thực > 0 hoặc rỗng
     public static double getDouble(String inpMsg,String pattern, String errMsg){
         System.out.println(inpMsg);
         while(true){
             try{
                 String number = sc.nextLine();
-                if(number.equals("")){
+                if(number.isEmpty()){
                     return -1;
                 }else if(number.matches(pattern)){
                     return Double.parseDouble(number.trim());
@@ -164,10 +158,6 @@ public class Utils {
         }
     }
 
-    //chấp nhận người dùng chỉ nhập vào 4 kí tự y,Y,n,N và kết quả sẽ đem lowerCase
-    //check equals với y => return true;
-    //                 n => return false;
-    //sử dụng 2 hàm này trong do-while
     public static boolean getUserConfirmation(String msg) {
         return getString(msg,Regex.YES_NO, Message.OPTIONS_IS_REQUIRED, Message.PLEASE_INPUT_Y_OR_N ).equalsIgnoreCase("y");
     }

@@ -2,8 +2,7 @@ package utils;
 
 public class StringTools {
 
-    //khi chuỗi có 2 khoảng trắng thừa thì sẽ xử lí còn 1
-    public static String removeTwoSpace(String inp) {
+    public static String removeRedundantSpace(String inp) {
         inp = inp.trim();
         return inp.replaceAll("\\s+", " ");
     }

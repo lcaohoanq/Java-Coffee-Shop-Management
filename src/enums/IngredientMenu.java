@@ -1,7 +1,6 @@
 package enums;
 
 public enum IngredientMenu {
-    // 1. Ingredient menu
     ADD_INGREDIENT(1, "Add ingredient"),
     UPDATE_INGREDIENT(2, "Update ingredient information"),
     DELETE_INGREDIENT(3, "Delete ingredient"),

@@ -1,64 +1,21 @@
 package runtime;
 
-import constants.Message;
 import constants.Path;
 import controllers.IngredientManagement;
-import controllers.LoginController;
 import controllers.MenuManagement;
 import controllers.OrderManagement;
-import controllers.RegisterController;
-import enums.AuthenticateMenu;
 import enums.DrinkMenu;
 import enums.IngredientMenu;
 import enums.MainMenu;
 import enums.OrderMenu;
 import enums.ReportMenu;
 import enums.UpdateDrinkMenu;
-import models.Menu;
 import models.MenuBuilder;
-import views.LoginView;
-import views.RegisterView;
 
 public class Main {
 
     public static void main(String[] args) {
-        doAuthentication();
-    }
-
-    private static void doAuthentication(){
-        MenuBuilder ma = new MenuBuilder("Authentication");
-        initMenuAuthentication(ma);
-        LoginController loginController = new LoginController(new LoginView());
-        RegisterController registerController = new RegisterController(new RegisterView());
-        int choice;
-        do{
-            ma.print();
-            choice = ma.getChoice();
-            switch (choice){
-                case 1:
-                    if (loginController.authenticate()) {
-                        doManagement();
-                    }else{
-                        System.out.println(Message.LOGIN_FAILED);
-                    }
-                    break;
-                case 2:
-                    if(registerController.authenticate()){
-                        System.out.println(Message.REGISTER_SUCCESS);
-                        System.out.println("Please login to continue");
-                        if (loginController.authenticate()) {
-                            doManagement();
-                        }else{
-                            System.out.println(Message.LOGIN_FAILED);
-                        }
-                        break;
-                    }
-                    System.out.println(Message.REGISTER_FAILED);
-                    break;
-                case 3:
-                    System.exit(0);
-            }
-        }while(choice != ma.optionList.size());
+        doManagement();
     }
 
     private static void doManagement(){
@@ -79,7 +36,6 @@ public class Main {
         im.loadDataObject(Path.URL_INGREDIENT_DAT);
         mm.loadDataObject(Path.URL_MENU_DAT);
         om.loadDataObject(Path.URL_ORDER_DAT);
-//        om2.
 
         int choice;
         do{
@@ -197,11 +153,7 @@ public class Main {
             }
         }while(choice != menu.optionList.size());
     }
-    private static void initMenuAuthentication(MenuBuilder ma){
-        for(AuthenticateMenu option : AuthenticateMenu.values()){
-            ma.addOption(option.getValue());
-        }
-    }
+
     private static void initMenu(MenuBuilder mm, MenuBuilder im, MenuBuilder dm, MenuBuilder dbm, MenuBuilder rm, MenuBuilder udm){
 
         for(MainMenu option : MainMenu.values()){
